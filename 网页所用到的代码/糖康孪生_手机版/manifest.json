@@ -1,0 +1,50 @@
+{
+    "name": "糖康孪生 - 数字健康管家",
+    "short_name": "糖康孪生",
+    "description": "基于大数据和人工智能的糖尿病健康管理平台 - 手机版",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "display_override": ["standalone", "minimal-ui"],
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#2A64B5",
+    "lang": "zh-CN",
+    "dir": "ltr",
+    "categories": ["health", "medical", "lifestyle"],
+    "icons": [
+        {
+            "src": "images/logo.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/logo.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "风险筛查",
+            "short_name": "筛查",
+            "description": "快速进行糖尿病风险筛查",
+            "url": "./index.html#page-quiz"
+        },
+        {
+            "name": "知识库",
+            "short_name": "知识",
+            "description": "阅读糖尿病科普知识",
+            "url": "./index.html#page-knowledge"
+        },
+        {
+            "name": "糖友社区",
+            "short_name": "社区",
+            "description": "与其他糖友交流经验",
+            "url": "./index.html#page-community"
+        }
+    ],
+    "prefer_related_applications": false
+}

@@ -1,0 +1,532 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>中风险糖尿病专区 - 糖康孪生平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    
+    <style>
+        body {
+            font-family: var(--tk-font-family);
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            min-height: 100vh;
+            color: var(--tk-text-main);
+        }
+
+        .forum-hero {
+            background: linear-gradient(135deg, var(--tk-warning) 0%, #d97706 100%);
+            color: white;
+            padding: 3rem 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .forum-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .forum-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .forum-hero p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .forum-hero .hero-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-box {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+        }
+
+        .alert-content {
+            background: linear-gradient(135deg, var(--tk-warning-light) 0%, #fff 100%);
+            border: 1px solid var(--tk-warning);
+            border-radius: var(--tk-radius-lg);
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .alert-content i {
+            color: var(--tk-warning);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-content h4 {
+            margin: 0 0 6px 0;
+            color: var(--tk-warning);
+            font-size: 1rem;
+        }
+
+        .alert-content p {
+            margin: 0;
+            color: var(--tk-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .forum-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        .forum-sidebar {
+            background: white;
+            border-radius: var(--tk-radius-lg);
+            padding: 20px;
+            box-shadow: var(--tk-shadow);
+            border: 1px solid var(--tk-divider);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .forum-sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--tk-warning-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .forum-sidebar-title i {
+            color: var(--tk-warning);
+        }
+
+        .forum-cat-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .forum-cat-list li {
+            margin-bottom: 4px;
+        }
+
+        .forum-cat-list a {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--tk-text-muted);
+            text-decoration: none;
+            border-radius: var(--tk-radius);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .forum-cat-list a i {
+            margin-right: 8px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .forum-cat-list a:hover, .forum-cat-list a.active {
+            background: var(--tk-warning-light);
+            color: var(--tk-warning);
+            transform: translateX(3px);
+        }
+
+        .forum-cat-list a .badge {
+            margin-left: auto;
+            background: var(--tk-divider);
+            color: var(--tk-text-muted);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .forum-cat-list a.active .badge {
+            background: var(--tk-warning);
+            color: white;
+        }
+
+        .forum-main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 16px 24px;
+            border-radius: var(--tk-radius-lg);
+            box-shadow: var(--tk-shadow-sm);
+            border: 1px solid var(--tk-divider);
+        }
+
+        .forum-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--tk-text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .forum-header h3 i {
+            color: var(--tk-warning);
+        }
+
+        .btn-new-post {
+            background: var(--tk-warning);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--tk-radius-full);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-new-post:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .thread-card {
+            background: white;
+            border-radius: var(--tk-radius-lg);
+            padding: 20px;
+            box-shadow: var(--tk-shadow-sm);
+            border: 1px solid var(--tk-divider);
+            display: flex;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .thread-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--tk-shadow);
+            border-color: var(--tk-warning-light);
+        }
+
+        .thread-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--tk-warning-light);
+            color: var(--tk-warning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .thread-info {
+            flex: 1;
+        }
+
+        .thread-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--tk-text-main);
+            margin-bottom: 8px;
+            text-decoration: none;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .thread-title:hover {
+            color: var(--tk-warning);
+        }
+
+        .thread-meta {
+            display: flex;
+            gap: 16px;
+            color: var(--tk-text-muted);
+            font-size: 0.85rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .thread-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tag {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tag-default { background: var(--tk-warning-light); color: var(--tk-warning); }
+        .tag-warning { background: var(--tk-danger-light); color: var(--tk-danger); }
+        .tag-advice { background: var(--tk-info-light); color: var(--tk-info); }
+        .tag-expert { background: #f3e8ff; color: #7c3aed; }
+
+        .thread-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            color: var(--tk-text-muted);
+            font-size: 0.85rem;
+            min-width: 80px;
+        }
+
+        .thread-stats b {
+            color: var(--tk-text-main);
+            font-size: 1.1rem;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, var(--tk-warning-light) 0%, #fff 100%);
+            border-radius: var(--tk-radius-lg);
+            padding: 24px;
+            margin-top: 16px;
+            border-left: 4px solid var(--tk-warning);
+        }
+
+        .tip-card h4 {
+            color: var(--tk-warning);
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card p {
+            color: var(--tk-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin: 0 0 12px 0;
+        }
+
+        .tip-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tip-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--tk-text-main);
+            font-size: 0.95rem;
+        }
+
+        .tip-list li i {
+            color: var(--tk-warning);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 980px) {
+            .forum-layout { grid-template-columns: 1fr; }
+            .forum-sidebar { position: static; }
+            .thread-card { flex-direction: column; }
+            .thread-stats { flex-direction: row; justify-content: flex-start; gap: 16px; }
+        }
+
+        @media (max-width: 768px) {
+            .forum-hero h1 { font-size: 1.8rem; }
+            .forum-layout { padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tk-header-placeholder"></div>
+
+    <div class="forum-hero">
+        <div class="hero-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h1>中风险糖尿病专区</h1>
+        <p>这里是血糖控制需要加强、生活方式需要调整的糖友们的互助家园。让我们一起努力，通过科学的方法改善健康状况。</p>
+    </div>
+
+    <div class="alert-box">
+        <div class="alert-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <h4>温馨提示</h4>
+                <p>中风险阶段是逆转病情的黄金时期。通过合理的饮食控制、规律的运动锻炼和科学的药物治疗，可以有效降低风险等级，避免病情进一步发展。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="forum-layout">
+        <aside class="forum-sidebar">
+            <h3 class="forum-sidebar-title">
+                <i class="fas fa-layer-group"></i> 交流专区
+            </h3>
+            <ul class="forum-cat-list">
+                <li><a href="luntan.html"><i class="fas fa-layer-group"></i> 全部主题 <span class="badge">128</span></a></li>
+                <li><a href="luntan-wenzhang.html"><i class="fas fa-smile"></i> 低风险交流区 <span class="badge">42</span></a></li>
+                <li><a href="luntan-zhuanjia.html" class="active"><i class="fas fa-exclamation-circle"></i> 中风险交流区 <span class="badge">27</span></a></li>
+                <li><a href="luntan-ask.html"><i class="fas fa-hospital-user"></i> 高风险专区 <span class="badge">15</span></a></li>
+                <li><a href="yiduiyi.html"><i class="fas fa-user-md"></i> 专家一对一 <span class="badge">10</span></a></li>
+            </ul>
+        </aside>
+
+        <main class="forum-main">
+            <div class="forum-header">
+                <h3><i class="fas fa-fire"></i> 热门讨论</h3>
+                <a href="#" class="btn-new-post" onclick="tk_showToast('发布功能开发中')">
+                    <i class="fas fa-pen"></i> 发布新帖
+                </a>
+            </div>
+
+            <div class="thread-card">
+                <div class="thread-avatar" style="background: var(--tk-danger-light); color: var(--tk-danger);"><i class="fas fa-user"></i></div>
+                <div class="thread-info">
+                    <a href="#" class="thread-title">空腹血糖总是降不下来怎么办？有没有好的控制方法？</a>
+                    <div class="thread-meta">
+                        <span class="tag tag-warning">求助</span>
+                        <span><i class="fas fa-user-edit"></i> 困惑的糖友</span>
+                        <span><i class="fas fa-clock"></i> 1小时前</span>
+                    </div>
+                </div>
+                <div class="thread-stats">
+                    <span><b>89</b> 浏览</span>
+                    <span><b>15</b> 回复</span>
+                </div>
+            </div>
+
+            <div class="thread-card">
+                <div class="thread-avatar" style="background: var(--tk-info-light); color: var(--tk-info);"><i class="fas fa-user-md"></i></div>
+                <div class="thread-info">
+                    <a href="#" class="thread-title">【专家解答】餐后血糖高？试试这5个饮食技巧</a>
+                    <div class="thread-meta">
+                        <span class="tag tag-advice">专家建议</span>
+                        <span><i class="fas fa-user-edit"></i> 张主任医师</span>
+                        <span><i class="fas fa-clock"></i> 3小时前</span>
+                    </div>
+                </div>
+                <div class="thread-stats">
+                    <span><b>256</b> 浏览</span>
+                    <span><b>34</b> 回复</span>
+                </div>
+            </div>
+
+            <div class="thread-card">
+                <div class="thread-avatar"><i class="fas fa-user"></i></div>
+                <div class="thread-info">
+                    <a href="#" class="thread-title">二甲双胍服用一个月，分享一下我的用药体验</a>
+                    <div class="thread-meta">
+                        <span class="tag tag-default">经验分享</span>
+                        <span><i class="fas fa-user-edit"></i> 糖友老张</span>
+                        <span><i class="fas fa-clock"></i> 昨天</span>
+                    </div>
+                </div>
+                <div class="thread-stats">
+                    <span><b>178</b> 浏览</span>
+                    <span><b>29</b> 回复</span>
+                </div>
+            </div>
+
+            <div class="thread-card">
+                <div class="thread-avatar" style="background: #f3e8ff; color: #7c3aed;"><i class="fas fa-user-md"></i></div>
+                <div class="thread-info">
+                    <a href="#" class="thread-title">【专家科普】胰岛素抵抗是怎么回事？如何改善？</a>
+                    <div class="thread-meta">
+                        <span class="tag tag-expert">专家科普</span>
+                        <span><i class="fas fa-user-edit"></i> 李医生</span>
+                        <span><i class="fas fa-clock"></i> 昨天</span>
+                    </div>
+                </div>
+                <div class="thread-stats">
+                    <span><b>345</b> 浏览</span>
+                    <span><b>48</b> 回复</span>
+                </div>
+            </div>
+
+            <div class="thread-card">
+                <div class="thread-avatar" style="background: var(--tk-danger-light); color: var(--tk-danger);"><i class="fas fa-user"></i></div>
+                <div class="thread-info">
+                    <a href="#" class="thread-title">最近总是感觉口渴、多尿，这是糖尿病的前兆吗？</a>
+                    <div class="thread-meta">
+                        <span class="tag tag-warning">求助</span>
+                        <span><i class="fas fa-user-edit"></i> 担心的小李</span>
+                        <span><i class="fas fa-clock"></i> 2天前</span>
+                    </div>
+                </div>
+                <div class="thread-stats">
+                    <span><b>123</b> 浏览</span>
+                    <span><b>22</b> 回复</span>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <h4><i class="fas fa-lightbulb"></i> 中风险阶段的管理建议</h4>
+                <p>如果您正处于中风险阶段，以下几点建议可能对您有所帮助：</p>
+                <ul class="tip-list">
+                    <li><i class="fas fa-utensils"></i> 控制碳水化合物摄入，优先选择低GI食物</li>
+                    <li><i class="fas fa-running"></i> 每天保持30分钟以上的中等强度运动</li>
+                    <li><i class="fas fa-pills"></i> 遵医嘱按时服药，不要自行停药或换药</li>
+                    <li><i class="fas fa-tint"></i> 每天饮水量不少于1500ml</li>
+                    <li><i class="fas fa-clock"></i> 保持规律作息，避免熬夜</li>
+                    <li><i class="fas fa-notes-medical"></i> 定期监测血糖，每3个月复查糖化血红蛋白</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+
+    <script src="tk-components.js"></script>
+</body>
+</html>

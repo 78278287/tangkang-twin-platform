@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>全球数据洞察 | 糖康孪生平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        /* 完美对齐首页的医疗科技色板 */
+        :root {
+            --bg-base: #f4f9f9;      
+            --bg-surface: #ffffff;
+            --text-main: #0f172a;    
+            --text-muted: #64748b;
+            --primary: #0d9488;      
+            --primary-light: #ccfbf1;
+            --secondary: #2563eb;    
+            --dark-section: #083344; 
+            --border-color: rgba(13, 148, 136, 0.1); 
+            --radius-xl: 28px;       
+            --radius-lg: 16px;
+        }
+
+        body { 
+            background-color: var(--bg-base);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-main);
+            margin: 0; padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- 1. 同款 Hero 首屏视觉区 --- */
+        .hero {
+            padding: 180px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+            width: 900px; height: 500px;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.1) 0%, rgba(37, 99, 235, 0.05) 40%, transparent 70%);
+            z-index: -1; pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 3.8rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 24px; color: var(--text-main);
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.25rem; color: var(--text-muted); max-width: 760px; margin: 0 auto 40px; font-weight: 400;
+        }
+
+        /* --- 2. 同款 Bento Box 网格布局 --- */
+        .bento-section { padding: 40px 0 120px; }
+        .bento-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px;
+        }
+
+        .bento-card {
+            background: var(--bg-surface); border-radius: var(--radius-xl); padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
+            transition: all 0.4s ease; display: flex; flex-direction: column;
+        }
+        .bento-card:hover { 
+            transform: translateY(-5px); box-shadow: 0 20px 40px rgba(13, 148, 136, 0.08); border-color: rgba(13, 148, 136, 0.3); 
+        }
+        
+        .bento-large { grid-column: span 2; }
+        
+        /* 首页同款特殊卡片样式 */
+        .card-ai { background: linear-gradient(to bottom right, #ffffff, #f0fdfa); }
+        .card-dark { background: var(--dark-section); color: white; border: none; }
+        .card-dark p { color: #cbd5e1; }
+
+        /* 卡片内部元素排版 */
+        .bento-card header { margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .icon-wrapper {
+            width: 48px; height: 48px; border-radius: 14px;
+            background: var(--primary-light); color: var(--primary); 
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+        }
+        .card-dark .icon-wrapper { background: rgba(255,255,255,0.1); color: #5eead4; }
+        
+        .bento-card h3 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin: 0; }
+        .card-dark h3 { color: white; }
+
+        /* 图表容器 */
+        .chart-wrapper {
+            background: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 24px;
+            border: 1px dashed rgba(13, 148, 136, 0.3);
+        }
+        .card-dark .chart-wrapper { background: rgba(0,0,0,0.2); border: 1px dashed rgba(255,255,255,0.2); }
+        .chart-wrapper img { max-width: 100%; border-radius: 8px; }
+
+        /* 数据说明与结论 */
+        .data-desc { color: var(--text-muted); font-size: 1rem; margin-bottom: 20px; line-height: 1.6; }
+        .conclusion-box {
+            background: rgba(13, 148, 136, 0.05); padding: 20px; border-radius: var(--radius-lg); margin-top: auto;
+        }
+        .card-dark .conclusion-box { background: rgba(255,255,255,0.05); }
+        
+        .conclusion-box strong { color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.05rem; }
+        .card-dark .conclusion-box strong { color: #5eead4; }
+        .conclusion-box ul { padding-left: 20px; margin: 0; color: var(--text-main); font-size: 0.95rem; }
+        .card-dark .conclusion-box ul { color: #cbd5e1; }
+        .conclusion-box ul li { margin-bottom: 8px; }
+
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-large { grid-column: span 1; }
+            .hero h1 { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <div id="tk-header-placeholder"></div>
+
+    <div class="hero">
+        <div class="container">
+            <h1>全维医疗数据<br><span>临床趋势洞察</span></h1>
+            <p>打破数据孤岛，透视隐藏在性别、年龄与并发症状背后的健康密码。用海量真实数据验证机器学习模型的精准度。</p>
+        </div>
+    </div>
+
+    <section class="bento-section">
+        <div class="container">
+            <div class="bento-grid">
+                
+                <div class="bento-card card-dark">
+                    <header>
+                        <div class="icon-wrapper"><i class="fa-solid fa-microchip"></i></div>
+                        <h3>糖康孪生模型</h3>
+                    </header>
+                    <p class="data-desc">基于数字孪生的糖尿病健康管控基座。通过深度整合电子病历、基因数据和生活方式信息，系统不仅能实时呈现健康态势，更具备前瞻性预测能力。</p>
+                    <div class="conclusion-box" style="margin-top: auto;">
+                        <strong>模型性能指标</strong>
+                        预测 5 年内患糖尿病风险，临床测试准确率稳定在 <span style="font-size: 1.5rem; color: #fff; font-weight: 800;">85%</span> 以上。
+                    </div>
+                </div>
+
+                <div class="bento-card bento-large card-ai">
+                    <header>
+                        <div class="icon-wrapper"><i class="fa-solid fa-venus-mars"></i></div>
+                        <h3>性别比例深度分析</h3>
+                    </header>
+                    
+                    <div style="display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap;">
+                        <div class="chart-wrapper" style="flex: 1; min-width: 250px;">
+                            <img src="images/微信图片_20250415001134.jpg" alt="性别分布" />
+                        </div>
+                        <div style="flex: 1; min-width: 250px;">
+                            <p class="data-desc"><strong>数据底色：</strong>样本中女性患者占比 54.06%，男性 45.94%，女性显著高于男性。</p>
+                            <div class="conclusion-box">
+                                <strong><i class="fa-solid fa-magnifying-glass-chart"></i> 诱因溯源与临床建议</strong>
+                                <ul>
+                                    <li><strong>生理学：</strong>女性更年期后雌激素水平下降可能影响胰岛素敏感性。</li>
+                                    <li><strong>社会学：</strong>女性更倾向于定期体检致使诊断率高；男性可能因忽视症状导致数据幸存者偏差。</li>
+                                    <li><strong>干预建议：</strong>针对女性群体推广代谢健康管理（如激素替代疗法监测），同时加强男性早期筛查宣传。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card bento-large">
+                    <header>
+                        <div class="icon-wrapper"><i class="fa-solid fa-users"></i></div>
+                        <h3>年龄段分布与风险跃迁</h3>
+                    </header>
+                    
+                    <div class="chart-wrapper">
+                        <img src="images/微信图片_20250410170300.png" alt="年龄分布" style="max-height: 250px; width: auto;" />
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                        <div class="conclusion-box" style="background: white; border: 1px solid var(--border-color);">
+                            <strong>&gt;60岁 (高危核心)</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin:0;">代谢功能衰退是主因。高发神经病变与心血管并发症，需定期糖化血红蛋白监测。</p>
+                        </div>
+                        <div class="conclusion-box" style="background: white; border: 1px solid var(--border-color);">
+                            <strong>36-60岁 (潜伏高发)</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin:0;">压力大、久坐引发胰岛素抵抗。需在企业健康计划中加入代谢综合征筛查。</p>
+                        </div>
+                        <div class="conclusion-box" style="background: white; border: 1px solid var(--border-color);">
+                            <strong>18-35岁及以下 (年轻化)</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin:0;">肥胖与高糖摄入导致2型提前。情绪易怒、厌食需心理与代谢双维度干预。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card">
+                    <header>
+                        <div class="icon-wrapper" style="color: #e11d48; background: #ffe4e6;"><i class="fa-solid fa-heart-crack"></i></div>
+                        <h3>多重并发症预警</h3>
+                    </header>
+                    <div class="chart-wrapper" style="padding: 10px;">
+                        <img src="images/shujuji.jpg" alt="并发症" />
+                    </div>
+                    <p class="data-desc" style="font-size: 0.9rem;">这些症状可能单独或同时出现。如果出现多个相关症状交叠，意味着微血管或神经已发生不可逆损伤，建议立即启动专家会诊与全面体征评估。</p>
+                </div>
+
+                <div class="bento-card" style="grid-column: 1 / -1;">
+                    <header>
+                        <div class="icon-wrapper"><i class="fa-solid fa-stethoscope"></i></div>
+                        <h3>症状占比的临床意义与数据规整</h3>
+                    </header>
+                    
+                    <div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
+                        <div class="chart-wrapper" style="flex: 1; min-width: 300px; margin-bottom: 0;">
+                            <img src="images/微信图片_20250410170305.png" alt="症状占比" />
+                        </div>
+                        <div style="flex: 1.5; min-width: 300px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <h4 style="color: var(--text-main); margin-bottom: 8px;">典型症状检出</h4>
+                                    <ul style="color: var(--text-muted); font-size: 0.95rem; padding-left: 20px;">
+                                        <li><strong>代谢异常：</strong>肌肉僵硬（34.38%）、易怒（47.81%）高度关联低血糖或电解质失衡。</li>
+                                        <li><strong>心理健康：</strong>厌食（19.06%）指标偏高，反映糖尿病极易合并抑郁倾向。</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 style="color: var(--text-main); margin-bottom: 8px;">数据清洗挑战</h4>
+                                    <ul style="color: var(--text-muted); font-size: 0.95rem; padding-left: 20px;">
+                                        <li><strong>标签模糊：</strong>P01y01-1a（75.94%）疑似“多尿/多饮”编码错误。</li>
+                                        <li><strong>机器翻译偏差：</strong>部分症状名称失真（如 danger hearing 应校准为“听力损伤”）。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="conclusion-box" style="margin-top: 24px;">
+                                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 平台优化方案</strong>
+                                下游数据清洗管道必须全面引入 <strong>ICD-10 标准医学术语库</strong> 进行强校验。平台临床端应优先对“多尿”、“神经病变”等高占比显性症状配置自动告警策略。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+    <script src="tk-components.js"></script>
+
+</body>
+</html>

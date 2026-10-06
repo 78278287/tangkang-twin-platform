@@ -1,0 +1,60 @@
+{
+    "name": "糖康孪生 - 数字健康管家",
+    "short_name": "糖康孪生",
+    "description": "基于大数据和人工智能的糖尿病健康管理平台",
+    "start_url": "index2.html",
+    "scope": "./",
+    "display": "standalone",
+    "display_override": ["standalone", "fullscreen", "minimal-ui"],
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#2A64B5",
+    "lang": "zh-CN",
+    "dir": "ltr",
+    "categories": ["health", "medical", "lifestyle"],
+    "icons": [
+        {
+            "src": "images/logo.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/logo.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "功能中心",
+            "short_name": "功能",
+            "description": "访问所有健康功能",
+            "url": "feature_center.html",
+            "icons": [{ "src": "images/logo.jpg", "sizes": "192x192" }]
+        },
+        {
+            "name": "AI健康助手",
+            "short_name": "AI助手",
+            "description": "智能健康问答",
+            "url": "ai_assistant.html",
+            "icons": [{ "src": "images/logo.jpg", "sizes": "192x192" }]
+        },
+        {
+            "name": "专家论坛",
+            "short_name": "论坛",
+            "description": "与专家在线交流",
+            "url": "luntan.html",
+            "icons": [{ "src": "images/logo.jpg", "sizes": "192x192" }]
+        },
+        {
+            "name": "数据大屏",
+            "short_name": "数据",
+            "description": "查看健康数据可视化",
+            "url": "data_dashboard.html",
+            "icons": [{ "src": "images/logo.jpg", "sizes": "192x192" }]
+        }
+    ],
+    "prefer_related_applications": false
+}

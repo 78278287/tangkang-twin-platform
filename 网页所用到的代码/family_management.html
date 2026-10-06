@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭健康管理 - 糖康孪生</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    <style>
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #fdf4ff 0%, #f0f9ff 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .tk-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        /* 当前用户显示 */
+        .current-user {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .current-user .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .current-user .name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .current-user .role {
+            color: #ec4899;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* 家庭成员列表 */
+        .members-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .member-card {
+            background: #f8fafc;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .member-card:hover {
+            transform: translateY(-4px);
+            border-color: #ec4899;
+            box-shadow: 0 8px 20px rgba(236,72,153,0.15);
+        }
+
+        .member-card.active {
+            border-color: #ec4899;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .member-info {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .member-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ec4899;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        /* 添加成员表单 */
+        .add-member-form {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: none;
+        }
+
+        .add-member-form.show {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-item label {
+            font-size: 0.9rem;
+            color: #475569;
+            font-weight: 500;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-item input,
+        .form-item select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .form-item input:focus,
+        .form-item select:focus {
+            outline: none;
+            border-color: #ec4899;
+        }
+
+        /* 角色选择 */
+        .role-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .role-option {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .role-option:hover {
+            border-color: #ec4899;
+        }
+
+        .role-option.selected {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white;
+            border-color: transparent;
+        }
+
+        .role-option i {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #ec4899;
+            border: 2px solid #ec4899;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .btn-outline:hover {
+            background: #fdf2f8;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .btn-delete:hover {
+            background: #fef2f2;
+        }
+
+        /* 家族健康概览 */
+        .overview-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .health-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .status-card.green { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+        .status-card.yellow { background: linear-gradient(135deg, #fefce8, #fef3c7); }
+        .status-card.red { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
+
+        .status-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .status-card .title {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+
+        .status-card .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="tk-header-placeholder"></div>
+    <div class="tk-container">
+        <div class="page-header">
+            <h1><i class="fas fa-house-heart"></i> 家庭健康管理</h1>
+            <p>一人注册，全家使用，守护每一位家人的健康 👨‍👩‍👧‍👦</p>
+        </div>
+
+        <!-- 当前用户显示 -->
+        <div class="current-user">
+            <div class="avatar" id="current-avatar"><i class="fas fa-user"></i></div>
+            <div class="name" id="current-name">未选择用户</div>
+            <div class="role" id="current-role">请选择或添加家庭成员</div>
+        </div>
+
+        <!-- 添加成员按钮 -->
+        <button class="btn-outline" onclick="toggleForm()" id="add-btn">
+            <i class="fas fa-user-plus"></i> 添加新成员
+        </button>
+
+        <!-- 添加成员表单 -->
+        <div class="add-member-form" id="add-form">
+            <div class="section-title">
+                <i class="fas fa-user-plus" style="color:#ec4899"></i>
+                添加新家庭成员
+            </div>
+
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>姓名/昵称</label>
+                    <input type="text" id="member-name" placeholder="例如：爸爸、妈妈、爷爷">
+                </div>
+                <div class="form-item">
+                    <label>年龄</label>
+                    <input type="number" id="member-age" placeholder="例如：55">
+                </div>
+                <div class="form-item">
+                    <label>性别</label>
+                    <select id="member-gender">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+            </div>
+
+            <label style="font-size:0.9rem;color:#475569;font-weight:500;margin-bottom:8px;display:block;">选择角色：</label>
+            <div class="role-options" id="role-selector">
+                <div class="role-option selected" data-role="本人" onclick="selectRole(this)">
+                    <i class="fas fa-user"></i>本人
+                </div>
+                <div class="role-option" data-role="爸爸" onclick="selectRole(this)">
+                    <i class="fas fa-user-tie"></i>爸爸
+                </div>
+                <div class="role-option" data-role="妈妈" onclick="selectRole(this)">
+                    <i class="fas fa-user-nurse"></i>妈妈
+                </div>
+                <div class="role-option" data-role="爷爷" onclick="selectRole(this)">
+                    <i class="fas fa-user-astronaut"></i>爷爷
+                </div>
+                <div class="role-option" data-role="奶奶" onclick="selectRole(this)">
+                    <i class="fas fa-user-graduate"></i>奶奶
+                </div>
+                <div class="role-option" data-role="其他" onclick="selectRole(this)">
+                    <i class="fas fa-users"></i>其他
+                </div>
+            </div>
+
+            <label style="font-size:0.9rem;color:#475569;font-weight:500;margin-bottom:8px;display:block;">健康状况：</label>
+            <div class="role-options">
+                <div class="role-option selected" data-health="健康" onclick="selectHealth(this)">
+                    <i class="fas fa-heart" style="color:#10b981"></i>健康
+                </div>
+                <div class="role-option" data-health="糖尿病前期" onclick="selectHealth(this)">
+                    <i class="fas fa-exclamation" style="color:#f59e0b"></i>糖尿病前期
+                </div>
+                <div class="role-option" data-health="糖尿病患者" onclick="selectHealth(this)">
+                    <i class="fas fa-tint" style="color:#ef4444"></i>糖尿病患者
+                </div>
+                <div class="role-option" data-health="高血压" onclick="selectHealth(this)">
+                    <i class="fas fa-heartbeat" style="color:#ec4899"></i>高血压
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="addMember()">
+                <i class="fas fa-check"></i> 添加到家庭
+            </button>
+        </div>
+
+        <!-- 家庭成员列表 -->
+        <div class="members-section">
+            <div class="section-title">
+                <i class="fas fa-users" style="color:#ec4899"></i>
+                家庭成员（<span id="member-count">0</span>）
+            </div>
+            <div class="members-grid" id="members-grid"></div>
+        </div>
+
+        <!-- 家族健康概览 -->
+        <div class="overview-section">
+            <div class="section-title">
+                <i class="fas fa-chart-pie" style="color:#ec4899"></i>
+                家族健康概览
+            </div>
+            <p style="color:#64748b;margin:0 0 8px 0;">了解家庭成员的健康分布，更好地管理全家健康 🌿</p>
+            <div class="health-status" id="health-overview">
+                <div class="status-card green">
+                    <div class="icon" style="color:#10b981"><i class="fas fa-smile"></i></div>
+                    <div class="title">健康</div>
+                    <div class="value" id="count-healthy">0 人</div>
+                </div>
+                <div class="status-card yellow">
+                    <div class="icon" style="color:#f59e0b"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="title">糖尿病前期</div>
+                    <div class="value" id="count-prediabetes">0 人</div>
+                </div>
+                <div class="status-card red">
+                    <div class="icon" style="color:#ef4444"><i class="fas fa-tint"></i></div>
+                    <div class="title">糖尿病患者</div>
+                    <div class="value" id="count-diabetes">0 人</div>
+                </div>
+                <div class="status-card red">
+                    <div class="icon" style="color:#ec4899"><i class="fas fa-heartbeat"></i></div>
+                    <div class="title">高血压</div>
+                    <div class="value" id="count-hypertension">0 人</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用说明 -->
+        <div class="overview-section">
+            <div class="section-title">
+                <i class="fas fa-lightbulb" style="color:#ec4899"></i>
+                使用说明
+            </div>
+            <div style="color:#475569;line-height:1.8;">
+                <p><strong>1. 添加成员：</strong>点击上方"添加新成员"按钮，填写家人的基本信息。</p>
+                <p><strong>2. 切换用户：</strong>点击任意家庭成员卡片，即可切换当前用户，然后去其他功能页面（血糖记录、用药提醒等）操作，数据会按用户独立存储。</p>
+                <p><strong>3. 健康管理：</strong>每位家人的数据相互独立，方便您为全家人建立健康档案。</p>
+                <p style="color:#ec4899;margin-top:12px;"><strong>💡 温馨提示：</strong>建议为每位家人都定期记录健康数据，方便医生参考和长期跟踪！</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+    <script src="tk-components.js"></script>
+
+    <script>
+        let members = JSON.parse(localStorage.getItem('familyMembers') || '[]');
+        let currentMemberId = localStorage.getItem('currentMemberId') || null;
+        let selectedRole = '本人';
+        let selectedHealth = '健康';
+
+        function toggleForm() {
+            document.getElementById('add-form').classList.toggle('show');
+            const btn = document.getElementById('add-btn');
+            btn.innerHTML = document.getElementById('add-form').classList.contains('show') 
+                ? '<i class="fas fa-times"></i> 取消' 
+                : '<i class="fas fa-user-plus"></i> 添加新成员';
+        }
+
+        function selectRole(el) {
+            document.querySelectorAll('#role-selector .role-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedRole = el.dataset.role;
+        }
+
+        function selectHealth(el) {
+            el.parentElement.querySelectorAll('.role-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedHealth = el.dataset.health;
+        }
+
+        function addMember() {
+            const name = document.getElementById('member-name').value.trim();
+            const age = document.getElementById('member-age').value;
+            const gender = document.getElementById('member-gender').value;
+
+            if (!name) {
+                alert('请填写成员姓名/昵称！');
+                return;
+            }
+
+            const member = {
+                id: Date.now(),
+                name,
+                age,
+                gender,
+                role: selectedRole,
+                health: selectedHealth,
+                createdAt: new Date().toLocaleString('zh-CN')
+            };
+
+            members.push(member);
+            localStorage.setItem('familyMembers', JSON.stringify(members));
+
+            // 清空表单
+            document.getElementById('member-name').value = '';
+            document.getElementById('member-age').value = '';
+
+            // 自动选择第一个添加的用户
+            if (members.length === 1) {
+                selectMember(member.id);
+            }
+
+            toggleForm();
+            renderMembers();
+            showToast(`已添加 ${name} 到家庭 👨‍👩‍👧`);
+        }
+
+        function deleteMember(id) {
+            if (!confirm('确定要删除这个成员吗？相关数据不会被自动清除。')) return;
+            members = members.filter(m => m.id !== id);
+            localStorage.setItem('familyMembers', JSON.stringify(members));
+            
+            if (currentMemberId === id) {
+                currentMemberId = members[0]?.id || null;
+                if (currentMemberId) localStorage.setItem('currentMemberId', currentMemberId);
+            }
+
+            renderMembers();
+            showToast('已删除');
+        }
+
+        function selectMember(id) {
+            currentMemberId = id;
+            localStorage.setItem('currentMemberId', id);
+            renderMembers();
+            showToast('已切换用户 ✨');
+        }
+
+        function renderMembers() {
+            // 更新计数
+            document.getElementById('member-count').textContent = members.length;
+
+            // 更新当前用户显示
+            const current = members.find(m => m.id == currentMemberId);
+            if (current) {
+                document.getElementById('current-avatar').innerHTML = 
+                    current.gender === '女' ? '<i class="fas fa-user-friends"></i>' : '<i class="fas fa-user"></i>';
+                document.getElementById('current-name').textContent = current.name;
+                document.getElementById('current-role').textContent = 
+                    `${current.role} · ${current.age}岁 · ${current.gender} · 健康状态：${current.health}`;
+            } else if (members.length > 0) {
+                document.getElementById('current-name').textContent = '请从下方选择用户';
+                document.getElementById('current-role').textContent = '点击下方卡片切换';
+            }
+
+            // 更新成员卡片
+            const grid = document.getElementById('members-grid');
+            if (members.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-user-plus"></i><p>还没有家庭成员，点击上方按钮添加第一个用户吧！</p></div>';
+            } else {
+                grid.innerHTML = members.map(m => {
+                    const isActive = m.id == currentMemberId;
+                    const avatarColors = {
+                        '本人': 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                        '爸爸': 'linear-gradient(135deg, #6366f1, #4f46e5)',
+                        '妈妈': 'linear-gradient(135deg, #ec4899, #db2777)',
+                        '爷爷': 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                        '奶奶': 'linear-gradient(135deg, #f59e0b, #d97706)',
+                        '其他': 'linear-gradient(135deg, #10b981, #059669)'
+                    };
+                    const icons = {
+                        '本人': 'fa-user',
+                        '爸爸': 'fa-user-tie',
+                        '妈妈': 'fa-user-nurse',
+                        '爷爷': 'fa-user-astronaut',
+                        '奶奶': 'fa-user-graduate',
+                        '其他': 'fa-users'
+                    };
+
+                    return `
+                        <div class="member-card ${isActive ? 'active' : ''}" onclick="selectMember(${m.id})">
+                            ${isActive ? '<div class="member-badge">当前</div>' : ''}
+                            <div class="member-avatar" style="background:${avatarColors[m.role]}">
+                                <i class="fas ${icons[m.role]}"></i>
+                            </div>
+                            <div class="member-name">${m.name}</div>
+                            <div class="member-info">${m.role} · ${m.age}岁 · ${m.gender}</div>
+                            <div class="member-info" style="color:#ec4899">${m.health}</div>
+                            <button class="btn-delete" onclick="event.stopPropagation(); deleteMember(${m.id})">
+                                <i class="fas fa-trash"></i> 移除
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // 更新健康概览
+            document.getElementById('count-healthy').textContent = 
+                members.filter(m => m.health === '健康').length + ' 人';
+            document.getElementById('count-prediabetes').textContent = 
+                members.filter(m => m.health === '糖尿病前期').length + ' 人';
+            document.getElementById('count-diabetes').textContent = 
+                members.filter(m => m.health === '糖尿病患者').length + ' 人';
+            document.getElementById('count-hypertension').textContent = 
+                members.filter(m => m.health === '高血压').length + ' 人';
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:14px 24px;border-radius:10px;z-index:99999;font-weight:500;box-shadow:0 8px 25px rgba(0,0,0,0.2)';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // 初始化
+        renderMembers();
+    </script>
+</body>
+</html>

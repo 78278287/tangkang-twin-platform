@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="糖康孪生">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="糖康孪生">
+    <meta name="theme-color" content="#2A64B5">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="apple-touch-icon" href="images/logo.jpg">
+    <link rel="apple-touch-icon" sizes="192x192" href="images/logo.jpg">
+    <link rel="apple-touch-icon" sizes="512x512" href="images/logo.jpg">
+    <link rel="icon" sizes="192x192" href="images/logo.jpg">
+    <link rel="icon" sizes="512x512" href="images/logo.jpg">
+    <link rel="manifest" href="manifest.json">
+    <title>糖康孪生 - 您的数字健康管家</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    <style>
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #1e40af;
+            --primary-light: #eff6ff;
+            --accent: #10b981;
+            --accent-light: #dcfce7;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .header-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .header-logo span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding-top: 56px;
+            padding-bottom: 70px;
+            min-height: 100vh;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--bg-card);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i { font-size: 1.3rem; transition: transform 0.2s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: scale(1.1); }
+
+        .page {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+        }
+
+        .hero-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+        .hero-title span { color: var(--primary); }
+        .hero-desc { font-size: 0.9rem; color: var(--text-sub); margin-bottom: 20px; }
+        .hero-buttons { display: flex; gap: 12px; justify-content: center; }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-outline:hover { background: var(--primary-light); }
+        .btn-block { width: 100%; }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+        .quick-item:active { transform: scale(0.95); }
+        .quick-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white;
+        }
+        .quick-icon.blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .quick-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .quick-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .quick-icon.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .quick-label { font-size: 0.75rem; font-weight: 500; text-align: center; }
+
+        .stats-card { background: var(--bg-card); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
+        .stat-item h3 { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+        .stat-item p { font-size: 0.75rem; color: var(--text-sub); }
+
+        .module-section { margin-bottom: 20px; }
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: var(--primary); }
+
+        .module-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.2s;
+        }
+        .module-card:active { transform: scale(0.98); }
+        .module-card img { width: 100%; height: 140px; object-fit: cover; }
+        .module-card-content { padding: 16px; }
+        .module-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+        .module-card p { font-size: 0.8rem; color: var(--text-sub); line-height: 1.5; }
+
+        .login-container { min-height: 100vh; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--primary-light) 0%, var(--bg-page) 50%); }
+        .login-header { padding: 60px 24px 40px; text-align: center; }
+        .login-logo { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(29, 78, 216, 0.2); }
+        .login-title { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .login-subtitle { font-size: 0.9rem; color: var(--text-sub); }
+        .login-form { padding: 0 24px; flex: 1; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-main); margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; transition: all 0.2s; background: var(--bg-card); }
+        .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1); }
+        .form-tabs { display: flex; background: var(--bg-card); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 24px; }
+        .form-tab { flex: 1; padding: 12px; text-align: center; font-weight: 600; color: var(--text-sub); background: none; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .form-tab.active { background: var(--primary); color: white; }
+
+        .quiz-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px 16px; margin: -16px -16px 20px -16px; text-align: center; }
+        .quiz-header h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+        .quiz-header p { font-size: 0.8rem; opacity: 0.9; }
+        .quiz-progress { height: 4px; background: rgba(255,255,255,0.3); margin: 16px -16px 0 -16px; border-radius: 0; }
+        .quiz-progress-bar { height: 100%; background: white; width: 33%; transition: width 0.3s; }
+
+        .quiz-section { background: var(--bg-card); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+        .quiz-section-title { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .quiz-section-title i { color: var(--primary); }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question label { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-main); margin-bottom: 10px; }
+        .quiz-question .required { color: var(--danger); }
+        .quiz-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; }
+        .radio-group { display: flex; gap: 12px; }
+        .radio-item { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: var(--bg-page); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; }
+        .radio-item.selected { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        .symptom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .symptom-item { padding: 12px; background: var(--bg-page); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
+        .symptom-item.selected { background: var(--primary-light); border-color: var(--primary); }
+        .symptom-item span { font-size: 0.85rem; color: var(--text-main); }
+        .symptom-item.selected span { color: var(--primary); font-weight: 500; }
+        .symptom-btns { display: flex; gap: 4px; }
+        .symptom-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-card); font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .symptom-btn.yes.selected { background: var(--danger); border-color: var(--danger); color: white; }
+        .symptom-btn.no.selected { background: var(--accent); border-color: var(--accent); color: white; }
+
+        .result-card { background: var(--bg-card); border-radius: var(--radius); padding: 24px; text-align: center; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .result-icon { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+        .result-icon.low { background: var(--accent-light); color: var(--accent); }
+        .result-icon.medium { background: #fef3c7; color: var(--warning); }
+        .result-icon.high { background: var(--danger-light); color: var(--danger); }
+        .result-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .result-probability { font-size: 2.5rem; font-weight: 800; margin: 16px 0; }
+        .result-probability.low { color: var(--accent); }
+        .result-probability.medium { color: var(--warning); }
+        .result-probability.high { color: var(--danger); }
+        .result-desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; padding: 16px; background: var(--bg-page); border-radius: var(--radius-sm); margin-bottom: 20px; }
+        .result-factors { text-align: left; padding: 16px; background: var(--bg-page); border-radius: var(--radius-sm); }
+        .result-factors h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; }
+        .factor-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .factor-tag { padding: 6px 12px; background: var(--primary-light); color: var(--primary); border-radius: 20px; font-size: 0.8rem; }
+
+        .knowledge-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; text-decoration: none; color: inherit; display: flex; transition: all 0.2s; }
+        .knowledge-card:active { transform: scale(0.98); }
+        .knowledge-card img { width: 100px; height: 100px; object-fit: cover; }
+        .knowledge-card-content { flex: 1; padding: 14px; display: flex; flex-direction: column; justify-content: center; }
+        .knowledge-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+        .knowledge-card p { font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .profile-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 24px 16px; margin: -16px -16px 20px -16px; text-align: center; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.2); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .profile-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+        .profile-desc { font-size: 0.85rem; opacity: 0.9; }
+        .menu-list { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+        .menu-item { display: flex; align-items: center; padding: 16px; text-decoration: none; color: var(--text-main); border-bottom: 1px solid var(--border); transition: background 0.2s; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:active { background: var(--bg-page); }
+        .menu-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 14px; font-size: 1rem; color: white; }
+        .menu-icon.blue { background: var(--primary); }
+        .menu-icon.green { background: var(--accent); }
+        .menu-icon.orange { background: var(--warning); }
+        .menu-icon.purple { background: #8b5cf6; }
+        .menu-icon.red { background: var(--danger); }
+        .menu-text { flex: 1; font-size: 0.95rem; font-weight: 500; }
+        .menu-arrow { color: var(--text-sub); font-size: 0.9rem; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--bg-card); border-radius: var(--radius); width: 100%; max-width: 340px; padding: 24px; animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-title { font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 16px; }
+        .modal-desc { font-size: 0.9rem; color: var(--text-sub); text-align: center; margin-bottom: 20px; line-height: 1.5; }
+        .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text-main); color: white; padding: 12px 24px; border-radius: 24px; font-size: 0.9rem; opacity: 0; transition: all 0.3s; z-index: 3000; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--primary-light); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .chart-card { background: var(--bg-card); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+        .chart-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .chart-card h3 i { color: var(--primary); }
+        .chart-card img { width: 100%; border-radius: var(--radius-sm); }
+        .analysis-item { padding: 14px; background: var(--bg-page); border-radius: var(--radius-sm); margin-bottom: 12px; }
+        .analysis-item h4 { font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
+        .analysis-item p { font-size: 0.8rem; color: var(--text-sub); line-height: 1.5; }
+
+        .forum-zones { margin-bottom: 16px; }
+        .zone-card { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s; }
+        .zone-card:active { transform: scale(0.98); background: var(--bg-page); }
+        .zone-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .zone-info { flex: 1; }
+        .zone-info h4 { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
+        .zone-info p { font-size: 0.8rem; color: var(--text-sub); }
+        .zone-arrow { color: var(--text-sub); font-size: 0.9rem; }
+
+        .post-card { background: var(--bg-card); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+        .post-header { display: flex; align-items: center; margin-bottom: 12px; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: 600; }
+        .post-info { flex: 1; }
+        .post-author { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+        .post-time { font-size: 0.75rem; color: var(--text-sub); }
+        .post-tag { padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 12px; font-size: 0.7rem; font-weight: 500; }
+        .post-content { font-size: 0.9rem; color: var(--text-main); line-height: 1.6; margin-bottom: 12px; }
+        .post-actions { display: flex; gap: 20px; border-top: 1px solid var(--border); padding-top: 12px; }
+        .post-action { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; }
+        .post-action i { font-size: 1rem; }
+
+        .risk-bar { height: 12px; background: var(--bg-page); border-radius: 6px; overflow: hidden; margin: 12px 0; }
+        .risk-bar-fill { height: 100%; border-radius: 6px; transition: width 0.5s ease; }
+        .risk-bar-fill.low { background: var(--accent); }
+        .risk-bar-fill.medium { background: var(--warning); }
+        .risk-bar-fill.high { background: var(--danger); }
+        .risk-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub); }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="mobile-header" id="mainHeader">
+        <a href="#" class="header-logo" onclick="showPage('home')">
+            <img src="images/logo.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/36/1d4ed8/ffffff?text=TK'">
+            <span>糖康孪生</span>
+        </a>
+        <div class="header-actions">
+            <button class="header-btn" onclick="showToast('消息中心开发中')">
+                <i class="fas fa-bell"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <div class="page active" id="page-home">
+            <div class="hero-section">
+                <span class="hero-badge">AI 驱动的健康新范式</span>
+                <h1 class="hero-title">构建您的专属<span>数字健康分身</span></h1>
+                <p class="hero-desc">依托海量临床数据与先进机器学习算法，提前5年预判糖尿病风险</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary" onclick="showTriageModal()">
+                        <i class="fas fa-stethoscope"></i> 免费评估
+                    </a>
+                    <a href="#" class="btn btn-outline" onclick="showPage('knowledge')">
+                        <i class="fas fa-book"></i> 知识库
+                    </a>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <a href="#" class="quick-item" onclick="showTriageModal()">
+                    <div class="quick-icon blue"><i class="fas fa-search"></i></div>
+                    <span class="quick-label">风险筛查</span>
+                </a>
+                <a href="#" class="quick-item" onclick="showPage('quiz')">
+                    <div class="quick-icon green"><i class="fas fa-clipboard-list"></i></div>
+                    <span class="quick-label">健康问卷</span>
+                </a>
+                <a href="#" class="quick-item" onclick="showPage('analysis')">
+                    <div class="quick-icon orange"><i class="fas fa-chart-bar"></i></div>
+                    <span class="quick-label">数据分析</span>
+                </a>
+                <a href="#" class="quick-item" onclick="window.location.href='ai_assistant.html'">
+                    <div class="quick-icon purple"><i class="fas fa-robot"></i></div>
+                    <span class="quick-label">AI助手</span>
+                </a>
+                <a href="#" class="quick-item" onclick="window.location.href='data_dashboard.html'">
+                    <div class="quick-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);"><i class="fas fa-tv"></i></div>
+                    <span class="quick-label">数据大屏</span>
+                </a>
+                <a href="#" class="quick-item" onclick="showPage('community')">
+                    <div class="quick-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-comments"></i></div>
+                    <span class="quick-label">专家社区</span>
+                </a>
+                <a href="#" class="quick-item" onclick="showPage('knowledge')">
+                    <div class="quick-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-book"></i></div>
+                    <span class="quick-label">知识库</span>
+                </a>
+                <a href="#" class="quick-item" onclick="showPage('profile')">
+                    <div class="quick-icon" style="background: linear-gradient(135deg, #84cc16, #65a30d);"><i class="fas fa-user"></i></div>
+                    <span class="quick-label">个人中心</span>
+                </a>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>85%+</h3>
+                        <p>预测准确率</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>12w+</h3>
+                        <p>模型运行</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>健康守望</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <h3 class="section-title"><i class="fas fa-newspaper"></i> 热门文章</h3>
+                <a href="#" class="module-card" onclick="showPage('knowledge')">
+                    <img src="images/AdobeStock_62404725-768x512.avif" alt="糖尿病" onerror="this.style.display='none'">
+                    <div class="module-card-content">
+                        <h4>什么是真正的糖尿病？</h4>
+                        <p>当人体无法有效利用胰岛素时，血糖便会失控。深入了解发病机制是预防的第一步。</p>
+                    </div>
+                </a>
+                <a href="#" class="module-card" onclick="showPage('knowledge')">
+                    <img src="images/OIP-C.jfif" alt="糖尿病现状" onerror="this.style.display='none'">
+                    <div class="module-card-content">
+                        <h4>全球糖尿病爆发式增长背后的原因</h4>
+                        <p>自1980年以来，患者人数几乎翻了两番。现代饮食与久坐习惯正在加剧这场健康危机。</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 登录页面 -->
+        <div class="page" id="page-login">
+            <div class="login-container">
+                <div class="login-header">
+                    <img src="images/logo.jpg" alt="糖康孪生" class="login-logo" onerror="this.style.display='none'">
+                    <h1 class="login-title">糖康孪生平台</h1>
+                    <p class="login-subtitle">您的数字健康管家</p>
+                </div>
+                <div class="login-form">
+                    <div class="form-tabs">
+                        <button class="form-tab active" onclick="switchLoginTab(this, 'login-form')">登录</button>
+                        <button class="form-tab" onclick="switchLoginTab(this, 'register-form')">注册</button>
+                    </div>
+                    <div id="login-form">
+                        <div class="form-group">
+                            <label class="form-label">邮箱</label>
+                            <input type="email" class="form-input" id="login-email" placeholder="请输入邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">密码</label>
+                            <input type="password" class="form-input" id="login-password" placeholder="请输入密码">
+                        </div>
+                        <a href="#" class="btn btn-primary btn-block" onclick="handleLogin()">
+                            <i class="fas fa-sign-in-alt"></i> 登录
+                        </a>
+                    </div>
+                    <div id="register-form" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">姓名</label>
+                            <input type="text" class="form-input" id="register-name" placeholder="请输入真实姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">邮箱</label>
+                            <input type="email" class="form-input" id="register-email" placeholder="请输入邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">密码</label>
+                            <input type="password" class="form-input" id="register-password" placeholder="至少6位字符">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">确认密码</label>
+                            <input type="password" class="form-input" id="register-confirm" placeholder="请再次输入密码">
+                        </div>
+                        <a href="#" class="btn btn-primary btn-block" onclick="handleRegister()">
+                            <i class="fas fa-user-plus"></i> 注册
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 风险筛查问卷 -->
+        <div class="page" id="page-quiz">
+            <div class="quiz-header">
+                <div class="quiz-progress">
+                    <div class="quiz-progress-bar" id="quiz-progress-bar"></div>
+                </div>
+                <h2><i class="fas fa-clipboard-check"></i> 风险筛查问卷</h2>
+                <p>请如实填写以下信息，获取精准健康评估</p>
+            </div>
+
+            <div class="quiz-section" id="quiz-section-1">
+                <h3 class="quiz-section-title"><i class="fas fa-user"></i> 基本信息</h3>
+                <div class="quiz-question">
+                    <label>您的年龄 <span class="required">*</span></label>
+                    <input type="number" class="quiz-input" id="quiz-age" placeholder="请输入年龄" min="1" max="120">
+                </div>
+                <div class="quiz-question">
+                    <label>您的性别 <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item" onclick="selectRadio(this, 'gender', 'Male')">
+                            <i class="fas fa-mars"></i> 男性
+                        </div>
+                        <div class="radio-item" onclick="selectRadio(this, 'gender', 'Female')">
+                            <i class="fas fa-venus"></i> 女性
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section" id="quiz-section-2">
+                <h3 class="quiz-section-title"><i class="fas fa-stethoscope"></i> 症状信息</h3>
+                <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 16px;">请选择您是否存在以下症状</p>
+                <div class="symptom-grid" id="symptom-grid">
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="submitQuiz()" style="margin-top: 20px;">
+                <i class="fas fa-paper-plane"></i> 提交评估
+            </button>
+        </div>
+
+        <!-- 结果页面 -->
+        <div class="page" id="page-result">
+            <div class="result-card">
+                <div class="result-icon" id="result-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2 class="result-title" id="result-title">风险评估完成</h2>
+                <div class="result-probability" id="result-probability">0%</div>
+                <div class="risk-bar">
+                    <div class="risk-bar-fill" id="result-bar"></div>
+                </div>
+                <div class="risk-label">
+                    <span>低风险</span>
+                    <span>中风险</span>
+                    <span>高风险</span>
+                </div>
+                <div class="result-desc" id="result-desc">
+                    正在分析您的健康数据...
+                </div>
+                <div class="result-factors">
+                    <h4><i class="fas fa-exclamation-circle"></i> 高风险因素</h4>
+                    <div class="factor-tags" id="result-factors"></div>
+                </div>
+            </div>
+
+            <button class="btn btn-outline btn-block" onclick="showPage('home')" style="margin-bottom: 12px;">
+                <i class="fas fa-home"></i> 返回首页
+            </button>
+            <button class="btn btn-primary btn-block" onclick="showPage('quiz')">
+                <i class="fas fa-redo"></i> 重新评估
+            </button>
+        </div>
+
+        <!-- 知识库页面 -->
+        <div class="page" id="page-knowledge">
+            <div class="module-section">
+                <h3 class="section-title"><i class="fas fa-book-medical"></i> 糖尿病知识库</h3>
+                <a href="#" class="knowledge-card" onclick="showToast('文章详情开发中')">
+                    <img src="images/AdobeStock_62404725-768x512.avif" alt="糖尿病" onerror="this.style.display='none'">
+                    <div class="knowledge-card-content">
+                        <h4>什么是真正的糖尿病？</h4>
+                        <p>当人体无法有效利用胰岛素时，血糖便会失控。深入了解发病机制是预防的第一步。</p>
+                    </div>
+                </a>
+                <a href="#" class="knowledge-card" onclick="showToast('文章详情开发中')">
+                    <img src="images/OIP-C.jfif" alt="糖尿病现状" onerror="this.style.display='none'">
+                    <div class="knowledge-card-content">
+                        <h4>全球糖尿病爆发式增长背后的原因</h4>
+                        <p>自1980年以来，患者人数几乎翻了两番。现代饮食与久坐习惯正在加剧这场健康危机。</p>
+                    </div>
+                </a>
+                <a href="#" class="knowledge-card" onclick="showToast('文章详情开发中')">
+                    <img src="images/640 (1).webp" alt="预防糖尿病" onerror="this.style.display='none'">
+                    <div class="knowledge-card-content">
+                        <h4>如何从生活细节中预防糖尿病？</h4>
+                        <p>除了控制碳水摄入，良好的心态和充足的睡眠同样能够改善胰岛素抵抗现象。</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 数据分析页面 -->
+        <div class="page" id="page-analysis">
+            <div class="module-section">
+                <h3 class="section-title"><i class="fas fa-chart-pie"></i> 全球数据洞察</h3>
+                <div class="chart-card">
+                    <h3><i class="fas fa-venus-mars"></i> 性别比例分析</h3>
+                    <img src="images/微信图片_20250415001134.jpg" alt="性别分布" onerror="this.style.display='none'">
+                    <div class="analysis-item">
+                        <h4>诱因溯源</h4>
+                        <p>女性患者占比54.06%，男性45.94%。女性更年期后雌激素水平下降可能影响胰岛素敏感性。</p>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-users"></i> 年龄段分布</h3>
+                    <img src="images/微信图片_20250410170300.png" alt="年龄分布" onerror="this.style.display='none'">
+                    <div class="analysis-item">
+                        <h4>高危核心：60岁以上</h4>
+                        <p>代谢功能衰退是主因。高发神经病变与心血管并发症，需定期糖化血红蛋白监测。</p>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar"></i> 症状占比分析</h3>
+                    <img src="images/微信图片_20250410170305.png" alt="症状占比" onerror="this.style.display='none'">
+                    <div class="analysis-item">
+                        <h4>典型症状检出</h4>
+                        <p>肌肉僵硬(34.38%)、易怒(47.81%)高度关联低血糖或电解质失衡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 社区页面 -->
+        <div class="page" id="page-community">
+            <div class="module-section">
+                <h3 class="section-title"><i class="fas fa-comments"></i> 糖友社区</h3>
+                <div class="forum-zones">
+                    <div class="zone-card" onclick="window.location.href='luntan-wenzhang.html'">
+                        <div class="zone-icon" style="background: #dcfce7;">
+                            <i class="fas fa-smile" style="color: #10b981;"></i>
+                        </div>
+                        <div class="zone-info">
+                            <h4>低风险交流区</h4>
+                            <p>血糖控制良好的糖友家园</p>
+                        </div>
+                        <i class="fas fa-chevron-right zone-arrow"></i>
+                    </div>
+                    <div class="zone-card" onclick="window.location.href='luntan-zhuanjia.html'">
+                        <div class="zone-icon" style="background: #fef3c7;">
+                            <i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i>
+                        </div>
+                        <div class="zone-info">
+                            <h4>中风险交流区</h4>
+                            <p>需要加强血糖管理的糖友</p>
+                        </div>
+                        <i class="fas fa-chevron-right zone-arrow"></i>
+                    </div>
+                    <div class="zone-card" onclick="window.location.href='luntan-ask.html'">
+                        <div class="zone-icon" style="background: #fef2f2;">
+                            <i class="fas fa-hospital-user" style="color: #ef4444;"></i>
+                        </div>
+                        <div class="zone-info">
+                            <h4>高风险专区</h4>
+                            <p>需要专业医疗支持</p>
+                        </div>
+                        <i class="fas fa-chevron-right zone-arrow"></i>
+                    </div>
+                    <div class="zone-card" onclick="window.location.href='yiduiyi.html'">
+                        <div class="zone-icon" style="background: #dbeafe;">
+                            <i class="fas fa-user-md" style="color: #1d4ed8;"></i>
+                        </div>
+                        <div class="zone-info">
+                            <h4>专家一对一</h4>
+                            <p>在线咨询专家医生</p>
+                        </div>
+                        <i class="fas fa-chevron-right zone-arrow"></i>
+                    </div>
+                </div>
+
+                <h4 class="section-title" style="margin-top: 20px;"><i class="fas fa-fire"></i> 热门话题</h4>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">李</div>
+                        <div class="post-info">
+                            <div class="post-author">李医生</div>
+                            <div class="post-time">内分泌科主任 · 2小时前</div>
+                        </div>
+                        <span class="post-tag">专家</span>
+                    </div>
+                    <p class="post-content">近期研究发现，适量摄入坚果有助于改善胰岛素敏感性。建议每日摄入30克左右的混合坚果，包括核桃、杏仁等...</p>
+                    <div class="post-actions">
+                        <span class="post-action"><i class="far fa-eye"></i> 328</span>
+                        <span class="post-action"><i class="far fa-comment"></i> 24</span>
+                        <span class="post-action"><i class="far fa-heart"></i> 89</span>
+                    </div>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar" style="background: #dcfce7; color: #10b981;">王</div>
+                        <div class="post-info">
+                            <div class="post-author">糖友王阿姨</div>
+                            <div class="post-time">资深糖友 · 5小时前</div>
+                        </div>
+                        <span class="post-tag" style="background: #dcfce7; color: #10b981;">经验</span>
+                    </div>
+                    <p class="post-content">分享一下我的控糖心得：每天坚持快走30分钟，配合低GI饮食，三个月时间空腹血糖从8.5降到了6.2，加油！</p>
+                    <div class="post-actions">
+                        <span class="post-action"><i class="far fa-eye"></i> 256</span>
+                        <span class="post-action"><i class="far fa-comment"></i> 18</span>
+                        <span class="post-action"><i class="far fa-heart"></i> 67</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 个人中心 -->
+        <div class="page" id="page-profile">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name" id="profile-name">未登录</div>
+                <div class="profile-desc" id="profile-desc">点击登录享受完整服务</div>
+            </div>
+
+            <div class="menu-list">
+                <a href="#" class="menu-item" onclick="showToast('历史记录开发中')">
+                    <div class="menu-icon blue"><i class="fas fa-history"></i></div>
+                    <span class="menu-text">评估历史</span>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </a>
+                <a href="#" class="menu-item" onclick="showToast('健康档案开发中')">
+                    <div class="menu-icon green"><i class="fas fa-folder-open"></i></div>
+                    <span class="menu-text">健康档案</span>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </a>
+                <a href="#" class="menu-item" onclick="showToast('设置开发中')">
+                    <div class="menu-icon orange"><i class="fas fa-cog"></i></div>
+                    <span class="menu-text">设置</span>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </a>
+                <a href="#" class="menu-item" onclick="showToast('关于我们')">
+                    <div class="menu-icon purple"><i class="fas fa-info-circle"></i></div>
+                    <span class="menu-text">关于我们</span>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </a>
+                <a href="#" class="menu-item" id="login-logout-btn" onclick="handleLogout()">
+                    <div class="menu-icon red"><i class="fas fa-sign-out-alt"></i></div>
+                    <span class="menu-text" id="login-logout-text">登录/注册</span>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="#" class="nav-item active" onclick="showPage('home')">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('quiz')">
+            <i class="fas fa-clipboard-check"></i>
+            <span>筛查</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('community')">
+            <i class="fas fa-comments"></i>
+            <span>社区</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('knowledge')">
+            <i class="fas fa-book"></i>
+            <span>知识</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('profile')">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </a>
+    </nav>
+
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="triage-modal">
+        <div class="modal">
+            <h3 class="modal-title">健康筛查确认</h3>
+            <p class="modal-desc">请问您近期是否已在线下医疗机构进行过糖尿病相关的专业检查与确诊？</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="goToFullForm()">
+                    <i class="fas fa-user-md"></i> 是，已就医确诊
+                </button>
+                <button class="btn btn-outline" onclick="goToQuickQuiz()">
+                    <i class="fas fa-home"></i> 否，仅做日常自测
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">提示信息</div>
+
+    <script>
+        // 症状列表
+        const symptoms = [
+            { id: 'polyuria', name: '多尿症' },
+            { id: 'polydipsia', name: '烦渴多饮' },
+            { id: 'weightLoss', name: '体重下降' },
+            { id: 'weakness', name: '身体虚弱' },
+            { id: 'polyphagia', name: '多食症' },
+            { id: 'genitalThrush', name: '生殖器疱疹' },
+            { id: 'visualBlurring', name: '视觉模糊' },
+            { id: 'itching', name: '皮肤瘙痒' },
+            { id: 'irritability', name: '易怒' },
+            { id: 'delayedHealing', name: '伤口愈合慢' },
+            { id: 'partialParalysis', name: '部分瘫痪' },
+            { id: 'muscleStiffness', name: '肌肉僵硬' },
+            { id: 'alopecia', name: '脱发' },
+            { id: 'obesity', name: '肥胖' }
+        ];
+
+        let userData = {
+            isLoggedIn: false,
+            name: '',
+            quizData: {}
+        };
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navMap = { 'home': 0, 'quiz': 1, 'community': 2, 'knowledge': 3, 'profile': 4 };
+            if (navMap[pageId] !== undefined) {
+                document.querySelectorAll('.nav-item')[navMap[pageId]].classList.add('active');
+            }
+            const header = document.getElementById('mainHeader');
+            const bottomNav = document.getElementById('bottomNav');
+            if (pageId === 'login') {
+                header.style.display = 'none';
+                bottomNav.style.display = 'none';
+            } else {
+                header.style.display = 'flex';
+                bottomNav.style.display = 'flex';
+            }
+            if (pageId === 'quiz') { initQuizPage(); }
+        }
+
+        function initQuizPage() {
+            const grid = document.getElementById('symptom-grid');
+            grid.innerHTML = symptoms.map(s => `
+                <div class="symptom-item" data-symptom="${s.id}">
+                    <span>${s.name}</span>
+                    <div class="symptom-btns">
+                        <button class="symptom-btn yes" onclick="selectSymptom(this, '${s.id}', 'Yes')">是</button>
+                        <button class="symptom-btn no selected" onclick="selectSymptom(this, '${s.id}', 'No')">否</button>
+                    </div>
+                </div>
+            `).join('');
+            updateProgress();
+        }
+
+        function selectRadio(element, field, value) {
+            element.parentElement.querySelectorAll('.radio-item').forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+            userData.quizData[field] = value;
+            updateProgress();
+        }
+
+        function selectSymptom(btn, symptomId, value) {
+            const item = btn.closest('.symptom-item');
+            const yesBtn = item.querySelector('.symptom-btn.yes');
+            const noBtn = item.querySelector('.symptom-btn.no');
+            if (value === 'Yes') {
+                yesBtn.classList.add('selected');
+                noBtn.classList.remove('selected');
+            } else {
+                noBtn.classList.add('selected');
+                yesBtn.classList.remove('selected');
+            }
+            userData.quizData[symptomId] = value;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const age = userData.quizData.age;
+            const gender = userData.quizData.gender;
+            const answeredSymptoms = Object.keys(userData.quizData).filter(k => symptoms.find(s => s.id === k)).length;
+            let progress = 0;
+            if (age) progress += 17;
+            if (gender) progress += 16;
+            if (answeredSymptoms > 0) progress += Math.round(67 * answeredSymptoms / symptoms.length);
+            document.getElementById('quiz-progress-bar').style.width = progress + '%';
+        }
+
+        async function submitQuiz() {
+            const age = document.getElementById('quiz-age').value;
+            const gender = userData.quizData.gender;
+            if (!age) { showToast('请输入年龄'); return; }
+            if (!gender) { showToast('请选择性别'); return; }
+            const formData = { age: parseInt(age), gender: gender, ...userData.quizData };
+            showPage('result');
+            document.getElementById('result-title').textContent = '正在分析...';
+            document.getElementById('result-probability').textContent = '...';
+            document.getElementById('result-desc').textContent = '正在整合多维度数据，请稍候...';
+            document.getElementById('result-factors').innerHTML = '';
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/predict_symptoms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (!response.ok) throw new Error('请求失败');
+                const result = await response.json();
+                displayResult(result);
+            } catch (error) {
+                const mockResult = simulateResult(age, gender, userData.quizData);
+                setTimeout(() => displayResult(mockResult), 1000);
+            }
+        }
+
+        function simulateResult(age, gender, symptoms) {
+            let score = 0;
+            const factors = [];
+            if (symptoms.polyuria === 'Yes') { score += 22; factors.push('多尿'); }
+            if (symptoms.polydipsia === 'Yes') { score += 22; factors.push('烦渴多饮'); }
+            if (symptoms.weightLoss === 'Yes') { score += 11; factors.push('体重下降'); }
+            if (symptoms.obesity === 'Yes') { score += 11; factors.push('肥胖'); }
+            if (symptoms.weakness === 'Yes') { score += 7; }
+            if (symptoms.visualBlurring === 'Yes') { score += 7; factors.push('视觉问题'); }
+            score += (age / 100) * 12;
+            const probability = Math.min(Math.round(score), 99);
+            let level, advice;
+            if (probability < 30) {
+                level = '低风险';
+                advice = '目前糖尿病风险较低，建议保持健康饮食和规律作息，每年定期体检即可。';
+            } else if (probability < 70) {
+                level = '中风险';
+                advice = '存在糖尿病相关风险因素，建议控制糖分和碳水摄入，增加运动，1-3个月内复查空腹血糖。';
+            } else {
+                level = '高风险';
+                advice = '多项指标和症状高度提示糖尿病风险，强烈建议尽快前往内分泌科做糖耐量试验和糖化血红蛋白检测。';
+            }
+            return {
+                probability,
+                risk_level: level,
+                medical_advice: advice,
+                key_factors: factors.length ? factors : ['年龄及基础代谢因素']
+            };
+        }
+
+        function displayResult(result) {
+            const { probability, risk_level, medical_advice, key_factors } = result;
+            const icon = document.getElementById('result-icon');
+            icon.className = 'result-icon';
+            const probEl = document.getElementById('result-probability');
+            probEl.className = 'result-probability';
+            const bar = document.getElementById('result-bar');
+            bar.className = 'risk-bar-fill';
+            if (probability < 30) {
+                icon.classList.add('low');
+                icon.innerHTML = '<i class="fas fa-check"></i>';
+                probEl.classList.add('low');
+                bar.classList.add('low');
+            } else if (probability < 70) {
+                icon.classList.add('medium');
+                icon.innerHTML = '<i class="fas fa-exclamation"></i>';
+                probEl.classList.add('medium');
+                bar.classList.add('medium');
+            } else {
+                icon.classList.add('high');
+                icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                probEl.classList.add('high');
+                bar.classList.add('high');
+            }
+            document.getElementById('result-title').textContent = risk_level;
+            document.getElementById('result-probability').textContent = probability + '%';
+            document.getElementById('result-desc').textContent = medical_advice;
+            document.getElementById('result-bar').style.width = probability + '%';
+            document.getElementById('result-factors').innerHTML = key_factors.map(f => `<span class="factor-tag">${f}</span>`).join('');
+        }
+
+        function switchLoginTab(btn, formId) {
+            document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('login-form').style.display = formId === 'login-form' ? 'block' : 'none';
+            document.getElementById('register-form').style.display = formId === 'register-form' ? 'block' : 'none';
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            if (!email || !password) { showToast('请填写完整信息'); return; }
+            userData.isLoggedIn = true;
+            userData.name = email.split('@')[0];
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-desc').textContent = '健康生活，从今天开始';
+            document.getElementById('login-logout-text').textContent = '退出登录';
+            showToast('登录成功');
+            showPage('home');
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            if (!name || !email || !password) { showToast('请填写完整信息'); return; }
+            if (password !== confirm) { showToast('两次密码输入不一致'); return; }
+            if (password.length < 6) { showToast('密码至少6位'); return; }
+            userData.isLoggedIn = true;
+            userData.name = name;
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-desc').textContent = '健康生活，从今天开始';
+            document.getElementById('login-logout-text').textContent = '退出登录';
+            showToast('注册成功');
+            showPage('home');
+        }
+
+        function handleLogout() {
+            if (userData.isLoggedIn) {
+                userData.isLoggedIn = false;
+                userData.name = '';
+                document.getElementById('profile-name').textContent = '未登录';
+                document.getElementById('profile-desc').textContent = '点击登录享受完整服务';
+                document.getElementById('login-logout-text').textContent = '登录/注册';
+                showToast('已退出登录');
+            } else {
+                showPage('login');
+            }
+        }
+
+        function showTriageModal() { document.getElementById('triage-modal').classList.add('active'); }
+        function goToFullForm() { document.getElementById('triage-modal').classList.remove('active'); showToast('完整表单开发中，请先使用快速筛查'); showPage('quiz'); }
+        function goToQuickQuiz() { document.getElementById('triage-modal').classList.remove('active'); showPage('quiz'); }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        }
+
+        document.getElementById('triage-modal').addEventListener('click', function(e) {
+            if (e.target === this) { this.classList.remove('active'); }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('quiz-age').addEventListener('input', function() {
+                userData.quizData.age = this.value;
+                updateProgress();
+            });
+        });
+
+        // PWA Service Worker 注册
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(reg) {
+                    console.log('PWA 已就绪，可以安装成 APP 啦！');
+                }).catch(function(err) {
+                    console.log('PWA 注册失败:', err);
+                });
+            });
+        }
+    </script>
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+    <script src="tk-components-mobile.js"></script>
+</body>
+</html>

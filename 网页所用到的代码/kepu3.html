@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>唐侦探</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="tk-design-system.css">
+	<link rel="stylesheet" href="tk-floating-menu.css">
+		<style>
+		    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+		
+		    /* 统一沉稳医疗蓝主题 */
+		    :root {
+		        --medical-blue: #2A64B5 !important;    
+		        --medical-light: #F0F6FF !important;   
+		        --medical-dark: #1A3C75 !important;    
+		        --medical-gray: #F8FAFC !important;    
+		        --text-main: #1e293b !important;       
+		        --text-muted: #64748b !important;
+		    }
+		
+		    /* 1. 核心修复：重置背景并为悬浮页头预留 100px 空间，彻底解决下拉菜单闪退 */
+		    body { 
+		        background-color: var(--medical-gray) !important;
+		        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+		        color: var(--text-main) !important;
+		        padding-top: 100px !important; 
+		        line-height: 1.8 !important;
+		    }
+		    body:before, #page-wrapper { background: none !important; display: none !important; }
+		    #page-wrapper { display: block !important; }
+		
+		    /* 2. 文章容器现代化：居中、最大宽度、大圆角卡片 */
+		    #main .container { max-width: 900px !important; margin: 0 auto; padding: 0 5%; }
+		    
+		    article.box.post {
+		        background: #ffffff !important;
+		        border-radius: 24px !important;
+		        padding: 50px !important;
+		        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03) !important;
+		        border: 1px solid rgba(15, 23, 42, 0.05) !important;
+		    }
+		
+		    /* 3. 顶部配图全宽自适应处理 */
+		    article.box.post .image.featured {
+		        margin: -50px -50px 40px -50px !important;
+		        display: block;
+		        border-radius: 24px 24px 0 0 !important;
+		        overflow: hidden;
+		    }
+		    article.box.post .image.featured img {
+		        width: 100% !important;
+		        height: 360px !important;
+		        object-fit: cover !important; /* 保证图片不变形 */
+		    }
+		
+		    /* 4. 标题与正文排版优化（大厂博客风） */
+		    article.box.post header { text-align: center; margin-bottom: 40px !important; }
+		    article.box.post header h2 {
+		        font-size: 2.4rem !important;
+		        color: var(--medical-dark) !important;
+		        font-weight: 800 !important;
+		        margin-bottom: 12px !important;
+		        line-height: 1.3 !important;
+		    }
+		    article.box.post header p {
+		        color: var(--medical-blue) !important;
+		        font-weight: 600 !important;
+		        font-size: 1.1rem !important;
+		        margin: 0 auto !important;
+		        display: inline-block;
+		        padding: 6px 16px;
+		        background: var(--medical-light) !important;
+		        border-radius: 50px;
+		    }
+		
+		    /* 正文细节打磨 */
+		    .sf-detail-body-wrapper, article.box.post > p, article.box.post ul, article.box.post div {
+		        color: var(--text-main) !important;
+		        font-size: 1.05rem !important;
+		    }
+		    article.box.post h2 {
+		        font-size: 1.5rem !important;
+		        color: var(--medical-blue) !important;
+		        margin: 40px 0 20px 0 !important;
+		        font-weight: 700 !important;
+		        border-bottom: 1px solid rgba(15,23,42,0.05) !important;
+		        padding-bottom: 10px !important;
+		    }
+		    
+		    /* 针对 kepu3.html 内部强制样式的清理 */
+		    article.box.post section { box-shadow: none !important; background: transparent !important; }
+		
+		    /* 移动端适配 */
+		    @media (max-width: 768px) {
+		        article.box.post { padding: 30px 20px !important; }
+		        article.box.post .image.featured { margin: -30px -20px 30px -20px !important; }
+		        article.box.post .image.featured img { height: 220px !important; }
+		        article.box.post header h2 { font-size: 1.8rem !important; }
+		    }
+		</style>
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<div id="tk-header-placeholder"></div>
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+
+						<!-- Content -->
+							<article class="box post">
+								<a href="#" class="image featured"><img src="images/640 (1).webp" alt="" /></a>
+								<header>
+									<h2>如何预防糖尿病</h2>
+									<p>数据来源泰安第一人民医院</p>
+								</header>
+<div class="sf-detail-body-wrapper">
+        <section style="text-align: center; justify-content: center; display: flex; flex-flow: row; visibility: visible;">
+			<section style="display: inline-block; width: 90%; vertical-align: top; align-self: flex-start; flex: 0 0 auto; background-color: rgba(241, 216, 149, 0.14); height: auto; padding: 20px; box-shadow: rgb(241, 216, 149) 0px 0px 3px 0px; visibility: visible;"><section style="margin-top: 10px; visibility: visible;"><section style="font-size: 15px; line-height: 2; letter-spacing: 1px; visibility: visible;"><p style="text-align: justify; text-indent: 2.1333em; text-wrap: wrap; visibility: visible;">1、心理调节方面</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">&nbsp;&nbsp;一个好的心态对糖尿病的预防也是有其积极作用的。各种心理不平衡会进一步加强胰岛素抵抗，促使糖尿病的发生，有例子说明，有些人为精神刺激，很长时间愁眉不展，很快就得了糖尿病。</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">2、及时体检</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">&nbsp;&nbsp;专家认为，年龄超过45岁、有糖尿病史家族、高脂血症、高血压、超重肥胖、嗜好抽烟、有长期偏食习惯、有巨大儿生育史的妇女等人群更应及早检测血糖。肥胖患者尤应定期抽检血糖。40岁以上的人和在怀孕过程中出现过高血糖的女性也要特别注意。</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">3、加强预防糖尿病知识的学习</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">&nbsp;&nbsp;加强预防糖尿病知识的宣传教育，增强对预防糖尿病重要性的认识。糖尿病病人和家属应主动学习糖尿病相关知识，了解糖尿病的危害性。掌握监测糖尿病的方法，充分认识糖尿病需要终生治疗。</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">4、食物药合理均衡搭配</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">&nbsp;&nbsp;碳水化合物、脂肪、蛋白质都是高热量的食物，尽量少食这些高热量食物。所摄取的食物应该以低糖、低盐、低脂、高纤维、高维生素为主。其次，糖、蛋白质、脂肪三方面的食物要合理均衡搭配。</p></section></section><section style="margin-top: 10px;margin-bottom: 10px;line-height: 0;"><section style="vertical-align: middle;display: inline-block;line-height: 0;">
+			<img src="images/640.webp" style="max-width: 100%;width: auto;" alt="" /></section></section><section style="margin-top: 10px;"><section style="font-size: 15px;line-height: 2;letter-spacing: 1px;"><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">5、体育锻炼是必不可少的一种方式</p><p style="text-align: justify;text-indent: 2.1333em;text-wrap: wrap;">&nbsp;&nbsp;降低糖尿病风险，运动是必不可少的一种方式，它不仅可以消耗身体多余的热量和脂肪，维持肌肉量，还可以提高胰岛素的敏感性，以便更好地与调节糖代谢，控制血糖平衡。一周至少保证5次锻炼，每次锻炼不低于30分钟。</p></section></section><section style="text-align: justify;"><p style="text-wrap: wrap;"><br></p></section></section></section>
+	
+								</section>
+							</article>
+
+					</div>
+				</section>
+
+				<div id="tk-footer-placeholder"></div>
+				<div id="tk-fab-placeholder"></div>
+				<script src="tk-components.js"></script>
+
+			</body>
+		</html>

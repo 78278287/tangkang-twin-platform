@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖康孪生 - 手机版访问</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+        .qr-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            border: 3px dashed #e2e8f0;
+            margin-bottom: 24px;
+        }
+        .qr-box img {
+            width: 200px;
+            height: 200px;
+        }
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: #94a3b8;
+        }
+        .qr-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .url-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .url-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.85rem;
+            color: #1e293b;
+            outline: none;
+            font-family: monospace;
+        }
+        .url-box button {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .url-box button:active { background: #1e40af; }
+        .steps {
+            text-align: left;
+            background: #eff6ff;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .steps h3 {
+            color: #1d4ed8;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .steps ol {
+            padding-left: 20px;
+            color: #1e293b;
+            font-size: 0.85rem;
+            line-height: 2;
+        }
+        .steps li { margin-bottom: 2px; }
+        .steps code {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        .note {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">❤️</div>
+        <h1>糖康孪生 - 手机版</h1>
+        <p class="subtitle">AI 驱动的数字健康管家</p>
+
+        <div class="qr-box">
+            <div class="qr-placeholder" id="qrPlaceholder">
+                <i class="fas fa-qrcode"></i>
+                <span style="font-size: 0.85rem;">点击下方按钮生成二维码</span>
+            </div>
+            <img id="qrImage" style="display:none;" alt="二维码">
+        </div>
+
+        <div class="url-box">
+            <i class="fas fa-link" style="color: #64748b;"></i>
+            <input type="text" id="urlInput" value="http://192.168.X.X:8080/index.html" readonly>
+            <button onclick="generateQR()">生成二维码</button>
+        </div>
+
+        <div class="steps">
+            <h3><i class="fas fa-list-ol"></i> 使用步骤</h3>
+            <ol>
+                <li>在电脑命令行进入 <code>糖康孪生_手机版</code> 文件夹</li>
+                <li>运行命令 <code>python -m http.server 8080</code></li>
+                <li>运行 <code>ipconfig</code> 查看 IPv4 地址</li>
+                <li>在上方输入框填入正确地址，点"生成二维码"</li>
+                <li>手机连同一 WiFi，扫码即可访问！</li>
+            </ol>
+        </div>
+
+        <p class="note">
+            <i class="fas fa-wifi"></i>
+            手机和电脑必须连同一 WiFi
+        </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        function generateQR() {
+            var url = document.getElementById('urlInput').value;
+            if (!url || url.includes('192.168.X.X')) {
+                alert('请先在上方输入框填入正确的地址！\n\n格式：http://你的IP:8080/index.html\n\n例如：http://192.168.1.100:8080/index.html');
+                return;
+            }
+            var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url);
+            var img = document.getElementById('qrImage');
+            img.src = qrUrl;
+            img.style.display = 'block';
+            document.getElementById('qrPlaceholder').style.display = 'none';
+        }
+
+        // 自动获取本机IP
+        function getLocalIP() {
+            var ips = [];
+            var ifaces = null;
+            try {
+                var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+                if (!RTCPeerConnection) return null;
+                var pc = new RTCPeerConnection({iceServers:[]});
+                pc.createDataChannel('');
+                pc.createOffer(function(sdp) {
+                    pc.setLocalDescription(sdp, function(){}, function(){});
+                }, function(){});
+                pc.onicecandidate = function(event) {
+                    if (!event.candidate) return;
+                    var candidate = event.candidate.candidate;
+                    var match = candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
+                    if (match && !match[1].startsWith('0.')) {
+                        ips.push(match[1]);
+                    }
+                };
+                setTimeout(function() {
+                    if (ips.length > 0) {
+                        var input = document.getElementById('urlInput');
+                        input.value = 'http://' + ips[0] + ':8080/index.html';
+                        input.style.color = '#1e293b';
+                    }
+                }, 1000);
+            } catch (e) {}
+        }
+        getLocalIP();
+    </script>
+</body>
+</html>

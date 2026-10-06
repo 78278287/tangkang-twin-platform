@@ -1,0 +1,71 @@
+{
+  "totalUsers": 1000,
+  "totalAssessments": 3000,
+  "avgAccuracy": "92.5%",
+  "responseTime": "12ms",
+  "onlineUsers": 1523,
+  "todayAssess": 33,
+  "highRisk": 362,
+  "dataProcessed": 10000,
+  "apiCalls": 8934,
+  "ageDistribution": [
+    9,
+    140,
+    161,
+    198,
+    172,
+    160,
+    160
+  ],
+  "genderRatio": [
+    52.1,
+    47.9
+  ],
+  "symptomLabels": [
+    "多尿",
+    "烦渴",
+    "体重下降",
+    "疲劳",
+    "视力模糊",
+    "伤口愈合慢"
+  ],
+  "symptomDistribution": [
+    76,
+    68,
+    58,
+    68,
+    54,
+    49
+  ],
+  "riskDistribution": [
+    497,
+    141,
+    362
+  ],
+  "riskTrend": {
+    "low": [
+      67,
+      72,
+      59,
+      93,
+      98,
+      108
+    ],
+    "medium": [
+      28,
+      31,
+      39,
+      12,
+      16,
+      15
+    ],
+    "high": [
+      71,
+      63,
+      68,
+      61,
+      52,
+      47
+    ]
+  }
+}

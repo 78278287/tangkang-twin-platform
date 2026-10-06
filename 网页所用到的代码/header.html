@@ -1,0 +1,227 @@
+<style>
+    /* ========================================= */
+    /* 现代高级版：毛玻璃悬浮页头 + 下拉菜单 (医疗蓝版) */
+    /* ========================================= */
+    .modern-header {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-bottom: 1px solid rgba(42, 100, 181, 0.1) !important;
+        position: fixed !important; 
+        top: 0 !important; left: 0 !important; right: 0 !important; 
+        z-index: 99999 !important;
+        display: flex !important; justify-content: space-between !important; align-items: center !important;
+        height: 80px !important; /* 强制高度，解决闪退第一步 */
+        padding: 0 5% !important; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    }
+
+    /* Logo 区域 */
+    .header-logo { display: flex !important; align-items: center !important; text-decoration: none !important; color: #1e293b !important; }
+    .header-logo img { width: 42px !important; height: 42px !important; border-radius: 10px !important; margin-right: 12px !important; object-fit: cover !important; box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important; }
+    .header-logo span { font-size: 1.4rem !important; font-weight: 800 !important; letter-spacing: -0.5px !important; }
+    
+    /* 主导航 */
+    .header-nav { 
+        display: flex !important; 
+        gap: 2.5rem !important; 
+        list-style: none !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+        height: 100% !important; 
+        align-items: center !important; 
+    }
+    
+    /* 普通链接与下拉菜单父项 */
+    .header-nav > li {
+        height: 100% !important; /* 强制高度，解决闪退第二步 */
+        display: flex !important;
+        align-items: center !important;
+        position: relative !important;
+    }
+
+    .header-nav a, .nav-item { 
+        text-decoration: none !important; 
+        color: #64748b !important; 
+        font-weight: 600 !important; 
+        font-size: 1.05rem !important; 
+        transition: color 0.2s !important; 
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 0 10px !important;
+    }
+
+    .header-nav a:hover, .header-nav a.active, .nav-item:hover { color: #2A64B5 !important; }
+
+    /* 导航高亮样式 - 突出两大核心系统 */
+    .nav-highlight {
+        color: #2A64B5 !important;
+        font-weight: 700 !important;
+        background: linear-gradient(135deg, rgba(42,100,181,0.08), rgba(42,100,181,0.15));
+        padding: 8px 18px !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(42,100,181,0.2) !important;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .nav-highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.5s;
+    }
+    .nav-item:hover .nav-highlight::before {
+        left: 100%;
+    }
+    .nav-item:hover .nav-highlight {
+        background: linear-gradient(135deg, rgba(42,100,181,0.12), rgba(42,100,181,0.2));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(42,100,181,0.15);
+    }
+
+    /* 小箭头 */
+    .nav-item::after {
+        content: '▾' !important;
+        font-size: 12px !important;
+        color: inherit !important;
+        transition: transform 0.2s !important;
+        margin-top: 2px !important;
+    }
+    .nav-item:hover::after {
+        transform: rotate(180deg) !important;
+    }
+
+    /* 下拉菜单面板 */
+    .dropdown {
+        position: absolute !important;
+        top: 80px !important; /* 紧贴页头底部 */
+        left: 50% !important;
+        transform: translateX(-50%) translateY(15px) !important;
+        min-width: 200px !important;
+        background: rgba(255,255,255,0.98) !important;
+        backdrop-filter: blur(16px) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important;
+        border: 1px solid rgba(42, 100, 181, 0.1) !important;
+        padding: 10px !important;
+        list-style: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        z-index: 999 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+    }
+
+    /* 👑 终极杀手锏：向四周大范围延展的透明热区，完美适配原版类名 👑 */
+    .dropdown::before {
+        content: '' !important;
+        position: absolute !important;
+        top: -40px !important; 
+        left: -30px !important;
+        right: -30px !important;
+        height: 50px !important;
+        background: transparent !important; 
+    }
+
+    /* hover 显示下拉 */
+    .nav-item:hover .dropdown {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(-50%) translateY(0) !important;
+    }
+
+    /* 下拉菜单项 */
+    .dropdown li { padding: 0 !important; width: 100% !important; }
+    
+    .dropdown a {
+        display: block !important;
+        padding: 12px 16px !important;
+        white-space: nowrap !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        color: #64748b !important;
+        border-radius: 10px !important;
+        transition: all 0.2s !important;
+    }
+    .dropdown a:hover {
+        background: #F0F6FF !important;
+        color: #2A64B5 !important;
+    }
+    
+    /* 按钮区域 */
+    .header-actions { display: flex !important; gap: 1.2rem !important; align-items: center !important; }
+    .btn-login { color: #2A64B5 !important; text-decoration: none !important; font-weight: 600 !important; padding: 0.5rem 1rem !important; border-radius: 8px !important; transition: background 0.2s !important; }
+    .btn-login:hover { background: #F0F6FF !important; }
+    .btn-register { background: #2A64B5 !important; color: white !important; text-decoration: none !important; font-weight: 600 !important; padding: 0.6rem 1.5rem !important; border-radius: 999px !important; box-shadow: 0 4px 10px rgba(42, 100, 181, 0.2) !important; transition: all 0.2s !important; }
+    .btn-register:hover { background: #1A3C75 !important; transform: translateY(-2px) !important; box-shadow: 0 6px 15px rgba(42, 100, 181, 0.3) !important; color: white !important; }
+
+    /* 适配移动端 */
+    @media (max-width: 900px) {
+        .header-nav { display: none !important; }
+        .btn-login { display: none !important; }
+    }
+</style>
+
+<div class="modern-header">
+    <a href="index2.html" class="header-logo">
+        <img src="images/logo.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/42/2A64B5/ffffff?text=TK'" />
+        <span>糖康孪生</span>
+    </a>
+    
+    <ul class="header-nav">
+        <li><a href="index2.html" class="active">首页</a></li>
+        
+        <li><a href="cx1.html" class="nav-highlight">糖尿病风险预测系统</a></li>
+        
+        <li><a href="ai_assistant.html" class="nav-highlight">AI健康助手</a></li>
+        
+        <li class="nav-item">
+            <span class="nav-highlight">健康管理系统</span>
+            <ul class="dropdown">
+                <li><a href="dati1.html"><i class="fas fa-brain"></i> AI风险健康管理系统</a></li>
+                <li><a href="feature_center.html"><i class="fas fa-th-large"></i> 功能中心</a></li>
+                <li><a href="vital_signs.html"><i class="fas fa-heartbeat"></i> 血压心率</a></li>
+                <li><a href="health_reminders.html"><i class="fas fa-bell"></i> 用药提醒</a></li>
+                <li><a href="family_management.html"><i class="fas fa-users"></i> 家庭管理</a></li>
+                <li><a href="health_quiz.html"><i class="fas fa-graduation-cap"></i> 健康知识测验</a></li>
+            </ul>
+        </li>
+        
+        <li class="nav-item">
+            全球数据
+            <ul class="dropdown">
+                <li><a href="fenxi.html"><i class="fas fa-globe-asia"></i> 全球数据分析</a></li>
+                <li><a href="data_dashboard.html"><i class="fas fa-chart-pie"></i> 数据可视化大屏</a></li>
+                <li><a href="kepu.html"><i class="fas fa-book-medical"></i> 健康科普</a></li>
+            </ul>
+        </li>
+        
+        <li class="nav-item">
+            专家社区
+            <ul class="dropdown">
+                <li><a href="luntan.html"><i class="fas fa-shield-alt"></i> 预防糖尿病专区</a></li>
+                <li><a href="luntan-wenzhang.html"><i class="fas fa-smile"></i> 低风险专区</a></li>
+                <li><a href="luntan-zhuanjia.html"><i class="fas fa-user-md"></i> 中风险专区</a></li>
+                <li><a href="luntan-ask.html"><i class="fas fa-exclamation-triangle"></i> 高风险专区</a></li>
+                <li><a href="yiduiyi.html"><i class="fas fa-comments"></i> 专家面对面</a></li>
+            </ul>
+        </li>
+        
+        <li><a href="gerenzx.html">个人中心</a></li>
+    </ul>
+    
+    <div class="header-actions">
+        <a href="denglu.html" class="btn-login">登录</a>
+        <a href="denglu.html" class="btn-register">免费注册</a>
+    </div>
+</div>

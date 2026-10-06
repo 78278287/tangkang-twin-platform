@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>唐侦探</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="tk-design-system.css">
+	<link rel="stylesheet" href="tk-floating-menu.css">
+		<style>
+		    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+		
+		    /* 统一沉稳医疗蓝主题 */
+		    :root {
+		        --medical-blue: #2A64B5 !important;    
+		        --medical-light: #F0F6FF !important;   
+		        --medical-dark: #1A3C75 !important;    
+		        --medical-gray: #F8FAFC !important;    
+		        --text-main: #1e293b !important;       
+		        --text-muted: #64748b !important;
+		    }
+		
+		    /* 1. 核心修复：重置背景并为悬浮页头预留 100px 空间，彻底解决下拉菜单闪退 */
+		    body { 
+		        background-color: var(--medical-gray) !important;
+		        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+		        color: var(--text-main) !important;
+		        padding-top: 100px !important; 
+		        line-height: 1.8 !important;
+		    }
+		    body:before, #page-wrapper { background: none !important; display: none !important; }
+		    #page-wrapper { display: block !important; }
+		
+		    /* 2. 文章容器现代化：居中、最大宽度、大圆角卡片 */
+		    #main .container { max-width: 900px !important; margin: 0 auto; padding: 0 5%; }
+		    
+		    article.box.post {
+		        background: #ffffff !important;
+		        border-radius: 24px !important;
+		        padding: 50px !important;
+		        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03) !important;
+		        border: 1px solid rgba(15, 23, 42, 0.05) !important;
+		    }
+		
+		    /* 3. 顶部配图全宽自适应处理 */
+		    article.box.post .image.featured {
+		        margin: -50px -50px 40px -50px !important;
+		        display: block;
+		        border-radius: 24px 24px 0 0 !important;
+		        overflow: hidden;
+		    }
+		    article.box.post .image.featured img {
+		        width: 100% !important;
+		        height: 360px !important;
+		        object-fit: cover !important; /* 保证图片不变形 */
+		    }
+		
+		    /* 4. 标题与正文排版优化（大厂博客风） */
+		    article.box.post header { text-align: center; margin-bottom: 40px !important; }
+		    article.box.post header h2 {
+		        font-size: 2.4rem !important;
+		        color: var(--medical-dark) !important;
+		        font-weight: 800 !important;
+		        margin-bottom: 12px !important;
+		        line-height: 1.3 !important;
+		    }
+		    article.box.post header p {
+		        color: var(--medical-blue) !important;
+		        font-weight: 600 !important;
+		        font-size: 1.1rem !important;
+		        margin: 0 auto !important;
+		        display: inline-block;
+		        padding: 6px 16px;
+		        background: var(--medical-light) !important;
+		        border-radius: 50px;
+		    }
+		
+		    /* 正文细节打磨 */
+		    .sf-detail-body-wrapper, article.box.post > p, article.box.post ul, article.box.post div {
+		        color: var(--text-main) !important;
+		        font-size: 1.05rem !important;
+		    }
+		    article.box.post h2 {
+		        font-size: 1.5rem !important;
+		        color: var(--medical-blue) !important;
+		        margin: 40px 0 20px 0 !important;
+		        font-weight: 700 !important;
+		        border-bottom: 1px solid rgba(15,23,42,0.05) !important;
+		        padding-bottom: 10px !important;
+		    }
+		    
+		    /* 针对 kepu3.html 内部强制样式的清理 */
+		    article.box.post section { box-shadow: none !important; background: transparent !important; }
+		
+		    /* 移动端适配 */
+		    @media (max-width: 768px) {
+		        article.box.post { padding: 30px 20px !important; }
+		        article.box.post .image.featured { margin: -30px -20px 30px -20px !important; }
+		        article.box.post .image.featured img { height: 220px !important; }
+		        article.box.post header h2 { font-size: 1.8rem !important; }
+		    }
+		</style>
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<div id="tk-header-placeholder"></div>
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+
+						<!-- Content -->
+							<article class="box post">
+								<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+								<header>
+									<h2>糖尿病</h2>
+									<p>数据来源于WHO</p>
+								</header>
+<div class="sf-detail-body-wrapper">
+        <div><p _msttexthash="1652699594" _msthash="574">自 1980 年以来，糖尿病患者人数几乎翻了两番。全球患病率正在增加，尤其是在低收入和中等收入国家。原因很复杂，但增加的部分原因是超重人数的增加，包括肥胖的增加，以及普遍缺乏体育锻炼。</p>
+<p _msttexthash="2090784683" _msthash="575">所有类型的糖尿病都会导致身体许多部位出现并发症，并增加过早死亡的风险。2012 年，糖尿病是全球 150 万人死亡的直接原因。很大一部分糖尿病及其并发症可以通过健康饮食、定期体育锻炼、保持正常体重和避免使用烟草来预防。</p>
+<p _msttexthash="1062401067" _msthash="576">2016 年 4 月，世卫组织发布了《全球糖尿病报告》，呼吁采取行动减少接触已知的 2 型糖尿病风险因素，并改善各种类型糖尿病患者获得护理的机会和质量。</p></div>
+    </div>
+	
+								</section>
+							</article>
+
+					</div>
+				</section>
+
+				<div id="tk-footer-placeholder"></div>
+				<div id="tk-fab-placeholder"></div>
+				<script src="tk-components.js"></script>
+
+					</body>
+				</html>

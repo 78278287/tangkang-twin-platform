@@ -1,0 +1,887 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>AI健康助手 - 糖康孪生平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, var(--tk-accent-light) 0%, var(--tk-bg-page) 50%);
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .ai-hero {
+            text-align: center;
+            padding: 2rem 24px;
+            background: linear-gradient(135deg, var(--tk-accent) 0%, var(--tk-accent-dark) 100%);
+            color: white;
+            border-radius: var(--tk-radius-xl);
+            margin: 0 24px 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .ai-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-hero p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-hero .ai-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        /* 双栏布局 */
+        .ai-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+        }
+
+        /* 聊天区域 */
+        .chat-section {
+            background: var(--tk-bg-card);
+            border-radius: var(--tk-radius-lg);
+            box-shadow: var(--tk-shadow);
+            border: 1px solid var(--tk-divider);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--tk-divider);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--tk-success);
+            box-shadow: 0 0 8px var(--tk-success);
+            animation: tk-pulse 2s infinite;
+        }
+
+        .chat-header-info h3 {
+            font-size: 1.05rem;
+            margin-bottom: 2px;
+        }
+
+        .chat-header-info p {
+            font-size: 0.82rem;
+            color: var(--tk-text-muted);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+            animation: tk-fadeIn 0.3s ease;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .message.ai .message-avatar {
+            background: var(--tk-accent-light);
+            color: var(--tk-accent);
+        }
+
+        .message.user .message-avatar {
+            background: var(--tk-primary);
+            color: white;
+        }
+
+        .message-content {
+            padding: 12px 18px;
+            border-radius: var(--tk-radius-lg);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .message.ai .message-content {
+            background: var(--tk-accent-light);
+            color: var(--tk-text-main);
+            border-top-left-radius: 4px;
+        }
+
+        .message.user .message-content {
+            background: var(--tk-primary);
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 14px 18px;
+            background: var(--tk-accent-light);
+            border-radius: var(--tk-radius-lg);
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--tk-accent);
+            border-radius: 50%;
+            animation: tk-pulse 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        .chat-input-area {
+            padding: 16px 20px;
+            border-top: 1px solid var(--tk-divider);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid var(--tk-border);
+            border-radius: var(--tk-radius);
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--tk-primary);
+            box-shadow: 0 0 0 3px rgba(42, 100, 181, 0.1);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--tk-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            background: var(--tk-primary-dark);
+            transform: scale(1.05);
+        }
+
+        /* 侧边栏 */
+        .ai-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ai-side-card {
+            background: var(--tk-bg-card);
+            border-radius: var(--tk-radius-lg);
+            padding: 20px;
+            box-shadow: var(--tk-shadow);
+            border: 1px solid var(--tk-divider);
+        }
+
+        .ai-side-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--tk-text-main);
+        }
+
+        .ai-side-title i {
+            color: var(--tk-primary);
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quick-btn {
+            background: var(--tk-bg-page);
+            border: 1px solid var(--tk-border);
+            border-radius: var(--tk-radius);
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: var(--tk-text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--tk-primary);
+            background: var(--tk-primary-light);
+            color: var(--tk-primary);
+        }
+
+        .quick-btn i {
+            color: var(--tk-primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .feature-btn {
+            background: var(--tk-bg-page);
+            border-radius: var(--tk-radius);
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .feature-btn:hover {
+            background: var(--tk-primary-light);
+            border-color: var(--tk-primary);
+            transform: translateY(-2px);
+        }
+
+        .feature-btn i {
+            font-size: 1.5rem;
+            color: var(--tk-primary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .feature-btn h4 {
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .knowledge-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .knowledge-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--tk-divider);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .knowledge-list li:last-child {
+            border-bottom: none;
+        }
+
+        .knowledge-list i {
+            color: var(--tk-accent);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 980px) {
+            .ai-layout {
+                grid-template-columns: 1fr;
+            }
+            .chat-section {
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ai-hero h1 { font-size: 1.6rem; }
+            .ai-hero { margin: 0 16px 1.5rem; padding: 1.5rem 16px; }
+            .ai-layout { padding: 0 16px; }
+            .message { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tk-header-placeholder"></div>
+
+    <div class="ai-hero tk-fade-in">
+        <div class="ai-avatar">
+            <i class="fas fa-robot"></i>
+        </div>
+        <h1>AI健康助手</h1>
+        <p>基于医学知识库的智能问答，24小时为您解答健康问题</p>
+        <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; backdrop-filter: blur(10px); position: relative; z-index: 1;">
+            <i class="fas fa-bolt" style="color: #fbbf24;"></i>
+            <span>Powered by <strong>DeepSeek</strong> · 国产先进大模型</span>
+        </div>
+    </div>
+
+    <div class="ai-layout">
+        <div class="chat-section">
+            <div class="chat-header">
+                <div class="chat-header-status"></div>
+                <div class="chat-header-info">
+                    <h3>糖康AI助手</h3>
+                    <p>在线服务中 · DeepSeek驱动 · 支持多轮对话</p>
+                </div>
+                <button onclick="clearChat()" style="margin-left: auto; background: transparent; border: 1px solid var(--tk-border); color: var(--tk-text-muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;">
+                    <i class="fas fa-redo"></i> 重置
+                </button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        👋 您好！我是糖康AI健康助手，由国产先进大模型 <strong>DeepSeek</strong> 驱动，支持多轮连续对话。我可以帮助您：<br><br>
+                        • 解答糖尿病相关问题<br>
+                        • 提供饮食和运动建议<br>
+                        • 解读检查报告指标<br>
+                        • 分享科学的健康管理方法<br><br>
+                        <span style="color: var(--tk-accent-dark); font-weight: 700;">💡 提示</span>：您可以像聊天一样持续追问，我会根据上下文给出更精准的回答。
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="请输入您的问题..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <aside class="ai-sidebar">
+            <div class="ai-side-card">
+                <h3 class="ai-side-title"><i class="fas fa-bolt"></i> 快速提问</h3>
+                <div class="quick-questions">
+                    <button class="quick-btn" onclick="askQuestion('糖尿病前期有什么症状？')">
+                        <i class="fas fa-search"></i> 糖尿病前期症状
+                    </button>
+                    <button class="quick-btn" onclick="askQuestion('血糖正常值是多少？')">
+                        <i class="fas fa-chart-line"></i> 血糖正常范围
+                    </button>
+                    <button class="quick-btn" onclick="askQuestion('糖尿病患者饮食应该注意什么？')">
+                        <i class="fas fa-utensils"></i> 饮食注意事项
+                    </button>
+                    <button class="quick-btn" onclick="askQuestion('如何预防糖尿病？')">
+                        <i class="fas fa-shield-alt"></i> 预防措施
+                    </button>
+                    <button class="quick-btn" onclick="askQuestion('糖尿病并发症有哪些？')">
+                        <i class="fas fa-exclamation-triangle"></i> 并发症清单
+                    </button>
+                </div>
+            </div>
+
+            <div class="ai-side-card">
+                <h3 class="ai-side-title"><i class="fas fa-th-large"></i> 我的能力</h3>
+                <div class="feature-grid">
+                    <div class="feature-btn" onclick="askQuestion('如何阅读血糖报告？')">
+                        <i class="fas fa-file-medical"></i>
+                        <h4>报告解读</h4>
+                    </div>
+                    <div class="feature-btn" onclick="askQuestion('适合糖尿病患者的运动有哪些？')">
+                        <i class="fas fa-running"></i>
+                        <h4>运动建议</h4>
+                    </div>
+                    <div class="feature-btn" onclick="askQuestion('糖尿病并发症有哪些？')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>并发症</h4>
+                    </div>
+                    <div class="feature-btn" onclick="askQuestion('胰岛素如何使用？')">
+                        <i class="fas fa-syringe"></i>
+                        <h4>用药指导</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-side-card">
+                <h3 class="ai-side-title"><i class="fas fa-lightbulb"></i> 今日健康知识</h3>
+                <ul class="knowledge-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>空腹血糖：</strong>3.9-6.1 mmol/L</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>餐后2小时：</strong>&lt; 7.8 mmol/L</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span><strong>糖化血红蛋白：</strong>&lt; 6.5%</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-lightbulb"></i>
+                        <span><strong>建议：</strong>每年至少检测一次血糖</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+
+    <script src="tk-components.js"></script>
+    <script>
+        // ===== 真实AI API配置 (DeepSeek) =====
+        const DEEPSEEK_API_KEY = 'sk-你的DeepSeek_API密钥';
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+        const USE_REAL_AI = true;
+
+        // 用户健康档案，用于个性化回答
+        let userHealthProfile = null;
+
+        // 构建带用户档案的 system prompt
+        function buildSystemPrompt(profile) {
+            let profileText = '';
+            if (profile) {
+                profileText = '\n\n【用户健康档案】';
+                if (profile.riskLevel) profileText += '\n- 当前糖尿病风险等级：' + profile.riskLevel;
+                if (profile.age) profileText += '\n- 年龄：' + profile.age + '岁';
+                if (profile.gender) profileText += '\n- 性别：' + profile.gender;
+                if (profile.bmi) profileText += '\n- BMI：' + profile.bmi;
+                if (profile.height && profile.weight) profileText += '\n- 身高/体重：' + profile.height + 'cm / ' + profile.weight + 'kg';
+                if (profile.bloodPressure) profileText += '\n- 血压：' + profile.bloodPressure;
+                if (profile.fastingGlucose) profileText += '\n- 空腹血糖：' + profile.fastingGlucose + ' mmol/L';
+                if (profile.postprandialGlucose) profileText += '\n- 餐后血糖：' + profile.postprandialGlucose + ' mmol/L';
+                if (profile.familyDiabetes) profileText += '\n- 家族糖尿病史：' + profile.familyDiabetes;
+                if (profile.keyFactors && profile.keyFactors.length) profileText += '\n- 高风险因素：' + profile.keyFactors.join('、');
+                if (profile.lastAssessmentTime) profileText += '\n- 最近评估时间：' + profile.lastAssessmentTime;
+                profileText += '\n\n请基于以上档案，在回答中给出针对性的、贴合用户实际情况的建议。如果用户档案缺少关键信息，可以礼貌地询问或建议完善。';
+            } else {
+                profileText = '\n\n【用户健康档案】\n当前暂无用户健康档案。回答时给出通用健康建议，并可在合适时机提醒用户完成平台健康评估以获取个性化指导。';
+            }
+
+            return `你是"糖康AI健康助手"，是糖康孪生平台的专业健康顾问。你的职责是：
+
+1. 角色定位：你是一位经验丰富的糖尿病健康教育专家，能够用通俗易懂的语言为用户提供科学的健康指导。
+
+2. 回答风格：
+- 语气亲切、专业、富有同理心
+- 回答简洁明了，重点突出，使用项目符号
+- 适当使用表情符号增加亲和力
+- 涉及专业术语时用通俗语言解释
+
+3. 回答范围：
+- 糖尿病相关知识（症状、预防、治疗、并发症等）
+- 饮食、运动、生活方式建议
+- 血糖管理、用药指导
+- 检查报告解读
+- 心理健康支持
+
+4. 重要原则：
+- 任何治疗方案或用药建议都要提醒用户遵医嘱
+- 不做最终诊断，建议用户就医确诊
+- 涉及急救情况（低血糖、酮症酸中毒等）要立即建议拨打120
+- 回答控制在300字以内，结构清晰
+
+5. 输出格式：
+- 重要信息使用【】标记
+- 关键数据加粗显示
+- 使用emoji增加可读性
+- 必要时使用分点列表` + profileText;
+        }
+
+        // 对话历史记录 - 用于上下文连续对话
+        let chatHistory = [];
+
+        // 从 localStorage 和后端加载用户健康档案
+        async function loadHealthProfile() {
+            const profile = {
+                source: 'local'
+            };
+
+            // 1. 读取本地风险等级和评估结果
+            try {
+                const riskLevel = localStorage.getItem('tk_risk_level');
+                if (riskLevel) profile.riskLevel = riskLevel;
+
+                const assessmentRaw = localStorage.getItem('tk_last_assessment');
+                if (assessmentRaw) {
+                    const assessment = JSON.parse(assessmentRaw);
+                    if (assessment.risk_level) profile.riskLevel = assessment.risk_level;
+                    if (assessment.probability) profile.probability = assessment.probability;
+                    if (assessment.key_factors) profile.keyFactors = assessment.key_factors;
+                    if (assessment.medical_advice) profile.medicalAdvice = assessment.medical_advice;
+                    if (assessment.timestamp) profile.lastAssessmentTime = new Date(assessment.timestamp).toLocaleDateString('zh-CN');
+                }
+
+                const profileRaw = localStorage.getItem('tk_health_profile');
+                if (profileRaw) {
+                    const localProfile = JSON.parse(profileRaw);
+                    Object.assign(profile, localProfile);
+                }
+            } catch (e) {
+                console.error('[AI助手] 读取本地档案失败:', e);
+            }
+
+            // 2. 如果已登录，尝试从后端获取更完整的档案
+            const token = localStorage.getItem('tk_token');
+            if (token) {
+                try {
+                    const response = await fetch('http://localhost:3001/api/user/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        const user = data.user || {};
+                        if (user.gender) profile.gender = user.gender;
+                        if (user.age) profile.age = user.age;
+                        if (user.height) profile.height = user.height;
+                        if (user.weight) profile.weight = user.weight;
+                        if (user.bmi) profile.bmi = user.bmi;
+                        if (user.family_diabetes !== undefined && user.family_diabetes !== null) {
+                            profile.familyDiabetes = user.family_diabetes ? '有' : '无';
+                        }
+                        profile.source = 'backend';
+                    }
+                } catch (e) {
+                    console.warn('[AI助手] 后端档案获取失败:', e);
+                }
+            }
+
+            userHealthProfile = profile;
+            // 初始化/更新 system prompt
+            chatHistory = [{ role: 'system', content: buildSystemPrompt(profile) }];
+            return profile;
+        }
+
+        // 本地知识库（API失败时兜底）
+        const fallbackResponses = {
+            '糖尿病前期有什么症状？': `糖尿病前期通常没有明显症状，但可能出现以下轻微信号：
+
+• **轻微口渴**：血糖升高导致渗透压变化
+• **疲劳感**：身体无法有效利用葡萄糖
+• **视力模糊**：晶状体渗透压改变
+• **伤口愈合慢**：高血糖影响修复能力
+
+**建议**：定期体检检测血糖，特别是有家族史、肥胖等高危因素的人群。`,
+
+            '血糖正常值是多少？': `血糖正常范围参考：
+
+• **空腹血糖**：3.9-6.1 mmol/L
+• **餐后2小时血糖**：< 7.8 mmol/L
+• **糖化血红蛋白(HbA1c)**：4%-6%
+
+**糖尿病诊断标准**：
+• 空腹血糖 ≥ 7.0 mmol/L
+• 餐后2小时血糖 ≥ 11.1 mmol/L
+• HbA1c ≥ 6.5%`,
+
+            '糖尿病患者饮食应该注意什么？': `糖尿病患者饮食原则：
+
+**✅ 推荐食物**：
+• 全谷物：糙米、燕麦、全麦面包
+• 蔬菜：菠菜、西兰花、胡萝卜
+• 蛋白质：鱼、鸡胸肉、豆制品
+• 水果：苹果、梨、樱桃（适量）
+
+**❌ 应避免**：
+• 高糖食物：糖果、蛋糕、甜饮料
+• 精制碳水：白米饭、白面包
+• 高脂肪：油炸食品、肥肉
+
+**🍽️ 饮食小技巧**：
+• 少食多餐，定时定量
+• 细嚼慢咽，减缓血糖上升
+• 餐后散步30分钟`,
+
+            '如何预防糖尿病？': `预防糖尿病的7个关键措施：
+
+**1. 健康饮食**：控制热量，多吃蔬菜水果，限制甜食
+**2. 坚持运动**：每周至少150分钟中等强度运动
+**3. 保持体重**：BMI控制在18.5-24之间
+**4. 定期体检**：每年检测空腹血糖和糖化血红蛋白
+**5. 充足睡眠**：保证7-8小时睡眠时间
+**6. 减压放松**：长期压力会影响血糖控制
+**7. 戒烟限酒**：吸烟和过量饮酒增加糖尿病风险`
+        };
+
+        // 调用DeepSeek真实AI API
+        async function callDeepSeekAPI(userMessage) {
+            chatHistory.push({ role: 'user', content: userMessage });
+
+            // 限制历史长度，保留最近6条对话
+            if (chatHistory.length > 8) {
+                chatHistory = [chatHistory[0], ...chatHistory.slice(-6)];
+            }
+
+            const response = await fetch(DEEPSEEK_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: chatHistory,
+                    temperature: 0.7,
+                    max_tokens: 800,
+                    stream: false
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API请求失败: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const aiMessage = data.choices[0].message.content;
+
+            chatHistory.push({ role: 'assistant', content: aiMessage });
+            return aiMessage;
+        }
+
+        // 查找本地知识库
+        function findFallbackResponse(question) {
+            for (const [key, value] of Object.entries(fallbackResponses)) {
+                if (question.includes(key.split('？')[0])) {
+                    return value;
+                }
+            }
+            return `感谢您的提问！关于"${question}"，建议您：
+
+• 定期体检检测血糖
+• 发现异常及时就医
+• 遵医嘱用药，定期复查
+
+我目前正在使用**本地知识库**模式回答，您可以尝试点击右侧的快速问题获取更准确的信息。`;
+        }
+
+        // 发送消息主函数
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+            input.style.height = 'auto';
+
+            showTypingIndicator();
+
+            try {
+                let response;
+                if (USE_REAL_AI) {
+                    response = await callDeepSeekAPI(message);
+                } else {
+                    await new Promise(r => setTimeout(r, 800));
+                    response = findFallbackResponse(message);
+                }
+                hideTypingIndicator();
+                addMessage(formatAIResponse(response), 'ai');
+            } catch (error) {
+                console.error('AI API错误:', error);
+                hideTypingIndicator();
+                // API失败时回退到本地知识库
+                const fallback = findFallbackResponse(message);
+                addMessage(`⚠️ 当前使用本地知识库回答：\n\n${fallback}`, 'ai');
+            }
+        }
+
+        // 格式化AI响应（Markdown转HTML）
+        function formatAIResponse(text) {
+            return text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>')
+                .replace(/【(.+?)】/g, '<span style="color: var(--tk-accent-dark); font-weight: 700;">【$1】</span>')
+                .replace(/^(#{1,3})\s*(.+)$/gm, '<strong style="font-size:1.05em;">$2</strong>');
+        }
+
+        function addMessage(content, type) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const avatarIcon = type === 'ai' ? 'fa-robot' : 'fa-user';
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas ${avatarIcon}"></i>
+                </div>
+                <div class="message-content">${content}</div>
+            `;
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const indicator = document.createElement('div');
+            indicator.id = 'typingIndicator';
+            indicator.className = 'message ai';
+            indicator.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            messagesDiv.appendChild(indicator);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function askQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        // 添加清空对话功能
+        function clearChat() {
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.innerHTML = '';
+            chatHistory = [chatHistory[0]]; // 保留系统提示
+            addMessage('对话已重置，请问您有什么健康问题想咨询？', 'ai');
+        }
+
+        // 支持通过 URL 参数预填问题并自动提问
+        (async function initFromURL() {
+            try {
+                // 先加载健康档案，确保 system prompt 已注入档案信息
+                await loadHealthProfile();
+
+                const params = new URLSearchParams(window.location.search);
+                const question = params.get('q');
+                if (question && question.trim()) {
+                    // 页面加载完成后延迟一点再提问，确保 UI 已渲染
+                    setTimeout(function() {
+                        askQuestion(decodeURIComponent(question));
+                    }, 300);
+                }
+            } catch (e) {
+                console.error('[AI助手] URL参数解析失败:', e);
+            }
+        })();
+    </script>
+
+</body>
+</html>

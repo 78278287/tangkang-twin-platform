@@ -1,0 +1,1417 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>糖康孪生平台 - 您的数字健康管家</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+		<meta name="description" content="基于大数据和人工智能的糖尿病健康管理平台，提供智能风险预测、AI健康助手、专家论坛和数据可视化服务。" />
+		<meta name="keywords" content="糖尿病,健康管理,AI助手,大数据,数字孪生,风险预测" />
+		<meta name="theme-color" content="#2A64B5" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="apple-mobile-web-app-title" content="糖康孪生" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="application-name" content="糖康孪生" />
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="apple-touch-icon" href="images/logo.jpg" />
+		<link rel="apple-touch-icon" sizes="192x192" href="images/logo.jpg" />
+		<link rel="apple-touch-icon" sizes="512x512" href="images/logo.jpg" />
+		<link rel="icon" sizes="192x192" href="images/logo.jpg" />
+		<link rel="icon" sizes="512x512" href="images/logo.jpg" />
+		<link rel="manifest" href="manifest.json" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+		<link rel="stylesheet" href="tk-design-system.css">
+		<link rel="stylesheet" href="tk-floating-menu.css">
+		
+		<style>
+			:root {
+				--primary: #1d4ed8 !important;     
+				--primary-light: #eff6ff !important;
+				--accent: #10b981 !important;
+				--text-main: #0f172a !important;
+				--text-sub: #64748b !important;
+				--bg-page: #f8fafc !important;
+			}
+			
+			body { background-color: var(--bg-page) !important; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif !important; }
+			body:before { display: none !important; }
+			
+
+			.tk-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+			@keyframes tk-float {
+				0%, 100% { transform: translateY(0px); }
+				50% { transform: translateY(-20px); }
+			}
+			@keyframes tk-float-slow {
+				0%, 100% { transform: translateY(0px) rotate(0deg); }
+				50% { transform: translateY(-30px) rotate(5deg); }
+			}
+			@keyframes tk-pulse-glow {
+				0%, 100% { opacity: 0.4; transform: scale(1); }
+				50% { opacity: 0.8; transform: scale(1.1); }
+			}
+			@keyframes tk-slide-up {
+				from { opacity: 0; transform: translateY(40px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+			@keyframes tk-shimmer {
+				0% { background-position: -200% 0; }
+				100% { background-position: 200% 0; }
+			}
+			@keyframes tk-bounce-in {
+				0% { opacity: 0; transform: scale(0.3); }
+				50% { transform: scale(1.05); }
+				70% { transform: scale(0.9); }
+				100% { opacity: 1; transform: scale(1); }
+			}
+			@keyframes tk-gradient-shift {
+				0%, 100% { background-position: 0% 50%; }
+				50% { background-position: 100% 50%; }
+			}
+
+			.tk-animate-on-scroll {
+				opacity: 0;
+				transform: translateY(40px);
+				transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+			}
+			.tk-animate-on-scroll.tk-visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			/* 1. 首屏 Hero Section */
+			.tk-hero {
+				background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 30%, #f0fdf4 70%, #f8fafc 100%);
+				background-size: 400% 400%;
+				animation: tk-gradient-shift 15s ease infinite;
+				padding: 7rem 0 5rem 0;
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			.tk-hero::before {
+				content: '';
+				position: absolute;
+				top: -50%;
+				left: -20%;
+				width: 600px;
+				height: 600px;
+				background: radial-gradient(circle, rgba(29, 78, 216, 0.08) 0%, transparent 70%);
+				border-radius: 50%;
+				animation: tk-pulse-glow 6s ease-in-out infinite;
+			}
+			.tk-hero::after {
+				content: '';
+				position: absolute;
+				bottom: -30%;
+				right: -10%;
+				width: 500px;
+				height: 500px;
+				background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+				border-radius: 50%;
+				animation: tk-pulse-glow 8s ease-in-out infinite 2s;
+			}
+			.tk-hero-decorations {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				pointer-events: none;
+				overflow: hidden;
+			}
+			.tk-hero-circle {
+				position: absolute;
+				border-radius: 50%;
+				border: 2px solid rgba(29, 78, 216, 0.1);
+			}
+			.tk-hero-circle-1 {
+				width: 300px;
+				height: 300px;
+				top: 10%;
+				left: 5%;
+				animation: tk-float 8s ease-in-out infinite;
+			}
+			.tk-hero-circle-2 {
+				width: 200px;
+				height: 200px;
+				bottom: 20%;
+				right: 10%;
+				animation: tk-float-slow 10s ease-in-out infinite 1s;
+			}
+			.tk-hero-dots {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				background-image: radial-gradient(circle, rgba(29, 78, 216, 0.15) 2px, transparent 2px);
+				background-size: 20px 20px;
+			}
+			.tk-hero-dots-1 {
+				top: 15%;
+				right: 15%;
+				animation: tk-float 7s ease-in-out infinite;
+			}
+			.tk-hero-dots-2 {
+				bottom: 25%;
+				left: 8%;
+				animation: tk-float-slow 9s ease-in-out infinite 0.5s;
+			}
+			.tk-hero-content {
+				position: relative;
+				z-index: 2;
+				animation: tk-slide-up 1s ease-out;
+			}
+			.tk-hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				background: linear-gradient(135deg, rgba(29, 78, 216, 0.1), rgba(59, 130, 246, 0.15));
+				color: var(--primary);
+				padding: 0.6rem 1.5rem;
+				border-radius: 50px;
+				font-weight: 600;
+				font-size: 0.9rem;
+				margin-bottom: 1.8rem;
+				border: 1px solid rgba(29, 78, 216, 0.2);
+				backdrop-filter: blur(10px);
+				animation: tk-bounce-in 0.8s ease-out 0.2s both;
+			}
+			.tk-hero-badge i {
+				animation: tk-pulse-glow 2s ease-in-out infinite;
+			}
+			.tk-hero h1 { 
+				font-size: 3.8rem !important; 
+				color: var(--text-main) !important; 
+				font-weight: 800 !important; 
+				margin-bottom: 1.5rem !important; 
+				letter-spacing: -1.5px;
+				line-height: 1.15 !important;
+				animation: tk-slide-up 1s ease-out 0.3s both;
+			}
+			.tk-hero h1 .gradient-text {
+				background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #10b981 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				background-size: 200% auto;
+				animation: tk-shimmer 3s linear infinite;
+			}
+			.tk-hero p { 
+				font-size: 1.25rem !important; 
+				color: var(--text-sub) !important; 
+				max-width: 700px; 
+				margin: 0 auto 3rem auto !important; 
+				line-height: 1.7 !important;
+				animation: tk-slide-up 1s ease-out 0.5s both;
+			}
+			
+			.tk-btn {
+				display: inline-flex; align-items: center; justify-content: center;
+				padding: 0.9rem 2.2rem; border-radius: 12px; font-weight: 600; text-decoration: none;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 1.1rem; border: none; cursor: pointer;
+				position: relative;
+				overflow: hidden;
+			}
+			.tk-btn::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+				transition: left 0.5s;
+			}
+			.tk-btn:hover::before {
+				left: 100%;
+			}
+			.tk-btn-primary { 
+				background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); 
+				color: white !important; 
+				box-shadow: 0 8px 24px rgba(29, 78, 216, 0.35); 
+				animation: tk-slide-up 1s ease-out 0.7s both;
+			}
+			.tk-btn-primary:hover { 
+				transform: translateY(-3px); 
+				box-shadow: 0 12px 32px rgba(29, 78, 216, 0.45); 
+			}
+			.tk-btn-outline { 
+				background: rgba(255,255,255,0.9); 
+				color: var(--primary) !important; 
+				border: 2px solid var(--primary); 
+				margin-left: 1rem;
+				backdrop-filter: blur(10px);
+			}
+			.tk-btn-outline:hover { 
+				background: var(--primary-light); 
+				transform: translateY(-3px);
+				box-shadow: 0 8px 20px rgba(29, 78, 216, 0.2);
+			}
+
+			/* 2. 数据信任条 */
+			.tk-stats {
+				background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+				border-radius: 24px;
+				box-shadow: 0 20px 50px rgba(0,0,0,0.08), 0 0 0 1px rgba(29, 78, 216, 0.05);
+				display: flex; justify-content: space-around;
+				padding: 3rem 2.5rem; 
+				margin-top: -2.5rem; 
+				position: relative; 
+				z-index: 10;
+				border: 1px solid rgba(226, 232, 240, 0.8);
+			}
+			.tk-stats::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 3px;
+				background: linear-gradient(90deg, #1d4ed8, #10b981, #1d4ed8);
+				border-radius: 24px 24px 0 0;
+				background-size: 200% 100%;
+				animation: tk-shimmer 3s linear infinite;
+			}
+			.tk-stat-item { 
+				text-align: center; 
+				position: relative;
+				transition: transform 0.3s ease;
+			}
+			.tk-stat-item:hover {
+				transform: translateY(-5px);
+			}
+			.tk-stat-item:not(:last-child)::after {
+				content: '';
+				position: absolute;
+				right: 0;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 1px;
+				height: 60%;
+				background: linear-gradient(180deg, transparent, #e2e8f0, transparent);
+			}
+			.tk-stat-icon {
+				width: 56px;
+				height: 56px;
+				margin: 0 auto 1rem auto;
+				border-radius: 16px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.6rem;
+				background: linear-gradient(135deg, var(--primary-light), rgba(59, 130, 246, 0.15));
+				color: var(--primary);
+				transition: all 0.3s ease;
+			}
+			.tk-stat-item:hover .tk-stat-icon {
+				transform: scale(1.1) rotate(-5deg);
+				box-shadow: 0 8px 20px rgba(29, 78, 216, 0.2);
+			}
+			.tk-stat-item h3 { 
+				font-size: 2.8rem !important; 
+				color: var(--primary) !important; 
+				margin: 0 0 0.5rem 0 !important; 
+				font-weight: 800 !important; 
+				letter-spacing: -1px;
+				background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.tk-stat-item p { 
+				margin: 0 !important; 
+				color: var(--text-sub) !important; 
+				font-weight: 500 !important; 
+				font-size: 0.95rem !important;
+			}
+
+			/* 3. 核心功能矩阵 */
+			.tk-section { padding: 6rem 0; position: relative; }
+			.tk-section-head { text-align: center; margin-bottom: 4rem; position: relative; }
+			.tk-section-head h2 { 
+				font-size: 2.5rem !important; 
+				color: var(--text-main) !important; 
+				margin-bottom: 1rem !important; 
+				font-weight: 800 !important;
+				letter-spacing: -0.5px;
+			}
+			.tk-section-head h2 .gradient-text {
+				background: linear-gradient(135deg, #1d4ed8 0%, #10b981 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.tk-section-head p { 
+				color: var(--text-sub) !important; 
+				font-size: 1.15rem !important; 
+				max-width: 600px;
+				margin: 0 auto;
+			}
+			.tk-section-head::after {
+				content: '';
+				display: block;
+				width: 60px;
+				height: 4px;
+				background: linear-gradient(90deg, #1d4ed8, #10b981);
+				margin: 1.5rem auto 0;
+				border-radius: 2px;
+			}
+			
+			.tk-grid-3 { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 2rem !important; }
+			.tk-grid-2 { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 2rem !important; }
+			@media (max-width: 768px) { .tk-grid-2 { grid-template-columns: 1fr !important; } }
+			
+			.tk-feature-card {
+				background: white; 
+				padding: 2.5rem; 
+				border-radius: 24px;
+				border: 1px solid #e2e8f0; 
+				transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+				position: relative; 
+				overflow: hidden;
+				text-decoration: none !important;
+				color: inherit;
+				display: block;
+			}
+			.tk-feature-card::before {
+				content: '';
+				position: absolute;
+				top: 0; left: 0; right: 0;
+				height: 4px;
+				background: linear-gradient(90deg, var(--primary), #10b981);
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 0.4s ease;
+			}
+			.tk-feature-card::after {
+				content: '';
+				position: absolute;
+				top: -50%;
+				right: -50%;
+				width: 200px;
+				height: 200px;
+				background: radial-gradient(circle, rgba(29, 78, 216, 0.05) 0%, transparent 70%);
+				border-radius: 50%;
+				transition: all 0.5s ease;
+				opacity: 0;
+			}
+			.tk-feature-card:hover {
+				transform: translateY(-10px);
+				box-shadow: 0 25px 50px rgba(29, 78, 216, 0.15);
+				border-color: transparent;
+			}
+			.tk-feature-card:hover::before { transform: scaleX(1); }
+			.tk-feature-card:hover::after { opacity: 1; top: -20%; right: -20%; }
+			.tk-feature-icon {
+				width: 72px; height: 72px;
+				background: linear-gradient(135deg, var(--primary-light), rgba(59, 130, 246, 0.2));
+				color: var(--primary);
+				border-radius: 20px; display: flex; align-items: center; justify-content: center;
+				font-size: 2rem; margin-bottom: 1.5rem;
+				transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+				position: relative;
+				z-index: 1;
+			}
+			.tk-feature-card:hover .tk-feature-icon {
+				transform: scale(1.15) rotate(-8deg);
+				box-shadow: 0 12px 30px rgba(29, 78, 216, 0.25);
+			}
+			.tk-feature-card h3 { 
+				font-size: 1.5rem !important; 
+				margin-bottom: 0.8rem !important; 
+				color: var(--text-main) !important; 
+				font-weight: 700 !important; 
+				position: relative;
+				z-index: 1;
+			}
+			.tk-feature-card p { 
+				color: var(--text-sub) !important; 
+				line-height: 1.8 !important; 
+				margin: 0 !important; 
+				font-size: 1rem !important; 
+				position: relative;
+				z-index: 1;
+			}
+			.tk-feature-arrow {
+				margin-top: 1.5rem;
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				color: var(--primary);
+				font-weight: 600;
+				font-size: 0.95rem;
+				transition: all 0.3s ease;
+				position: relative;
+				z-index: 1;
+			}
+			.tk-feature-card:hover .tk-feature-arrow {
+				gap: 12px;
+			}
+
+			/* 4. 知识枢纽 (非对称左右排版) */
+			.tk-knowledge-hub {
+				display: grid; 
+				grid-template-columns: 1fr 1fr; 
+				gap: 3rem;
+				background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+				padding: 3rem; 
+				border-radius: 28px;
+				box-shadow: 0 15px 50px rgba(0,0,0,0.06);
+				border: 1px solid #e2e8f0;
+				transition: all 0.4s ease;
+			}
+			.tk-knowledge-hub:hover {
+				box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+				transform: translateY(-3px);
+			}
+			/* 左侧：文章列表 */
+			.tk-article-list { display: flex; flex-direction: column; gap: 1.5rem; }
+			.tk-article-item {
+				display: flex; gap: 1.5rem; align-items: center;
+				padding: 1.2rem; 
+				border-radius: 16px;
+				text-decoration: none; 
+				transition: all 0.3s ease;
+				background: white;
+				border: 1px solid #f1f5f9;
+			}
+			.tk-article-item:last-child { border-bottom: none; padding-bottom: 1.2rem; }
+			.tk-article-item:hover { 
+				background: #f8fafc; 
+				transform: translateX(8px);
+				box-shadow: 0 8px 25px rgba(29, 78, 216, 0.1);
+				border-color: #e0e7ff;
+			}
+			.tk-article-item:hover h4 { color: var(--primary) !important; }
+			.tk-article-img { 
+				width: 130px; 
+				height: 90px; 
+				border-radius: 12px; 
+				object-fit: cover; 
+				flex-shrink: 0; 
+				transition: all 0.3s ease;
+			}
+			.tk-article-item:hover .tk-article-img {
+				transform: scale(1.05);
+				box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+			}
+			.tk-article-info h4 { 
+				margin: 0 0 0.5rem 0 !important; 
+				font-size: 1.15rem !important; 
+				color: var(--text-main) !important; 
+				transition: color 0.2s; 
+				line-height: 1.4 !important;
+				font-weight: 700 !important;
+			}
+			.tk-article-info p { 
+				margin: 0 !important; 
+				color: var(--text-sub) !important; 
+				font-size: 0.9rem !important; 
+				display: -webkit-box; 
+				-webkit-line-clamp: 2; 
+				-webkit-box-orient: vertical; 
+				overflow: hidden; 
+				line-height: 1.6 !important;
+			}
+			.tk-article-meta {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				margin-top: 0.5rem;
+				font-size: 0.8rem;
+				color: #94a3b8;
+			}
+			.tk-article-meta span {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+			}
+			
+			/* 右侧：精选视频 */
+			.tk-video-highlight { 
+				background: #f8fafc; 
+				border-radius: 20px; 
+				overflow: hidden; 
+				border: 1px solid #e2e8f0;
+				transition: all 0.4s ease;
+			}
+			.tk-video-highlight:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+			}
+			.tk-video-highlight video { width: 100%; height: 280px; object-fit: cover; display: block; }
+			.tk-video-info { padding: 1.8rem; }
+			.tk-video-info .tag { 
+				background: linear-gradient(135deg, #fee2e2, #fecaca); 
+				color: #dc2626; 
+				font-size: 0.8rem; 
+				padding: 0.3rem 0.8rem; 
+				border-radius: 20px; 
+				font-weight: 700; 
+				margin-bottom: 1rem; 
+				display: inline-flex;
+				align-items: center;
+				gap: 5px;
+			}
+			.tk-video-info h3 { 
+				margin: 0 0 1rem 0 !important; 
+				font-size: 1.4rem !important; 
+				color: var(--text-main) !important; 
+				font-weight: 700 !important;
+			}
+			.tk-video-info p { 
+				margin: 0 !important; 
+				color: var(--text-sub) !important; 
+				line-height: 1.7 !important; 
+				font-size: 0.95rem !important;
+			}
+
+			/* 核心系统突出卡片样式 */
+			.tk-system-card {
+				display: flex !important;
+				align-items: center !important;
+				gap: 2rem !important;
+				padding: 3rem !important;
+				background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+				border-radius: 28px !important;
+				box-shadow: 0 15px 50px rgba(42, 100, 181, 0.12) !important;
+				transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+				border: 2px solid transparent !important;
+				position: relative !important;
+				overflow: hidden !important;
+				text-decoration: none !important;
+				color: inherit !important;
+			}
+			.tk-system-card::before {
+				content: '';
+				position: absolute;
+				top: -50%;
+				right: -20%;
+				width: 250px;
+				height: 250px;
+				background: radial-gradient(circle, rgba(42, 100, 181, 0.08) 0%, transparent 70%);
+				border-radius: 50%;
+				transition: all 0.6s ease;
+			}
+			.tk-system-card::after {
+				content: '';
+				position: absolute;
+				bottom: -30%;
+				left: -10%;
+				width: 180px;
+				height: 180px;
+				background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+				border-radius: 50%;
+				transition: all 0.6s ease 0.1s;
+			}
+			.tk-system-card:hover {
+				transform: translateY(-12px) scale(1.02) !important;
+				box-shadow: 0 30px 80px rgba(42, 100, 181, 0.25) !important;
+				border-color: var(--primary) !important;
+			}
+			.tk-system-card:hover::before {
+				transform: scale(1.5);
+				right: -10%;
+				top: -30%;
+			}
+			.tk-system-card:hover::after {
+				transform: scale(1.3);
+				left: -5%;
+				bottom: -20%;
+			}
+			.tk-system-icon {
+				width: 100px !important;
+				height: 100px !important;
+				background: linear-gradient(135deg, var(--primary), #1e40af) !important;
+				border-radius: 28px !important;
+				display: flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				font-size: 3rem !important;
+				color: white !important;
+				flex-shrink: 0 !important;
+				box-shadow: 0 12px 35px rgba(29, 78, 216, 0.35) !important;
+				position: relative !important;
+				z-index: 1 !important;
+				transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+			}
+			.tk-system-icon::before {
+				content: '';
+				position: absolute;
+				inset: -3px;
+				border-radius: 30px;
+				background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+				opacity: 0;
+				transition: opacity 0.3s ease;
+			}
+			.tk-system-card:hover .tk-system-icon {
+				transform: scale(1.1) rotate(-8deg) !important;
+				box-shadow: 0 20px 50px rgba(29, 78, 216, 0.45) !important;
+			}
+			.tk-system-card:hover .tk-system-icon::before {
+				opacity: 1;
+			}
+			.tk-system-content {
+				position: relative !important;
+				z-index: 1 !important;
+				flex: 1 !important;
+			}
+			.tk-system-content h3 {
+				font-size: 1.8rem !important;
+				font-weight: 800 !important;
+				color: var(--text-main) !important;
+				margin: 0 0 1rem 0 !important;
+			}
+			.tk-system-content p {
+				color: var(--text-sub) !important;
+				line-height: 1.8 !important;
+				margin: 0 0 1.5rem 0 !important;
+				font-size: 1rem !important;
+			}
+			.tk-system-tag {
+				display: inline-flex !important;
+				align-items: center !important;
+				background: linear-gradient(135deg, rgba(42, 100, 181, 0.1), rgba(59, 130, 246, 0.15)) !important;
+				color: var(--primary) !important;
+				padding: 0.6rem 1.4rem !important;
+				border-radius: 28px !important;
+				font-size: 0.9rem !important;
+				font-weight: 700 !important;
+				border: 1px solid rgba(42, 100, 181, 0.2) !important;
+				transition: all 0.3s ease !important;
+			}
+			.tk-system-tag i { margin-right: 8px !important; }
+			.tk-system-card:hover .tk-system-tag {
+				transform: translateX(5px);
+				background: linear-gradient(135deg, rgba(42, 100, 181, 0.15), rgba(59, 130, 246, 0.2)) !important;
+			}
+
+			@media (max-width: 900px) {
+				.tk-hero h1 { font-size: 2.5rem !important; }
+				.tk-stats { flex-direction: column; gap: 2rem; }
+				.tk-knowledge-hub { grid-template-columns: 1fr; }
+				.tk-btn-outline { margin-left: 0; margin-top: 1rem; display: flex; }
+				.tk-system-card { flex-direction: column !important; text-align: center; gap: 1.5rem !important; }
+				.tk-system-content h3 { font-size: 1.3rem !important; }
+			}
+
+            /* 弹窗样式保留 */
+            .modal-overlay {
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+                z-index: 10000; display: flex; justify-content: center; align-items: center;
+                opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            }
+            .modal-overlay.active { opacity: 1; visibility: visible; }
+            
+            .modal-content {
+                background: white; width: 90%; max-width: 460px; border-radius: 24px;
+                padding: 40px 32px; text-align: center; position: relative;
+                box-shadow: 0 25px 50px rgba(15, 23, 42, 0.2);
+                transform: scale(0.95) translateY(20px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            }
+            .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+            .modal-close {
+                position: absolute; top: 16px; right: 20px; background: transparent; border: none;
+                font-size: 28px; color: #94a3b8; cursor: pointer; transition: color 0.2s;
+            }
+            .modal-close:hover { color: var(--text-main); }
+
+            .modal-icon {
+                width: 72px; height: 72px; background: var(--primary-light); color: var(--primary);
+                border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px auto;
+            }
+            .modal-title { color: var(--text-main); font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+            .modal-desc { color: var(--text-sub); font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
+
+            .modal-actions { display: flex; flex-direction: column; gap: 12px; }
+            .modal-actions button { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+            /* 主按钮 (是) */
+            .modal-btn-primary { 
+                background: var(--primary) !important; 
+                color: white !important; 
+                border: none !important; 
+                box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2) !important; 
+            }
+            .modal-btn-primary:hover { 
+                background: #1e40af !important; 
+                transform: translateY(-2px); 
+            }
+            
+            /* 次按钮 (否) - 强制蓝字白底，抵抗旧模板干扰 */
+            .modal-btn-outline { 
+                background: white !important; 
+                color: var(--primary) !important; 
+                border: 1px solid var(--primary) !important; 
+            }
+            .modal-btn-outline:hover { 
+                background: var(--primary-light) !important; 
+            }
+		</style>
+	</head>
+	
+	<body>
+		<div id="tk-header-placeholder"></div>
+
+		<section class="tk-hero">
+			<div class="tk-hero-decorations">
+				<div class="tk-hero-circle tk-hero-circle-1"></div>
+				<div class="tk-hero-circle tk-hero-circle-2"></div>
+				<div class="tk-hero-dots tk-hero-dots-1"></div>
+				<div class="tk-hero-dots tk-hero-dots-2"></div>
+			</div>
+			<div class="tk-container tk-hero-content">
+				<span class="tk-hero-badge"><i class="fas fa-sparkles"></i> AI 驱动的健康新范式 · 数字孪生技术</span>
+				<h1>构建您的专属<span class="gradient-text">数字健康分身</span></h1>
+				<p>依托海量临床数据与先进机器学习算法，提前 5 年预判糖尿病风险。为您定制全生命周期的精准干预与控糖方案。</p>
+				<div>
+					<a href="dati1.html" class="tk-btn tk-btn-primary"><i class="fas fa-brain" style="margin-right: 8px;"></i> 免费风险评估</a>
+					<a href="feature_center.html" class="tk-btn tk-btn-outline"><i class="fas fa-th-large" style="margin-right: 8px;"></i> 进入功能中心</a>
+					<a href="ai_assistant.html" class="tk-btn tk-btn-outline" style="margin-left: 1rem; border-color: #10b981; color: #10b981 !important;"><i class="fas fa-robot" style="margin-right: 8px;"></i> AI 健康助手</a>
+				</div>
+			</div>
+		</section>
+
+		<div class="tk-container">
+			<div class="tk-stats">
+				<div class="tk-stat-item">
+					<div class="tk-stat-icon"><i class="fas fa-chart-line"></i></div>
+					<h3>85<span style="font-size: 1.5rem;">%+</span></h3>
+					<p>核心预测准确率</p>
+				</div>
+				<div class="tk-stat-item">
+					<div class="tk-stat-icon"><i class="fas fa-dna"></i></div>
+					<h3>12<span style="font-size: 1.5rem;">w+</span></h3>
+					<p>孪生模型运行</p>
+				</div>
+				<div class="tk-stat-item">
+					<div class="tk-stat-icon"><i class="fas fa-clock"></i></div>
+					<h3>24<span style="font-size: 1.5rem;">/7</span></h3>
+					<p>全天候健康守望</p>
+				</div>
+				<div class="tk-stat-item">
+					<div class="tk-stat-icon"><i class="fas fa-puzzle-piece"></i></div>
+					<h3>20<span style="font-size: 1.5rem;">+</span></h3>
+					<p>功能模块</p>
+				</div>
+				<div class="tk-stat-item">
+					<div class="tk-stat-icon"><i class="fas fa-globe-asia"></i></div>
+					<h3>5<span style="font-size: 1.5rem;">种</span></h3>
+					<p>多语言支持</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- 两大核心系统突出展示 -->
+		<section class="tk-section tk-container" style="padding-top: 3rem;">
+			<div class="tk-section-head">
+				<h2>平台<span class="gradient-text">核心系统</span></h2>
+				<p>两大系统协同发力，全方位守护您的健康</p>
+			</div>
+			<div class="tk-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 2rem !important; max-width: 1100px; margin: 0 auto;">
+				<a href="cx1.html" class="tk-system-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-system-icon"><i class="fas fa-chart-line"></i></div>
+					<div class="tk-system-content">
+						<h3>糖尿病风险预测系统</h3>
+						<p>基于机器学习模型，综合年龄、症状、生活习惯等多维度指标，快速精准评估糖尿病患病风险等级。</p>
+						<span class="tk-system-tag"><i class="fas fa-bullseye"></i> 精准预测</span>
+					</div>
+				</a>
+				<a href="dati1.html" class="tk-system-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-system-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-brain"></i></div>
+					<div class="tk-system-content">
+						<h3>AI风险健康管理系统</h3>
+						<p>基于 XGBoost + 神经网络融合模型，结合数字孪生技术，提前 5 年预判糖尿病风险，提供个性化干预方案。</p>
+						<span class="tk-system-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981;"><i class="fas fa-star"></i> AI 核心引擎</span>
+					</div>
+				</a>
+			</div>
+		</section>
+
+		<!-- 四大核心功能 -->
+		<section class="tk-section tk-container">
+			<div class="tk-section-head">
+				<h2>平台<span class="gradient-text">核心功能</span></h2>
+				<p>AI 健康管理 · 数据管理 · 全球分析 · 专家社区</p>
+			</div>
+			<div class="tk-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 2rem !important; max-width: 1000px; margin: 0 auto;">
+				<a href="dati1.html" class="tk-feature-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-feature-icon"><i class="fas fa-brain"></i></div>
+					<h3>AI风险健康管理</h3>
+					<p>基于 XGBoost + 神经网络融合模型，结合数字孪生技术，提前预判糖尿病风险。</p>
+					<span class="tk-feature-arrow">了解详情 <i class="fas fa-arrow-right"></i></span>
+				</a>
+				<a href="feature_center.html" class="tk-feature-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-feature-icon" style="background:#dcfce7; color:#10b981;"><i class="fas fa-th-large"></i></div>
+					<h3>健康数据管理</h3>
+					<p>血压心率、用药提醒、家庭档案全方位记录，智能分析健康趋势。</p>
+					<span class="tk-feature-arrow" style="color: #10b981;">了解详情 <i class="fas fa-arrow-right"></i></span>
+				</a>
+				<a href="fenxi.html" class="tk-feature-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-feature-icon" style="background:#cffafe; color:#0e7490;"><i class="fas fa-globe-asia"></i></div>
+					<h3>全球数据分析</h3>
+					<p>全球糖尿病发病率热力图、趋势分析，直观展示海量健康数据。</p>
+					<span class="tk-feature-arrow" style="color: #0e7490;">了解详情 <i class="fas fa-arrow-right"></i></span>
+				</a>
+				<a href="luntan.html" class="tk-feature-card" style="text-decoration: none; color: inherit;">
+					<div class="tk-feature-icon" style="background:#fef3c7; color:#b45309;"><i class="fas fa-users"></i></div>
+					<h3>专家社区</h3>
+					<p>糖友交流分享，医生在线答疑，经验分享与一对一咨询平台。</p>
+					<span class="tk-feature-arrow" style="color: #b45309;">了解详情 <i class="fas fa-arrow-right"></i></span>
+				</a>
+			</div>
+		</section>
+
+		<!-- 健康科普 -->
+		<section class="tk-section" style="background: #f1f5f9; margin-bottom: -5em; padding-bottom: 10em;">
+			<div class="tk-container">
+				<div class="tk-section-head">
+					<h2>糖康<span class="gradient-text">前沿资讯库</span></h2>
+					<p>了解糖尿病的真相，掌握科学防糖武器</p>
+				</div>
+				
+				<div class="tk-knowledge-hub">
+					<div class="tk-article-list">
+						<a href="kepu.html" class="tk-article-item">
+							<img src="images/AdobeStock_62404725-768x512.avif" alt="什么是糖尿病" class="tk-article-img">
+							<div class="tk-article-info">
+								<h4>什么是真正的糖尿病？</h4>
+								<p>当人体无法有效利用胰岛素时，血糖便会失控。深入了解发病机制是预防的第一步。</p>
+							</div>
+						</a>
+						<a href="kepu2.html" class="tk-article-item">
+							<img src="images/OIP-C.jfif" alt="糖尿病现状" class="tk-article-img">
+							<div class="tk-article-info">
+								<h4>全球糖尿病爆发式增长背后的原因</h4>
+								<p>自1980年以来，患者人数几乎翻了两番。现代饮食与久坐习惯正在加剧这场健康危机。</p>
+							</div>
+						</a>
+						<a href="kepu3.html" class="tk-article-item">
+							<img src="images/640 (1).webp" alt="如何预防糖尿病" class="tk-article-img">
+							<div class="tk-article-info">
+								<h4>如何从生活细节中预防糖尿病？</h4>
+								<p>除了控制碳水摄入，良好的心态和充足的睡眠同样能够改善胰岛素抵抗现象。</p>
+							</div>
+						</a>
+					</div>
+
+					<div class="tk-video-highlight">
+						<video src="images/8e3f0728f218b4761f4f29415280cdbc.mp4" controls></video>
+						<div class="tk-video-info">
+							<span class="tag">深度解析</span>
+							<h3>糖尿病：潜伏在体内的“定时炸弹”</h3>
+							<p>高血糖的隐匿性极强。本期视频将通过3D人体建模，直观展示长期高血糖是如何悄无声息地损害血管、肾脏并导致严重并发症的。</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<style>
+    /* ========================================= */
+    /* 快速功能入口板块 - 高级美化版 */
+    /* ========================================= */
+    .tk-quick-access {
+        background: linear-gradient(180deg, #ffffff 0%, #eff6ff 50%, #f0fdf4 100%);
+        padding: 6rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .tk-quick-access::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #1d4ed8, #10b981, transparent);
+    }
+    .tk-quick-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.2rem;
+    }
+    .tk-quick-item {
+        background: white;
+        border-radius: 18px;
+        padding: 1.8rem 1rem;
+        text-align: center;
+        text-decoration: none !important;
+        color: #1e293b !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .tk-quick-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #1d4ed8, #10b981);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+    .tk-quick-item::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(29, 78, 216, 0.06) 0%, transparent 70%);
+        border-radius: 50%;
+        transition: all 0.5s ease;
+        opacity: 0;
+    }
+    .tk-quick-item:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(29, 78, 216, 0.15);
+        border-color: transparent;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    }
+    .tk-quick-item:hover::before { transform: scaleX(1); }
+    .tk-quick-item:hover::after { opacity: 1; top: -20%; right: -20%; }
+    .tk-quick-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 1;
+    }
+    .tk-quick-item:hover .tk-quick-icon {
+        transform: scale(1.15) rotate(-8deg);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .tk-quick-item .title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.3;
+        position: relative;
+        z-index: 1;
+    }
+    .tk-quick-item .subtitle {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        line-height: 1.3;
+        position: relative;
+        z-index: 1;
+        transition: color 0.3s ease;
+    }
+    .tk-quick-item:hover .subtitle {
+        color: #64748b;
+    }
+    /* 分类标题 */
+    .tk-quick-category {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+        position: relative;
+    }
+    .tk-quick-category::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, #1d4ed8, #10b981);
+    }
+    .tk-quick-category h3 {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #1e293b;
+        font-size: 1.3rem;
+        margin: 0;
+        font-weight: 800;
+    }
+    .tk-quick-category h3 i {
+        color: white;
+        background: linear-gradient(135deg, #1d4ed8, #10b981);
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    @media (max-width: 900px) {
+        .tk-quick-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+        .tk-quick-item { padding: 1.2rem 0.6rem; }
+    }
+		</style>
+
+		<section class="tk-quick-access">
+			<div class="tk-container">
+				<div class="tk-section-head">
+					<h2>20+ 功能一触即达</h2>
+					<p>从预测到管理，从数据到社区，一站式健康管理平台</p>
+				</div>
+
+				<div class="tk-quick-category"><h3><i class="fas fa-robot"></i> AI 健康管理</h3></div>
+				<div class="tk-quick-grid" style="margin-bottom: 3rem;">
+					<a href="dati1.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#1d4ed8;"><i class="fas fa-brain"></i></div>
+						<div class="title">AI风险健康管理</div>
+						<div class="subtitle">AI 评估糖尿病风险</div>
+					</a>
+					<a href="ai_assistant.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#7c3aed;"><i class="fas fa-robot"></i></div>
+						<div class="title">AI 助手</div>
+						<div class="subtitle">智能健康问答</div>
+					</a>
+					<a href="cx1.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#0891b2;"><i class="fas fa-search-plus"></i></div>
+						<div class="title">风险筛查</div>
+						<div class="subtitle">快速初筛检查</div>
+					</a>
+					<a href="feature_center.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#10b981;"><i class="fas fa-th-large"></i></div>
+						<div class="title">功能中心</div>
+						<div class="subtitle">所有功能总入口</div>
+					</a>
+				</div>
+
+				<div class="tk-quick-category"><h3><i class="fas fa-heartbeat"></i> 健康记录管理</h3></div>
+				<div class="tk-quick-grid" style="margin-bottom: 3rem;">
+					<a href="vital_signs.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#b91c1c;"><i class="fas fa-heartbeat"></i></div>
+						<div class="title">血压心率</div>
+						<div class="subtitle">生命体征记录</div>
+					</a>
+					<a href="health_reminders.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#ea580c;"><i class="fas fa-bell"></i></div>
+						<div class="title">用药提醒</div>
+						<div class="subtitle">定时智能提醒</div>
+					</a>
+					<a href="family_management.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#4338ca;"><i class="fas fa-users"></i></div>
+						<div class="title">家庭管理</div>
+						<div class="subtitle">多用户档案管理</div>
+					</a>
+					<a href="health_quiz.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#15803d;"><i class="fas fa-graduation-cap"></i></div>
+						<div class="title">知识测验</div>
+						<div class="subtitle">糖尿病知识挑战</div>
+					</a>
+					<a href="gerenzx.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#0284c7;"><i class="fas fa-user-circle"></i></div>
+						<div class="title">个人中心</div>
+						<div class="subtitle">个人信息与设置</div>
+					</a>
+				</div>
+
+				<div class="tk-quick-category"><h3><i class="fas fa-globe-asia"></i> 全球数据</h3></div>
+				<div class="tk-quick-grid" style="margin-bottom: 3rem;">
+					<a href="fenxi.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#1e40af;"><i class="fas fa-globe-asia"></i></div>
+						<div class="title">全球数据</div>
+						<div class="subtitle">全球糖尿病分析</div>
+					</a>
+					<a href="data_dashboard.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#0e7490;"><i class="fas fa-chart-pie"></i></div>
+						<div class="title">数据大屏</div>
+						<div class="subtitle">综合数据可视化</div>
+					</a>
+					<a href="kepu.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#0891b2;"><i class="fas fa-book-medical"></i></div>
+						<div class="title">健康科普</div>
+						<div class="subtitle">糖尿病知识科普</div>
+					</a>
+					<a href="project_report.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#7c2d12;"><i class="fas fa-file-alt"></i></div>
+						<div class="title">作品报告</div>
+						<div class="subtitle">项目介绍文档</div>
+					</a>
+				</div>
+
+				<div class="tk-quick-category"><h3><i class="fas fa-user-md"></i> 专家社区</h3></div>
+				<div class="tk-quick-grid" style="margin-bottom: 3rem;">
+					<a href="luntan.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#059669;"><i class="fas fa-shield-alt"></i></div>
+						<div class="title">预防专区</div>
+						<div class="subtitle">糖尿病预防社区</div>
+					</a>
+					<a href="luntan-wenzhang.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#0891b2;"><i class="fas fa-smile"></i></div>
+						<div class="title">低风险专区</div>
+						<div class="subtitle">早期管理交流</div>
+					</a>
+					<a href="luntan-zhuanjia.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#ca8a04;"><i class="fas fa-user-md"></i></div>
+						<div class="title">中风险专区</div>
+						<div class="subtitle">专业医生答疑</div>
+					</a>
+					<a href="luntan-ask.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#dc2626;"><i class="fas fa-exclamation-triangle"></i></div>
+						<div class="title">高风险专区</div>
+						<div class="subtitle">重点人群交流</div>
+					</a>
+					<a href="yiduiyi.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#7c3aed;"><i class="fas fa-comments"></i></div>
+						<div class="title">专家面对面</div>
+						<div class="subtitle">一对一在线咨询</div>
+					</a>
+					<a href="guanyuwm.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#475569;"><i class="fas fa-info-circle"></i></div>
+						<div class="title">关于我们</div>
+						<div class="subtitle">团队介绍</div>
+					</a>
+					<a href="zhuanjiazhuzhen.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#be185d;"><i class="fas fa-user-tie"></i></div>
+						<div class="title">专家助阵</div>
+						<div class="subtitle">权威专家顾问</div>
+					</a>
+					<a href="denglu.html" class="tk-quick-item">
+						<div class="tk-quick-icon" style="background:#2563eb;"><i class="fas fa-sign-in-alt"></i></div>
+						<div class="title">登录注册</div>
+						<div class="subtitle">用户账号管理</div>
+					</a>
+				</div>
+
+			</div>
+		</section>
+
+        <div id="triage-modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+                <div class="modal-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                
+                <h3 class="modal-title">健康筛查前置确认</h3>
+                <p class="modal-desc">为了给您提供更精准的概率预测与风险报告，请问您近期是否已在线下医疗机构进行过糖尿病相关的专业检查与确诊？</p>
+                
+                <div class="modal-actions">
+                    <button id="btn-visited" class="modal-btn-primary">是，已就医确诊</button>
+                    <button id="btn-not-visited" class="modal-btn-outline">否，仅做日常自测</button>
+                </div>
+            </div>
+        </div>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.dropotron.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				var headerPlaceholder = document.getElementById("header-placeholder");
+				var footerPlaceholder = document.getElementById("footer-placeholder");
+				var timestamp = new Date().getTime(); 
+
+				var loadTasks = [];
+
+				if (headerPlaceholder) {
+					var loadHeader = fetch("header.html?v=" + timestamp)
+						.then(function(res) { 
+							if (!res.ok) throw new Error("找不到 header.html");
+							return res.text(); 
+						})
+						.then(function(html) { 
+							headerPlaceholder.innerHTML = html; 
+						});
+					loadTasks.push(loadHeader);
+				}
+
+				if (footerPlaceholder) {
+					var loadFooter = fetch("footer.html?v=" + timestamp)
+						.then(function(res) { 
+							if (!res.ok) throw new Error("找不到 footer.html");
+							return res.text(); 
+						})
+						.then(function(html) { 
+							footerPlaceholder.innerHTML = html; 
+						});
+					loadTasks.push(loadFooter);
+				}
+
+				Promise.all(loadTasks).then(function() {
+					var script = document.createElement("script");
+					script.src = "assets/js/main.js?v=" + timestamp;
+					document.body.appendChild(script);
+				}).catch(function(err) {
+					var errorDiv = document.createElement("div");
+					errorDiv.style.cssText = "background:#ef4444; color:white; padding:20px; font-size:16px; text-align:center; z-index:9999;";
+					errorDiv.innerHTML = "<b>【加载异常】</b> " + err.message;
+					document.body.insertBefore(errorDiv, document.body.firstChild);
+				});
+
+                // ==========================================
+                // 滚动入场动画
+                // ==========================================
+                function initScrollAnimations() {
+                    var animateElements = document.querySelectorAll('.tk-stats, .tk-system-card, .tk-feature-card, .tk-knowledge-hub, .tk-quick-item, .tk-section-head');
+                    animateElements.forEach(function(el, index) {
+                        el.classList.add('tk-animate-on-scroll');
+                        el.style.transitionDelay = (index % 6) * 0.1 + 's';
+                    });
+
+                    function checkScroll() {
+                        animateElements.forEach(function(el) {
+                            var rect = el.getBoundingClientRect();
+                            var isVisible = rect.top < window.innerHeight - 100;
+                            if (isVisible) {
+                                el.classList.add('tk-visible');
+                            }
+                        });
+                    }
+
+                    window.addEventListener('scroll', checkScroll);
+                    window.addEventListener('load', checkScroll);
+                    setTimeout(checkScroll, 300);
+                }
+                initScrollAnimations();
+
+                // ==========================================
+                // 数字增长动画
+                // ==========================================
+                function animateNumbers() {
+                    var statItems = document.querySelectorAll('.tk-stat-item h3');
+                    statItems.forEach(function(item) {
+                        var text = item.textContent;
+                        var match = text.match(/(\d+)/);
+                        if (match) {
+                            var target = parseInt(match[1]);
+                            var suffix = text.replace(match[1], '');
+                            var current = 0;
+                            var increment = target / 50;
+                            var duration = 1500;
+                            var startTime = null;
+                            
+                            function updateNumber(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                var progress = Math.min((timestamp - startTime) / duration, 1);
+                                var easeProgress = 1 - Math.pow(1 - progress, 3);
+                                current = Math.floor(target * easeProgress);
+                                item.innerHTML = current + '<span style="font-size: 1.5rem;">' + suffix.replace(match[1], '') + '</span>';
+                                if (progress < 1) {
+                                    requestAnimationFrame(updateNumber);
+                                } else {
+                                    item.innerHTML = target + '<span style="font-size: 1.5rem;">' + suffix.replace(match[1], '') + '</span>';
+                                }
+                            }
+                            
+                            var observer = new IntersectionObserver(function(entries) {
+                                entries.forEach(function(entry) {
+                                    if (entry.isIntersecting) {
+                                        requestAnimationFrame(updateNumber);
+                                        observer.disconnect();
+                                    }
+                                });
+                            }, { threshold: 0.5 });
+                            
+                            observer.observe(item.closest('.tk-stat-item'));
+                        }
+                    });
+                }
+                animateNumbers();
+
+                // ==========================================
+                // 新增：弹窗交互逻辑
+                // ==========================================
+                const modalOverlay = document.getElementById('triage-modal-overlay');
+                const closeBtn = document.getElementById('modal-close-btn');
+                const btnVisited = document.getElementById('btn-visited');
+                const btnNotVisited = document.getElementById('btn-not-visited');
+                const freeTestBtn = document.getElementById('btn-free-test'); 
+                
+                // 点击“免费风险评估”触发弹窗
+                if (freeTestBtn) {
+                    freeTestBtn.addEventListener('click', function(e) {
+                        e.preventDefault(); 
+                        modalOverlay.classList.add('active');
+                    });
+                }
+                
+                // 关闭弹窗
+                closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+                });
+
+                // 路由跳转
+                btnVisited.addEventListener('click', function() {
+                    window.location.href = 'dati1.html'; // 跳转到详细数据表单页
+                });
+                
+                btnNotVisited.addEventListener('click', function() {
+                    window.location.href = 'cx1.html'; // 跳转到初筛问卷
+                });
+			});
+		</script>
+		<div id="tk-footer-placeholder"></div>
+		<div id="tk-fab-placeholder"></div>
+		<script src="tk-components.js"></script>
+		<script>
+			// ============================================
+			// PWA Service Worker 注册
+			// ============================================
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('./sw.js')
+						.then(function(registration) {
+							console.log('[PWA] Service Worker 注册成功，作用域:', registration.scope);
+
+							// 检查更新并立即激活新版本
+							registration.addEventListener('updatefound', function() {
+								console.log('[PWA] 发现新版本');
+								var installingWorker = registration.installing;
+								installingWorker.addEventListener('statechange', function() {
+									if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+										console.log('[PWA] 新版本已安装，立即激活');
+										installingWorker.postMessage('SKIP_WAITING');
+										window.location.reload();
+									}
+								});
+							});
+						})
+						.catch(function(error) {
+							console.warn('[PWA] Service Worker 注册失败:', error);
+						});
+				});
+			}
+
+			// 提示用户添加到主屏
+			let deferredPrompt;
+			window.addEventListener('beforeinstallprompt', function(e) {
+				e.preventDefault();
+				deferredPrompt = e;
+				console.log('[PWA] 可以添加到主屏幕');
+				
+				// 5秒后显示提示
+				setTimeout(function() {
+					if (deferredPrompt && confirm('欢迎使用糖康孪生！是否添加到桌面以便下次快速访问？')) {
+						deferredPrompt.prompt();
+						deferredPrompt.userChoice.then(function(choiceResult) {
+							console.log('[PWA] 用户选择:', choiceResult.outcome);
+							deferredPrompt = null;
+						});
+					}
+				}, 5000);
+			});
+
+			// 安装成功提示
+			window.addEventListener('appinstalled', function() {
+				console.log('[PWA] 已安装到主屏幕');
+			});
+		</script>
+	</body>
+</html>

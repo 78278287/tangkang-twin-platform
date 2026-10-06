@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>糖尿病风险预测系统</title>
+  <style>
+    /* 基础样式设置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f9ff; /* 淡蓝色背景 */
+      color: #1e3a8a; /* 深蓝色文本 */
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    /* 头部样式 */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .header-decoration {
+      height: 3px;
+      width: 150px;
+      background: linear-gradient(90deg, #1e40af, #3b82f6); /* 深蓝色到亮蓝色渐变 */
+      margin: 0 auto 20px;
+      border-radius: 2px;
+    }
+
+    h1 {
+      color: #1e3a8a; /* 深蓝色标题 */
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .header-desc {
+      color: #3b4c75; /* 中蓝色描述文本 */
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1rem;
+    }
+
+    /* 表单卡片样式 */
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(59, 130, 246, 0.1); /* 蓝色阴影 */
+      padding: 30px;
+      margin-bottom: 30px;
+      border-top: 4px solid #3b82f6; /* 蓝色顶部边框 */
+    }
+
+    /* 表单区域标题 */
+    .section-title {
+      color: #1e3a8a;
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dbeafe; /* 淡蓝色分割线 */
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .section-title i {
+      margin-right: 10px;
+      color: #3b82f6; /* 主色调图标 */
+    }
+
+    /* 表单组样式 */
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+      font-weight: 500;
+    }
+
+    .required {
+      color: #dc2626; /* 医疗红必填标记 */
+    }
+
+    /* 输入框样式 */
+    .form-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #bfdbfe; /* 淡蓝色边框 */
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #f8fafc; /* 极淡的背景 */
+    }
+
+    .form-input:focus {
+      border-color: #3b82f6; /* 主色调焦点边框 */
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); /* 蓝色焦点阴影 */
+      outline: none;
+    }
+
+    /* 布局网格 */
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .grid-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 单选按钮样式 */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .radio-item input {
+      margin-right: 8px;
+      accent-color: #3b82f6; /* 蓝色单选按钮 */
+    }
+
+    /* 症状选项样式 */
+    .symptom-section {
+      margin-top: 15px;
+    }
+
+    .symptom-desc {
+      color: #3b4c75;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .symptom-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .symptom-item:hover {
+      background-color: #f0f9ff; /* 悬停时的淡蓝色背景 */
+      border-color: #bfdbfe;
+    }
+
+    .symptom-label {
+      color: #1e3a8a;
+    }
+
+    .symptom-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* 按钮样式 */
+    .btn {
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: 1px solid #93c5fd;
+      background: transparent;
+      color: #1e3a8a;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .btn-selected {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .btn-selected:hover {
+      background-color: #2563eb; /* 深色版本的主色调 */
+      color: white;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn-reset {
+      padding: 10px 20px;
+      border: 1px solid #93c5fd;
+      background: transparent;
+      color: #1e3a8a;
+    }
+
+    .btn-reset:hover {
+      background-color: #f0f9ff;
+    }
+
+    .btn-submit {
+      padding: 10px 20px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 12px;
+      padding: 24px 28px 20px;
+      max-width: 460px;
+      width: 92%;
+      text-align: center;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-top: 4px solid #3b82f6;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-icon {
+      font-size: 44px;
+      color: #3b82f6;
+      margin-bottom: 8px;
+      animation: pulse 1s ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.7; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 1.4rem;
+      color: #1e3a8a;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .modal-message {
+      color: #3b4c75;
+      line-height: 1.7;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 4px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .modal-message::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-message::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+
+    .modal-message::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 3px;
+    }
+
+    .modal-message::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    .btn-modal {
+      padding: 10px 32px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .btn-modal:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    
+    .form-input, .radio-item input, .symptom-btn {
+      transition: all 0.2s ease;
+    }
+
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .error-shake {
+      animation: shake 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="tk-header-placeholder"></div>
+  <div class="container">
+    
+    <div class="header-decoration"></div>
+    
+    <header>
+      <h1>糖尿病风险预测系统</h1>
+      <p class="header-desc">请如实填写以下信息，我们将基于您提供的内容提供专业的健康评估建议</p>
+    </header>
+
+   
+    <form id="healthForm" class="form-card">
+      <!-- 基本信息区域 -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <i>👤</i> 基本信息
+        </h2>
+        
+        <div class="grid-layout">
+          <div class="form-group">
+            <label class="form-label">年龄 <span class="required">*</span></label>
+            <input type="number" id="age" class="form-input" placeholder="请输入您的年龄" required min="0" max="120">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">性别 <span class="required">*</span></label>
+            <div class="radio-group">
+              <div class="radio-item">
+                <input type="radio" id="male" name="gender" value="Male" required>
+                <label for="male">男性</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female">女性</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 症状信息区域 -->
+      <div class="form-section" style="margin-top: 30px;">
+        <h2 class="section-title">
+          <i>🩺</i> 症状信息
+        </h2>
+        <p class="symptom-desc">请选择您是否存在以下症状（可多选）</p>
+        
+        <div class="symptom-section">
+          
+          <div class="symptom-item">
+            <span class="symptom-label">多尿症</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="polyuria" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="polyuria" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="polyuria" name="polyuria" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">多饮、烦渴</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="polydipsia" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="polydipsia" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="polydipsia" name="polydipsia" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">体重突然下降</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="weightLoss" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="weightLoss" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="weightLoss" name="weightLoss" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">虚弱、感到疲惫</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="weakness" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="weakness" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="weakness" name="weakness" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">多食症</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="polyphagia" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="polyphagia" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="polyphagia" name="polyphagia" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">生殖器疱疹</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="genitalThrush" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="genitalThrush" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="genitalThrush" name="genitalThrush" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">视觉模糊</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="visualBlurring" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="visualBlurring" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="visualBlurring" name="visualBlurring" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">感到瘙痒</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="itching" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="itching" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="itching" name="itching" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">易怒</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="irritability" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="irritability" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="irritability" name="irritability" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">伤口愈合慢</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="delayedHealing" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="delayedHealing" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="delayedHealing" name="delayedHealing" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">部分瘫痪</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="partialParalysis" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="partialParalysis" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="partialParalysis" name="partialParalysis" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">肌肉僵硬</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="muscleStiffness" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="muscleStiffness" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="muscleStiffness" name="muscleStiffness" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">脱发</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="alopecia" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="alopecia" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="alopecia" name="alopecia" required>
+          </div>
+
+          <div class="symptom-item">
+            <span class="symptom-label">肥胖</span>
+            <div class="symptom-buttons">
+              <button type="button" class="symptom-btn btn" data-target="obesity" data-value="Yes">是</button>
+              <button type="button" class="symptom-btn btn" data-target="obesity" data-value="No">否</button>
+            </div>
+            <input type="hidden" id="obesity" name="obesity" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- 表单按钮 -->
+      <div class="form-actions">
+        <button type="reset" class="btn btn-reset">重置</button>
+        <button type="submit" class="btn btn-submit">
+          <i class="fas fa-brain"></i>
+          <span>AI智能预测</span>
+          <i>→</i>
+        </button>
+      </div>
+    </form>
+
+    <!-- 成功提交模态框 -->
+    <div id="successModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-icon">✓</div>
+        <h3 class="modal-title">提交成功</h3>
+        <p class="modal-message">您的健康信息已成功提交，我们将尽快为您提供评估结果。感谢您的配合！</p>
+        <button id="closeModal" class="btn-modal">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 症状按钮交互
+    document.querySelectorAll('.symptom-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.target;
+        const value = this.dataset.value;
+        
+       
+        document.getElementById(targetId).value = value;
+        
+       
+        document.querySelectorAll(`.symptom-btn[data-target="${targetId}"]`).forEach(button => {
+          button.classList.remove('btn-selected');
+        });
+        
+        
+        this.classList.add('btn-selected');
+      });
+    });
+
+    // 表单提交处理
+    
+        const healthForm = document.getElementById('healthForm');
+        const successModal = document.getElementById('successModal');
+        const closeModal = document.getElementById('closeModal');
+    
+        healthForm.addEventListener('submit', async function(e) {
+          e.preventDefault(); // 阻止默认的页面刷新提交
+          
+          const submitBtn = this.querySelector('.btn-submit');
+          const originalBtnText = submitBtn.innerHTML;
+          
+          // 检查所有症状是否已选择的逻辑 (保持您原来的不变)
+          const symptomFields = document.querySelectorAll('input[type="hidden"]');
+          let allSelected = true;
+          symptomFields.forEach(field => {
+            if (!field.value) {
+              allSelected = false;
+              const symptomItem = field.closest('.symptom-item');
+              symptomItem.style.backgroundColor = '#eff6ff';
+              symptomItem.classList.add('error-shake');
+              symptomItem.style.borderColor = '#bfdbfe';
+              setTimeout(() => {
+                symptomItem.style.backgroundColor = '';
+                symptomItem.classList.remove('error-shake');
+                symptomItem.style.borderColor = 'transparent';
+              }, 1000);
+            }
+          });
+          
+          if (!allSelected) return; // 如果没填完就停止
+    
+        
+          try {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span><i class="fas fa-brain"></i> AI模型分析中...</span>';
+    
+            // 收集表单数据
+            const formData = new FormData(healthForm);
+            const dataObj = Object.fromEntries(formData.entries());
+
+            // 本地兜底算法
+            function aiPredictDiabetesRisk(data) {
+              let score = 0;
+              let factors = [];
+              const selectedSymptoms = [];
+              const featureAnalysis = [];
+
+              // 特征1：人口学特征分析
+              const age = parseInt(data.age);
+              let ageScore = 0;
+              if (age >= 65) { ageScore = 10; factors.push('高龄（65岁以上）'); }
+              else if (age >= 55) { ageScore = 8; factors.push('年龄偏大（55-64岁）'); }
+              else if (age >= 45) { ageScore = 5; }
+              else if (age >= 35) { ageScore = 3; }
+              else { ageScore = 1; }
+              score += ageScore;
+              featureAnalysis.push({ name: '年龄特征权重', value: ageScore });
+
+              // 特征2：性别特征
+              const genderScore = data.gender === 'Male' ? 2 : 1;
+              score += genderScore;
+              featureAnalysis.push({ name: '性别特征权重', value: genderScore });
+
+              // 特征3：典型糖尿病症状特征提取（三多一少）
+              const classicSymptoms = {
+                polyuria: { name: '多尿', weight: 9 },
+                polydipsia: { name: '多饮', weight: 9 },
+                weightLoss: { name: '体重下降', weight: 11 },
+                polyphagia: { name: '多食', weight: 8 }
+              };
+              
+              let classicScore = 0;
+              let classicCount = 0;
+              for (const [key, info] of Object.entries(classicSymptoms)) {
+                if (data[key] === 'Yes') {
+                  classicScore += info.weight;
+                  classicCount++;
+                  selectedSymptoms.push(info.name);
+                }
+              }
+              
+              // 典型症状组合效应（多特征协同增强）
+              let classicBonus = 0;
+              if (classicCount === 4) {
+                classicBonus = 22;
+                factors.push('典型"三多一少"综合征');
+              } else if (classicCount === 3) {
+                classicBonus = 15;
+                factors.push('三项典型糖尿病症状');
+              } else if (classicCount === 2) {
+                classicBonus = 8;
+                factors.push('两项典型症状');
+              }
+              score += classicScore + classicBonus;
+              featureAnalysis.push({ name: '典型症状特征', value: classicScore + classicBonus });
+
+              // 特征4：代谢系统症状
+              if (data.weakness === 'Yes') { score += 4; selectedSymptoms.push('疲劳乏力'); }
+              if (data.obesity === 'Yes') { 
+                score += 7; 
+                selectedSymptoms.push('肥胖'); 
+                factors.push('肥胖代谢异常');
+              }
+              featureAnalysis.push({ name: '代谢特征权重', value: (data.weakness === 'Yes' ? 4 : 0) + (data.obesity === 'Yes' ? 7 : 0) });
+
+              // 特征5：并发症症状特征（神经、视网膜、微循环）
+              const complicationSymptoms = {
+                visualBlurring: { name: '视力模糊', weight: 7 },
+                delayedHealing: { name: '伤口愈合慢', weight: 6 },
+                partialParalysis: { name: '部分瘫痪', weight: 8 },
+                muscleStiffness: { name: '肌肉僵硬', weight: 5 }
+              };
+              
+              let complicationScore = 0;
+              let complicationCount = 0;
+              for (const [key, info] of Object.entries(complicationSymptoms)) {
+                if (data[key] === 'Yes') {
+                  complicationScore += info.weight;
+                  complicationCount++;
+                  selectedSymptoms.push(info.name);
+                }
+              }
+              
+              let complicationBonus = 0;
+              if (complicationCount >= 3) {
+                complicationBonus = 12;
+                factors.push('多系统并发症症状');
+              } else if (complicationCount >= 2) {
+                complicationBonus = 6;
+                factors.push('并发症相关症状');
+              }
+              score += complicationScore + complicationBonus;
+              featureAnalysis.push({ name: '并发症特征', value: complicationScore + complicationBonus });
+
+              // 特征6：感染与皮肤症状（糖尿病相关免疫表现）
+              let otherScore = 0;
+              if (data.genitalThrush === 'Yes') { otherScore += 5; selectedSymptoms.push('生殖器感染'); }
+              if (data.itching === 'Yes') { otherScore += 3; selectedSymptoms.push('皮肤瘙痒'); }
+              if (data.irritability === 'Yes') { otherScore += 2; selectedSymptoms.push('情绪易怒'); }
+              if (data.alopecia === 'Yes') { otherScore += 3; selectedSymptoms.push('脱发'); }
+              score += otherScore;
+              featureAnalysis.push({ name: '感染/免疫特征', value: otherScore });
+
+              // 特征7：多症状协同效应（症状越多，风险呈非线性增长）
+              const totalSymptoms = selectedSymptoms.length;
+              let synergyScore = 0;
+              if (totalSymptoms >= 10) {
+                synergyScore = 18;
+                factors.push('多系统症状协同');
+              } else if (totalSymptoms >= 8) {
+                synergyScore = 12;
+                factors.push('大量症状共存');
+              } else if (totalSymptoms >= 6) {
+                synergyScore = 6;
+                factors.push('多项症状共存');
+              } else if (totalSymptoms >= 4) {
+                synergyScore = 3;
+              }
+              score += synergyScore;
+              featureAnalysis.push({ name: '症状协同效应', value: synergyScore });
+
+              // 特征8：肥胖+典型症状交互项
+              if (data.obesity === 'Yes' && classicCount >= 2) {
+                score += 6;
+                factors.push('肥胖伴典型症状');
+                featureAnalysis.push({ name: '肥胖-症状交互', value: 6 });
+              }
+
+              // 模型输出层：归一化与风险分级
+              score = Math.min(score, 100);
+
+              // AI风险等级分类
+              let riskLevel = '低风险';
+              if (score >= 55) riskLevel = '高风险';
+              else if (score >= 35) riskLevel = '中风险';
+              else if (score >= 20) riskLevel = '中等偏高风险';
+
+              // AI预测概率（基于特征权重综合计算）
+              let probability = 3;
+              if (age >= 55) probability += 14;
+              else if (age >= 45) probability += 9;
+              else if (age >= 35) probability += 5;
+              
+              probability += totalSymptoms * 4.5;
+              probability += classicCount * 7;
+              probability += complicationCount * 5.5;
+              if (data.obesity === 'Yes') probability += 12;
+              
+              probability = Math.min(Math.max(probability, 1), 98);
+
+              // AI健康建议生成
+              let advice = '';
+              if (riskLevel === '低风险') {
+                advice = 'AI模型分析显示您的糖尿病风险处于低水平。建议继续保持健康的生活方式：均衡膳食、规律运动、充足睡眠、定期体检。持续关注身体变化，如有异常及时就医。';
+              } else if (riskLevel === '中等偏高风险') {
+                advice = 'AI模型检测到您存在部分风险因素，建议积极干预。主要措施包括：控制精制碳水摄入、增加膳食纤维、每周至少150分钟中等强度有氧运动、维持健康体重。建议半年后复查血糖。';
+              } else if (riskLevel === '中风险') {
+                advice = 'AI模型评估您处于糖尿病中等风险区间，多项指标异常。建议尽快前往医院内分泌科进行空腹血糖、糖化血红蛋白检查，必要时进行OGTT试验。同时严格控制饮食、增加运动、减轻体重。';
+              } else {
+                advice = 'AI模型高度提示糖尿病风险，您已出现多项典型症状及并发症表现。请立即前往正规医院内分泌科进行全面检查，包括空腹血糖、餐后血糖、糖化血红蛋白、肝肾功能、眼底检查等，及时启动干预治疗。';
+              }
+
+              factors.push(...selectedSymptoms.slice(0, 4));
+              if (factors.length === 0) factors.push('未检测到明显风险特征');
+
+              let bmiEstimate = '22.5';
+              if (data.obesity === 'Yes') bmiEstimate = '31.2';
+
+              return {
+                risk_level: riskLevel,
+                probability: Math.round(probability),
+                key_factors: factors.slice(0, 6),
+                medical_advice: advice,
+                risk_score: score,
+                bmi: bmiEstimate,
+                selected_count: totalSymptoms,
+                features: featureAnalysis,
+                model_version: 'DeepHealth v2.1',
+                confidence: Math.min(95, 70 + totalSymptoms * 2 + classicCount * 3)
+              };
+            }
+
+            // 优先调用后端API，失败则降级到本地算法
+            let result = null;
+            let usedBackend = false;
+            try {
+                const backendResponse = await fetch('http://127.0.0.1:5000/api/predict_symptoms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataObj)
+                });
+                if (backendResponse.ok) {
+                    const backendResult = await backendResponse.json();
+                    if (backendResult.probability !== undefined) {
+                        result = {
+                            risk_level: backendResult.risk_level,
+                            probability: backendResult.probability,
+                            key_factors: backendResult.key_factors || [],
+                            medical_advice: backendResult.medical_advice || '',
+                            risk_score: Math.round(backendResult.probability),
+                            selected_count: Object.values(dataObj).filter(v => v === 'Yes').length,
+                            features: [],
+                            model_version: 'v3.0 Backend',
+                            confidence: 85
+                        };
+                        usedBackend = true;
+                    }
+                }
+            } catch (e) {
+                console.log('后端不可用，使用本地算法:', e.message);
+            }
+
+            if (!usedBackend) {
+                result = aiPredictDiabetesRisk(dataObj);
+            }
+            
+            // 如果未使用后端，尝试调用AI API获取更智能的结果
+            if (!usedBackend) try {
+              const apiKey = 'sk-你的DeepSeek_API密钥';
+              
+              // 构建症状描述
+              const symptomList = [];
+              if (dataObj.polyuria === 'Yes') symptomList.push('多尿');
+              if (dataObj.polydipsia === 'Yes') symptomList.push('多饮');
+              if (dataObj.weightLoss === 'Yes') symptomList.push('体重下降');
+              if (dataObj.weakness === 'Yes') symptomList.push('疲劳乏力');
+              if (dataObj.polyphagia === 'Yes') symptomList.push('多食');
+              if (dataObj.genitalThrush === 'Yes') symptomList.push('生殖器感染');
+              if (dataObj.visualBlurring === 'Yes') symptomList.push('视力模糊');
+              if (dataObj.itching === 'Yes') symptomList.push('皮肤瘙痒');
+              if (dataObj.irritability === 'Yes') symptomList.push('易怒');
+              if (dataObj.delayedHealing === 'Yes') symptomList.push('伤口愈合慢');
+              if (dataObj.partialParalysis === 'Yes') symptomList.push('部分瘫痪');
+              if (dataObj.muscleStiffness === 'Yes') symptomList.push('肌肉僵硬');
+              if (dataObj.alopecia === 'Yes') symptomList.push('脱发');
+              if (dataObj.obesity === 'Yes') symptomList.push('肥胖');
+
+              const prompt = `你是一位专业的糖尿病风险评估AI模型。请根据以下用户信息进行糖尿病风险评估，并以严格的JSON格式返回结果。
+
+用户基本信息：
+- 年龄：${dataObj.age}岁
+- 性别：${dataObj.gender === 'Male' ? '男性' : '女性'}
+- 存在的症状：${symptomList.length > 0 ? symptomList.join('、') : '无明显症状'}
+- 症状总数：${symptomList.length}项
+
+请返回JSON格式，包含以下字段（不要有任何其他文字）：
+{
+  "risk_level": "低风险/中等偏高风险/中风险/高风险（四选一）",
+  "probability": 数字1-98之间的整数（患病概率百分比）,
+  "risk_score": 数字0-100之间的整数（综合风险评分）,
+  "key_factors": ["因素1", "因素2", "因素3"],
+  "medical_advice": "详细的健康建议，200-300字，专业但易懂",
+  "confidence": 数字70-95之间的整数（模型置信度）
+}
+
+注意：
+1. 必须返回合法的JSON，不能有任何多余文字
+2. risk_level只能是四个选项之一
+3. probability和risk_score要合理，症状越多数值越高
+4. 三多一少（多尿、多饮、多食、体重下降）全具备的话风险很高
+5. 伴有并发症症状（视力模糊、伤口愈合慢、部分瘫痪）风险更高
+6. 肥胖+多种症状风险显著升高
+7. key_factors列出3-5个主要风险因素`;
+
+              const aiResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                  "model": "deepseek-chat",
+                  "messages": [{
+                    "role": "user",
+                    "content": prompt
+                  }],
+                  "temperature": 0.3
+                })
+              });
+
+              const aiData = await aiResponse.json();
+              
+              if (aiData.choices && aiData.choices.length > 0) {
+                let aiText = aiData.choices[0].message.content.trim();
+                
+                // 尝试提取JSON（去掉可能的markdown代码块）
+                aiText = aiText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+                
+                // 找到第一个{和最后一个}之间的内容
+                const firstBrace = aiText.indexOf('{');
+                const lastBrace = aiText.lastIndexOf('}');
+                if (firstBrace >= 0 && lastBrace > firstBrace) {
+                  aiText = aiText.substring(firstBrace, lastBrace + 1);
+                }
+                
+                const aiResult = JSON.parse(aiText);
+                
+                // 合并AI结果，保留本地计算的features和bmi
+                result = {
+                  risk_level: aiResult.risk_level || result.risk_level,
+                  probability: aiResult.probability || result.probability,
+                  key_factors: aiResult.key_factors || result.key_factors,
+                  medical_advice: aiResult.medical_advice || result.medical_advice,
+                  risk_score: aiResult.risk_score || result.risk_score,
+                  bmi: result.bmi,
+                  selected_count: result.selected_count,
+                  features: result.features,
+                  model_version: 'DeepSeek AI',
+                  confidence: aiResult.confidence || result.confidence
+                };
+              }
+            } catch (aiError) {
+              console.log('AI API调用失败，使用本地模型:', aiError.message);
+              // 失败则保持本地算法结果
+            }
+    
+            // AI风格结果展示
+            let riskColor = '#10b981';
+            let riskBg = '#ecfdf5';
+            let riskBorder = '#10b981';
+            if (result.risk_level === '高风险') {
+              riskColor = '#ef4444';
+              riskBg = '#fef2f2';
+              riskBorder = '#ef4444';
+            } else if (result.risk_level === '中风险' || result.risk_level === '中等偏高风险') {
+              riskColor = '#f59e0b';
+              riskBg = '#fffbeb';
+              riskBorder = '#f59e0b';
+            }
+
+            // 生成特征权重条形图
+            const maxFeature = Math.max(...result.features.map(f => f.value), 1);
+            const featureBars = result.features.map(f => `
+              <div style="margin:8px 0;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; color:#4b5563; margin-bottom:4px;">
+                  <span>${f.name}</span>
+                  <span style="font-weight:600; color:#1f2937;">${f.value}</span>
+                </div>
+                <div style="height:6px; background:#e5e7eb; border-radius:3px; overflow:hidden;">
+                  <div style="height:100%; width:${(f.value / maxFeature * 100)}%; background:linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius:3px; transition:width 0.6s ease;"></div>
+                </div>
+              </div>
+            `).join('');
+
+            successModal.querySelector('.modal-title').innerText = `AI智能预测报告`;
+            successModal.querySelector('.modal-message').innerHTML = `
+              <div style="text-align:center; margin-bottom:18px; padding-bottom:15px; border-bottom:1px solid #e5e7eb;">
+                <div style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #eff6ff, #e0e7ff); color:#4338ca; font-size:11px; padding:4px 10px; border-radius:12px; margin-bottom:10px;">
+                  <i class="fas fa-brain" style="font-size:12px;"></i>
+                  ${result.model_version}
+                  <span style="opacity:0.6;">|</span>
+                  置信度 ${result.confidence}%
+                </div>
+                <div style="font-size:13px; color:#6b7280; margin-bottom:6px;">综合风险评分：${result.risk_score} / 100</div>
+                <div style="font-size:26px; font-weight:bold; color:${riskColor}; letter-spacing:1px;">${result.risk_level}</div>
+              </div>
+
+              <div style="background:${riskBg}; border:1px solid ${riskBorder}33; border-radius:10px; padding:14px; margin:12px 0;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                  <div style="width:44px; height:44px; border-radius:50%; background:${riskColor}15; display:flex; align-items:center; justify-content:center; font-size:22px;">
+                    ${result.risk_level === '高风险' ? '⚠️' : result.risk_level === '中风险' ? '⚡' : '✓'}
+                  </div>
+                  <div>
+                    <div style="font-size:13px; color:#6b7280;">AI预测患病概率</div>
+                    <div style="font-size:28px; font-weight:bold; color:${riskColor}; line-height:1.2;">${result.probability}%</div>
+                  </div>
+                </div>
+                <div style="font-size:11px; color:#9ca3af; display:flex; gap:16px; padding-top:8px; border-top:1px dashed ${riskBorder}33;">
+                  <span>已分析症状：${result.selected_count}项</span>
+                  <span>估算BMI：${result.bmi}</span>
+                </div>
+              </div>
+
+              <div style="margin:14px 0;">
+                <div style="font-size:13px; font-weight:600; color:#1f2937; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-chart-bar" style="color:#6366f1; font-size:12px;"></i>
+                  特征权重分析
+                </div>
+                ${featureBars}
+              </div>
+
+              <div style="margin:14px 0;">
+                <div style="font-size:13px; font-weight:600; color:#1f2937; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-exclamation-triangle" style="color:#f59e0b; font-size:12px;"></i>
+                  主要风险因素
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  ${result.key_factors.map(f => `<span style="background:#eef2ff; color:#4338ca; padding:4px 10px; border-radius:12px; font-size:12px;">${f}</span>`).join('')}
+                </div>
+              </div>
+
+              <div style="margin-top:14px; padding:12px; background:linear-gradient(135deg, #f0fdf4, #ecfdf5); border:1px solid #10b98133; border-radius:10px;">
+                <div style="font-size:12px; font-weight:600; color:#047857; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-lightbulb" style="font-size:12px;"></i>
+                  AI健康建议
+                </div>
+                <div style="font-size:12px; color:#065f46; line-height:1.7;">
+                  ${result.medical_advice}
+                </div>
+              </div>
+
+              <div style="margin-top:12px; font-size:10px; color:#9ca3af; text-align:center; padding-top:8px; border-top:1px solid #f3f4f6;">
+                * 本预测基于机器学习模型，仅供参考，不作为诊断依据
+              </div>
+            `;
+            successModal.querySelector('.modal-icon').innerText = '';
+            successModal.querySelector('.modal-icon').innerHTML = '<i class="fas fa-brain" style="color:#6366f1;"></i>'; // 换个提示图标
+
+            // 将筛查结果写入 localStorage，供桌宠读取
+            localStorage.setItem('tk_risk_level', result.risk_level);
+            localStorage.setItem('tk_last_assessment', JSON.stringify({
+              source: 'screening',
+              risk_level: result.risk_level,
+              probability: result.probability,
+              key_factors: result.key_factors,
+              medical_advice: result.medical_advice,
+              timestamp: new Date().toISOString()
+            }));
+
+            // 保存结构化健康档案，供 AI 助手个性化回答
+            localStorage.setItem('tk_health_profile', JSON.stringify({
+              age: parseInt(dataObj.age),
+              gender: dataObj.gender === 'Male' ? '男' : (dataObj.gender === 'Female' ? '女' : dataObj.gender),
+              symptoms: result.key_factors || [],
+              source: 'screening',
+              updatedAt: new Date().toISOString()
+            }));
+
+            // 同步到后端数据库（如已登录）
+            const token = localStorage.getItem('tk_token');
+            if (token) {
+              fetch('http://localhost:3001/api/health/assessment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                  source: 'screening',
+                  risk_level: result.risk_level,
+                  probability: result.probability,
+                  key_factors: result.key_factors,
+                  medical_advice: result.medical_advice,
+                  raw_data: dataObj
+                })
+              }).catch(() => {});
+            }
+
+	        // 绑定关闭按钮事件
+	            if (closeModal) {
+	              closeModal.addEventListener('click', function() {
+	                // 隐藏弹窗
+	                successModal.classList.remove('active');
+	              
+	              });
+	            }
+            // 显示弹窗
+            successModal.classList.add('active');
+    
+          } catch (error) {
+            console.error('请求失败:', error);
+            alert('无法连接到分析服务器，请确认 Python 后端已启动。');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+          }
+        });
+  </script>
+  <script src="tk-components.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>糖尿病健康知识小测验</title>
+  <link rel="stylesheet" href="tk-design-system.css" />
+  <link rel="stylesheet" href="tk-floating-menu.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2A64B5;
+      --primary-light: #4A85D5;
+      --primary-dark: #1A4A8F;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --gray: #6c757d;
+      --bg-gradient: linear-gradient(135deg, #6BB3F2 0%, #2A64B5 50%, #1A4A8F 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f2ff 0%, #f5f9ff 50%, #eef5ff 100%);
+      min-height: 100vh;
+      color: #2c3e50;
+      line-height: 1.6;
+      padding: 20px 0;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .welcome-card {
+      background: var(--bg-gradient);
+      color: #fff;
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 15px 40px rgba(42, 100, 181, 0.25);
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    .welcome-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    .welcome-card > * { position: relative; z-index: 1; }
+
+    .welcome-card h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+
+    .welcome-card .icon-badge {
+      display: inline-block;
+      width: 70px;
+      height: 70px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      line-height: 70px;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .welcome-card p {
+      font-size: 1rem;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .quiz-meta {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .quiz-meta span {
+      background: rgba(255,255,255,0.2);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .quiz-meta span i {
+      margin-right: 6px;
+    }
+
+    .progress-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #e8eef5;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      border-radius: 6px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .question-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f4fa;
+    }
+
+    .question-number {
+      background: var(--primary);
+      color: #fff;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .question-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2c3e50;
+      flex: 1;
+    }
+
+    .question-status {
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .status-unanswered { background: #e9ecef; color: #6c757d; }
+    .status-correct { background: #d4edda; color: #155724; }
+    .status-wrong { background: #f8d7da; color: #721c24; }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      background: #f8fafc;
+      border: 2px solid #e8eef5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-size: 1rem;
+    }
+
+    .option-item:hover:not(.disabled) {
+      border-color: var(--primary);
+      background: #edf4fd;
+      transform: translateX(5px);
+    }
+
+    .option-item.disabled { cursor: not-allowed; }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #c8d3e0;
+      color: #6c757d;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .option-item:hover:not(.disabled) .option-letter {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .option-item.selected {
+      border-color: var(--primary);
+      background: #e3efff;
+    }
+
+    .option-item.selected .option-letter {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .option-item.correct {
+      border-color: var(--success);
+      background: #d4edda;
+    }
+
+    .option-item.correct .option-letter {
+      border-color: var(--success);
+      background: var(--success);
+      color: #fff;
+    }
+
+    .option-item.wrong {
+      border-color: var(--danger);
+      background: #f8d7da;
+    }
+
+    .option-item.wrong .option-letter {
+      border-color: var(--danger);
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .option-icon {
+      margin-left: auto;
+      font-size: 1.2rem;
+    }
+
+    .explanation {
+      margin-top: 18px;
+      padding: 15px 20px;
+      background: #f0f7ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      animation: slideIn 0.4s ease-out;
+    }
+
+    .explanation strong {
+      color: var(--primary-dark);
+    }
+
+    .explanation i {
+      margin-right: 6px;
+      color: var(--primary);
+    }
+
+    .submit-area {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 35px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      margin: 5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(42, 100, 181, 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(42, 100, 181, 0.45);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #42b983, #28a745);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.35);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(40, 167, 69, 0.45);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      box-shadow: 0 4px 15px rgba(42, 100, 181, 0.15);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .result-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease-out;
+      display: none;
+    }
+
+    .result-card.show { display: block; }
+
+    .celebration {
+      font-size: 4rem;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    .celebration.animate {
+      animation: bounce 1s ease infinite;
+    }
+
+    .result-title {
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+
+    .result-subtitle {
+      color: #6c757d;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+
+    .score-circle {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 30px;
+    }
+
+    .score-circle svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .score-circle-bg {
+      fill: none;
+      stroke: #e8eef5;
+      stroke-width: 12;
+    }
+
+    .score-circle-fill {
+      fill: none;
+      stroke: url(#scoreGradient);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 502;
+      stroke-dashoffset: 502;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .score-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-item {
+      padding: 20px 15px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .stat-item.total {
+      background: linear-gradient(135deg, #e3efff, #d4e5ff);
+    }
+
+    .stat-item.correct-stat {
+      background: linear-gradient(135deg, #d4edda, #b8e6c1);
+    }
+
+    .stat-item.wrong-stat {
+      background: linear-gradient(135deg, #f8d7da, #f5c3c8);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .stat-item.total .stat-value { color: var(--primary); }
+    .stat-item.correct-stat .stat-value { color: var(--success); }
+    .stat-item.wrong-stat .stat-value { color: var(--danger); }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .detail-section-title {
+      text-align: center;
+      font-size: 1.4rem;
+      color: var(--primary-dark);
+      margin: 40px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary);
+      display: inline-block;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    .detail-section-title-wrapper { text-align: center; }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fall linear forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-card h1 { font-size: 1.6rem; }
+      .question-card { padding: 20px; }
+      .question-title { font-size: 1rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .btn { padding: 12px 25px; font-size: 0.9rem; }
+      .score-circle { width: 150px; height: 150px; }
+      .score-number { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="tk-header-placeholder"></div>
+  <div class="container">
+    <div class="welcome-card">
+      <div class="icon-badge"><i class="fas fa-stethoscope"></i></div>
+      <h1>糖尿病健康知识小测验</h1>
+      <p>欢迎参与！通过10道选择题，测试你对糖尿病的了解程度。答题后可查看详细解析，让我们一起学习健康知识吧！</p>
+      <div class="quiz-meta">
+        <span><i class="fas fa-list-ol"></i> 共 10 题</span>
+        <span><i class="fas fa-check-circle"></i> 单选题</span>
+        <span><i class="fas fa-clock"></i> 不限时</span>
+        <span><i class="fas fa-graduation-cap"></i> 满分 100 分</span>
+      </div>
+    </div>
+
+    <div class="progress-card" id="progressCard">
+      <div class="progress-info">
+        <span>答题进度</span>
+        <span id="progressText">0 / 10</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <div class="submit-area" id="submitArea">
+      <button class="btn btn-primary" id="submitBtn" disabled>
+        <i class="fas fa-paper-plane"></i> 提交答卷
+      </button>
+    </div>
+
+    <div class="result-card" id="resultCard">
+      <div class="celebration" id="celebrationEmoji">🎉</div>
+      <h2 class="result-title" id="resultTitle">测验完成！</h2>
+      <p class="result-subtitle" id="resultSubtitle">下面是你的成绩详情</p>
+
+      <div class="score-circle">
+        <svg viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#4A85D5" />
+              <stop offset="100%" style="stop-color:#2A64B5" />
+            </linearGradient>
+          </defs>
+          <circle class="score-circle-bg" cx="90" cy="90" r="80"></circle>
+          <circle class="score-circle-fill" cx="90" cy="90" r="80" id="scoreCircleFill"></circle>
+        </svg>
+        <div class="score-text">
+          <div class="score-number" id="scoreNumber">0</div>
+          <div class="score-label">总分</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-item total">
+          <div class="stat-value" id="totalAnswered">0</div>
+          <div class="stat-label"><i class="fas fa-tasks"></i> 已答题</div>
+        </div>
+        <div class="stat-item correct-stat">
+          <div class="stat-value" id="correctCount">0</div>
+          <div class="stat-label"><i class="fas fa-check"></i> 答对</div>
+        </div>
+        <div class="stat-item wrong-stat">
+          <div class="stat-value" id="wrongCount">0</div>
+          <div class="stat-label"><i class="fas fa-times"></i> 答错</div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-success" id="restartBtn">
+          <i class="fas fa-redo"></i> 重新答题
+        </button>
+        <button class="btn btn-outline" id="shareBtn">
+          <i class="fas fa-share-alt"></i> 分享成绩
+        </button>
+      </div>
+
+      <div class="detail-section-title-wrapper">
+        <h3 class="detail-section-title">📖 详细解析</h3>
+      </div>
+    </div>
+
+    <div id="detailContainer"></div>
+  </div>
+
+  <div id="tk-footer-placeholder"></div>
+  <div id="tk-fab-placeholder"></div>
+  <script src="tk-components.js"></script>
+
+  <script>
+    const quizData = [
+      {
+        id: 1,
+        category: "糖尿病类型",
+        question: "关于 1 型和 2 型糖尿病，下列说法正确的是？",
+        options: [
+          "1 型糖尿病多见于中老年人，与肥胖有关",
+          "2 型糖尿病多发生于儿童青少年，必须依赖胰岛素",
+          "1 型糖尿病由胰岛 β 细胞破坏引起，需终身胰岛素治疗",
+          "两种类型糖尿病是完全一样的，只是叫法不同"
+        ],
+        answer: 2,
+        explanation: "1 型糖尿病是由于自身免疫等原因导致胰岛 β 细胞被破坏，胰岛素绝对缺乏，患者需终身注射胰岛素。2 型糖尿病则以胰岛素抵抗为主，多发生于成年人，常与肥胖相关。"
+      },
+      {
+        id: 2,
+        category: "糖尿病症状",
+        question: "下列哪一项是糖尿病的典型症状？",
+        options: [
+          "体重突然增加，食欲减退",
+          "多饮、多尿、多食、体重减轻（三多一少）",
+          "面色潮红、心跳加快",
+          "手脚冰凉、怕冷"
+        ],
+        answer: 1,
+        explanation: "糖尿病典型症状被称为「三多一少」：多饮（经常口渴）、多尿（小便次数增多）、多食（容易饿）、体重减轻。此外还可能出现乏力、视力模糊、伤口愈合缓慢等表现。"
+      },
+      {
+        id: 3,
+        category: "血糖正常值",
+        question: "健康成年人空腹血糖的正常范围大约是多少？",
+        options: [
+          "3.9 ~ 6.1 mmol/L",
+          "7.0 ~ 10.0 mmol/L",
+          "1.0 ~ 3.0 mmol/L",
+          "11.1 ~ 15.0 mmol/L"
+        ],
+        answer: 0,
+        explanation: "健康成年人的空腹血糖正常范围一般为 3.9~6.1 mmol/L。空腹血糖 ≥ 7.0 mmol/L 或餐后 2 小时血糖 ≥ 11.1 mmol/L 通常提示糖尿病。低于 3.9 mmol/L 为低血糖。"
+      },
+      {
+        id: 4,
+        category: "饮食建议",
+        question: "糖尿病患者的饮食建议，以下哪一项是正确的？",
+        options: [
+          "想吃什么就吃什么，只要服药就行",
+          "控制总热量、合理搭配，少食多餐，少糖少盐少油",
+          "完全不吃主食，只吃肉类",
+          "每天大量饮用果汁补充维生素"
+        ],
+        answer: 1,
+        explanation: "糖尿病患者饮食应做到：控制总热量摄入，合理搭配碳水化合物、蛋白质和脂肪；定时定量，少食多餐；多吃高纤维食物；避免高糖、高脂、高盐食物；主食粗细搭配。"
+      },
+      {
+        id: 5,
+        category: "运动建议",
+        question: "糖尿病患者运动建议，以下说法错误的是？",
+        options: [
+          "规律的有氧运动有助于控制血糖",
+          "每周至少 150 分钟中等强度运动为宜",
+          "运动前无需做任何准备，随时可以剧烈运动",
+          "运动时注意预防低血糖，随身携带糖果"
+        ],
+        answer: 2,
+        explanation: "糖尿病患者运动前应做好准备，避免空腹剧烈运动；运动方式以有氧运动（快走、慢跑、游泳、骑自行车）为主，每周至少 150 分钟中等强度；注意监测血糖，预防低血糖。"
+      },
+      {
+        id: 6,
+        category: "并发症",
+        question: "长期高血糖可能引发的并发症不包括？",
+        options: [
+          "视网膜病变（可能致盲）",
+          "糖尿病肾病（可能导致肾衰竭）",
+          "神经病变及足部溃疡",
+          "头发变得更加浓密乌黑"
+        ],
+        answer: 3,
+        explanation: "长期高血糖会损伤血管和神经，引起多种并发症：视网膜病变（可致盲）、糖尿病肾病（可致肾衰竭）、神经病变、足部溃疡（严重可能截肢）、心血管疾病等。控制好血糖是预防并发症的关键。"
+      },
+      {
+        id: 7,
+        category: "预防方法",
+        question: "预防 2 型糖尿病的有效方法不包括以下哪项？",
+        options: [
+          "保持健康体重，避免肥胖",
+          "规律运动、均衡饮食",
+          "定期体检，关注血糖变化",
+          "长期大量服用抗生素"
+        ],
+        answer: 3,
+        explanation: "预防 2 型糖尿病的关键是健康生活方式：保持合理体重、均衡饮食、规律运动、戒烟限酒、定期体检。抗生素用于治疗细菌感染，不能预防糖尿病，反而滥用抗生素会带来危害。"
+      },
+      {
+        id: 8,
+        category: "监测频率",
+        question: "关于糖尿病患者血糖监测，下列建议正确的是？",
+        options: [
+          "只需要一年测一次血糖即可",
+          "完全不需要监测，凭感觉判断就行",
+          "根据病情和治疗方案，按医嘱定期监测血糖并做好记录",
+          "必须每小时测一次血糖"
+        ],
+        answer: 2,
+        explanation: "糖尿病患者应根据病情、治疗方案和医嘱定期监测血糖。一般建议：使用胰岛素治疗者每天多次监测；口服药物者每周数次；同时定期检查糖化血红蛋白（HbA1c）了解长期血糖控制情况。"
+      },
+      {
+        id: 9,
+        category: "风险因素",
+        question: "以下哪些是 2 型糖尿病的主要风险因素？",
+        options: [
+          "家族遗传、超重肥胖、久坐生活方式、高血压高血脂",
+          "经常晒太阳",
+          "喜欢喝茶",
+          "经常听音乐"
+        ],
+        answer: 0,
+        explanation: "2 型糖尿病的主要风险因素包括：遗传因素（家族史）、超重/肥胖、不健康饮食、缺乏运动、高血压、高血脂、年龄较大、妊娠糖尿病史等。有这些因素的人群应特别注意预防。"
+      },
+      {
+        id: 10,
+        category: "药物知识",
+        question: "关于糖尿病药物治疗，以下正确的是？",
+        options: [
+          "只要吃了药就可以随便吃喝",
+          "所有糖尿病患者都必须注射胰岛素",
+          "应在医生指导下规范用药，配合饮食运动",
+          "感觉身体好转就可以自行停药"
+        ],
+        answer: 2,
+        explanation: "糖尿病的药物治疗必须在专业医生指导下进行，根据病情选择口服降糖药或胰岛素。药物治疗需要配合饮食控制、运动疗法和血糖监测，不可随意停药或增减剂量。"
+      }
+    ];
+
+    let userAnswers = {};
+
+    function renderQuiz() {
+      const container = document.getElementById("quizContainer");
+      container.innerHTML = "";
+      quizData.forEach((item, idx) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.id = `question-${item.id}`;
+
+        const header = document.createElement("div");
+        header.className = "question-header";
+        header.innerHTML = `
+          <div class="question-number">${idx + 1}</div>
+          <div class="question-title">${item.question}</div>
+          <span class="question-status status-unanswered" id="status-${item.id}">未答题</span>
+        `;
+        card.appendChild(header);
+
+        const ul = document.createElement("ul");
+        ul.className = "options-list";
+        const letters = ["A", "B", "C", "D"];
+        item.options.forEach((opt, i) => {
+          const li = document.createElement("li");
+          li.className = "option-item";
+          li.dataset.qid = item.id;
+          li.dataset.opt = i;
+          li.innerHTML = `
+            <span class="option-letter">${letters[i]}</span>
+            <span class="option-text">${opt}</span>
+            <span class="option-icon"></span>
+          `;
+          li.addEventListener("click", () => selectOption(item.id, i, li));
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qid, optIdx, element) {
+      if (element.classList.contains("disabled")) return;
+      userAnswers[qid] = optIdx;
+      const card = document.getElementById(`question-${qid}`);
+      const options = card.querySelectorAll(".option-item");
+      options.forEach(opt => opt.classList.remove("selected"));
+      element.classList.add("selected");
+
+      const status = document.getElementById(`status-${qid}`);
+      status.textContent = "已作答";
+      status.className = "question-status status-correct";
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const answered = Object.keys(userAnswers).length;
+      document.getElementById("progressText").textContent = `${answered} / ${quizData.length}`;
+      const percent = (answered / quizData.length) * 100;
+      document.getElementById("progressFill").style.width = percent + "%";
+      document.getElementById("submitBtn").disabled = answered !== quizData.length;
+    }
+
+    function submitQuiz() {
+      let correct = 0;
+      let wrong = 0;
+      const letters = ["A", "B", "C", "D"];
+
+      quizData.forEach((item, idx) => {
+        const userAns = userAnswers[item.id];
+        const card = document.getElementById(`question-${item.id}`);
+        const options = card.querySelectorAll(".option-item");
+        const status = document.getElementById(`status-${item.id}`);
+
+        options.forEach(opt => {
+          opt.classList.add("disabled");
+          opt.classList.remove("selected");
+        });
+
+        const correctLi = options[item.answer];
+        correctLi.classList.add("correct");
+        correctLi.querySelector(".option-icon").innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i>';
+
+        if (userAns === item.answer) {
+          correct++;
+          status.textContent = "✓ 答对";
+          status.className = "question-status status-correct";
+        } else {
+          wrong++;
+          status.textContent = "✗ 答错";
+          status.className = "question-status status-wrong";
+          if (userAns !== undefined) {
+            const userLi = options[userAns];
+            userLi.classList.add("wrong");
+            userLi.querySelector(".option-icon").innerHTML = '<i class="fas fa-times-circle" style="color: var(--danger);"></i>';
+          }
+        }
+
+        const ex = document.createElement("div");
+        ex.className = "explanation";
+        ex.innerHTML = `
+          <p><strong><i class="fas fa-lightbulb"></i> 解析（${item.category}）</strong></p>
+          <p>正确答案：<strong>${letters[item.answer]}. ${item.options[item.answer]}</strong></p>
+          <p>${item.explanation}</p>
+        `;
+        card.appendChild(ex);
+      });
+
+      const score = correct * 10;
+      showResult(score, correct, wrong);
+      document.getElementById("submitArea").style.display = "none";
+    }
+
+    function showResult(score, correct, wrong) {
+      const card = document.getElementById("resultCard");
+      card.classList.add("show");
+
+      const title = document.getElementById("resultTitle");
+      const subtitle = document.getElementById("resultSubtitle");
+      const emoji = document.getElementById("celebrationEmoji");
+
+      if (score === 100) {
+        emoji.textContent = "🏆";
+        title.textContent = "满分！太棒啦！";
+        subtitle.textContent = "你对糖尿病知识掌握得非常好，继续保持健康生活方式！";
+        launchConfetti();
+      } else if (score >= 80) {
+        emoji.textContent = "🎉";
+        title.textContent = "表现优秀！";
+        subtitle.textContent = "你有良好的健康知识基础，看看错题解析巩固一下吧！";
+        launchConfetti();
+      } else if (score >= 60) {
+        emoji.textContent = "👍";
+        title.textContent = "及格啦！";
+        subtitle.textContent = "还有提升空间，认真看看详细解析学到更多健康知识！";
+      } else {
+        emoji.textContent = "📚";
+        title.textContent = "继续加油！";
+        subtitle.textContent = "别着急，学习糖尿病健康知识对自己和家人都很重要哦！";
+      }
+
+      emoji.classList.add("animate");
+
+      const circumference = 2 * Math.PI * 80;
+      const offset = circumference - (score / 100) * circumference;
+      const fillCircle = document.getElementById("scoreCircleFill");
+      fillCircle.style.strokeDasharray = circumference;
+      fillCircle.style.strokeDashoffset = offset;
+
+      animateNumber("scoreNumber", 0, score, 1200);
+      document.getElementById("totalAnswered").textContent = correct + wrong;
+      document.getElementById("correctCount").textContent = correct;
+      document.getElementById("wrongCount").textContent = wrong;
+
+      renderDetails();
+
+      card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderDetails() {
+      const detailContainer = document.getElementById("detailContainer");
+      detailContainer.innerHTML = "";
+      const letters = ["A", "B", "C", "D"];
+
+      quizData.forEach((item, idx) => {
+        const userAns = userAnswers[item.id];
+        const isCorrect = userAns === item.answer;
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.style.animation = `fadeInUp 0.5s ease-out ${idx * 0.08}s both`;
+        card.innerHTML = `
+          <div class="question-header">
+            <div class="question-number" style="background: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">${idx + 1}</div>
+            <div class="question-title">${item.question}</div>
+            <span class="question-status ${isCorrect ? 'status-correct' : 'status-wrong'}">${isCorrect ? '✓ 答对' : '✗ 答错'}</span>
+          </div>
+          <ul class="options-list">
+            ${item.options.map((opt, i) => {
+              let cls = "option-item disabled";
+              let icon = "";
+              if (i === item.answer) {
+                cls += " correct";
+                icon = '<span class="option-icon"><i class="fas fa-check-circle" style="color: var(--success);"></i> 正确答案</span>';
+              } else if (i === userAns) {
+                cls += " wrong";
+                icon = '<span class="option-icon"><i class="fas fa-times-circle" style="color: var(--danger);"></i> 你的选择</span>';
+              }
+              return `<li class="${cls}">
+                <span class="option-letter">${letters[i]}</span>
+                <span class="option-text">${opt}</span>
+                ${icon}
+              </li>`;
+            }).join("")}
+          </ul>
+          <div class="explanation">
+            <p><strong><i class="fas fa-lightbulb"></i> 解析（${item.category}）</strong></p>
+            <p>正确答案：<strong>${letters[item.answer]}. ${item.options[item.answer]}</strong></p>
+            <p>你的答案：<strong style="color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">${userAns !== undefined ? letters[userAns] + '. ' + item.options[userAns] : '未作答'}</strong></p>
+            <p>${item.explanation}</p>
+          </div>
+        `;
+        detailContainer.appendChild(card);
+      });
+    }
+
+    function animateNumber(id, start, end, duration) {
+      const el = document.getElementById(id);
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(start + (end - start) * eased);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function launchConfetti() {
+      const colors = ["#2A64B5", "#4A85D5", "#28a745", "#ffc107", "#dc3545", "#6f42c1"];
+      for (let i = 0; i < 80; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "%";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = 2 + Math.random() * 2 + "s";
+        c.style.animationDelay = Math.random() * 0.5 + "s";
+        c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        c.style.width = 6 + Math.random() * 8 + "px";
+        c.style.height = c.style.width;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4500);
+      }
+    }
+
+    function restart() {
+      userAnswers = {};
+      document.getElementById("resultCard").classList.remove("show");
+      document.getElementById("submitArea").style.display = "block";
+      document.getElementById("submitBtn").disabled = true;
+      document.getElementById("detailContainer").innerHTML = "";
+      document.getElementById("progressFill").style.width = "0%";
+      document.getElementById("progressText").textContent = "0 / 10";
+      renderQuiz();
+      document.querySelector(".welcome-card").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function shareScore() {
+      const correct = parseInt(document.getElementById("correctCount").textContent);
+      const wrong = parseInt(document.getElementById("wrongCount").textContent);
+      const score = correct * 10;
+      let msg = `🎉 我在糖尿病健康知识小测验中获得了 ${score} 分！（答对 ${correct} 题，答错 ${wrong} 题）快来测测你的糖尿病知识吧！`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: "糖尿病健康知识小测验",
+          text: msg
+        }).catch(() => fallbackCopy(msg));
+      } else {
+        fallbackCopy(msg);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        alert("成绩文本已复制到剪贴板，快去分享吧！\n\n" + text);
+      } catch (e) {
+        prompt("复制下面的文字分享给朋友：", text);
+      }
+      document.body.removeChild(ta);
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", submitQuiz);
+    document.getElementById("restartBtn").addEventListener("click", restart);
+    document.getElementById("shareBtn").addEventListener("click", shareScore);
+
+    renderQuiz();
+  </script>
+</body>
+</html>

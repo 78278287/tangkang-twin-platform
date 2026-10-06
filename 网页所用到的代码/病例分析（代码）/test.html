@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<!--
+    Dopetrope by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+    <title>糖征探 - 登录</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2em;
+        }
+        .login-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 3em;
+            width: 100%;
+            max-width: 450px;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+        .login-header h2 {
+            color: #d52349;
+            margin-bottom: 0.5em;
+            right: 0;
+        }
+        .login-header p {
+            color: #5d5d5d;
+            font-size: 1em;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #252122;
+            font-weight: 400;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8em;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #d52349;
+        }
+        .login-button {
+            width: 100%;
+            padding: 0.8em;
+            background: #d52349;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-button:hover {
+            background: #b31b3c;
+        }
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5em;
+            font-size: 0.9em;
+        }
+        .login-options a {
+            color: #d52349;
+            text-decoration: none;
+        }
+        .login-options a:hover {
+            text-decoration: underline;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1.5em;
+            font-size: 0.9em;
+        }
+        .register-link a {
+            color: #d52349;
+            font-weight: 400;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.8em;
+            border-radius: 5px;
+            margin-bottom: 1.5em;
+            display: none;
+        }
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.8em;
+            border-radius: 5px;
+            margin-bottom: 1.5em;
+            display: none;
+        }
+        @media screen and (max-width: 768px) {
+            .login-box {
+                padding: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+
+            <!-- Logo -->
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="糖征探" width="150" />
+                </a>
+            </div>
+
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="forum.html">论坛</a></li>
+                    <li><a href="dati1.html">自我检测</a></li>
+                    <li class="current"><a href="login.html">登录</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>欢迎登录</h2>
+                <p>登录您的账号以使用更多功能</p>
+            </div>
+
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+
+                <div class="login-options">
+                    <label>
+                        <input type="checkbox" name="remember"> 记住我
+                    </label>
+                    <a href="#">忘记密码？</a>
+                </div>
+
+                <button type="submit" class="login-button">登录</button>
+
+                <div class="register-link">
+                    还没有账号？<a href="register.html">立即注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="copyright">© 2024 糖征探. 保留所有权利。</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // 获取表单数据
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 简单的表单验证
+            if (!username || !password) {
+                showError('请输入用户名和密码');
+                return;
+            }
+            
+            // 这里可以添加实际的登录逻辑
+            // 模拟登录过程
+            showSuccess('登录成功，正在跳转...');
+            
+            // 模拟登录成功后的跳转
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+        
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            const successElement = document.getElementById('success-message');
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

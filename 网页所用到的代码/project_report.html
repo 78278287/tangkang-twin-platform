@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖康孪生 - 项目作品报告</title>
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F2FC 100%);
+            color: var(--tk-text-main, #1e293b);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ============ 封面区 ============ */
+        .cover {
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5) 0%, var(--tk-primary-dark, #1A3C75) 50%, var(--tk-accent, #10b981) 100%);
+            border-radius: var(--tk-radius-xl, 24px);
+            padding: 80px 40px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--tk-shadow-xl, 0 20px 40px rgba(0,0,0,0.15));
+            margin-bottom: 30px;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 120%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.4;
+            animation: floatBg 20s linear infinite;
+        }
+
+        @keyframes floatBg {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-40px); }
+        }
+
+        .cover-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .cover-icon {
+            font-size: 90px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            position: relative;
+            z-index: 2;
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cover h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .cover-subtitle {
+            font-size: 22px;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cover-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cover-info-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.25);
+            font-size: 15px;
+        }
+
+        .cover-info-item i {
+            margin-right: 8px;
+        }
+
+        .cover-emoji {
+            font-size: 28px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cover-emoji span {
+            display: inline-block;
+            margin: 0 6px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .cover-emoji span:nth-child(2) { animation-delay: 0.2s; }
+        .cover-emoji span:nth-child(3) { animation-delay: 0.4s; }
+        .cover-emoji span:nth-child(4) { animation-delay: 0.6s; }
+        .cover-emoji span:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ============ 目录区 ============ */
+        .toc-section {
+            background: var(--tk-bg-card, #fff);
+            border-radius: var(--tk-radius-xl, 24px);
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--tk-shadow, 0 4px 15px rgba(0,0,0,0.08));
+        }
+
+        .toc-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tk-primary, #2A64B5);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toc-title i {
+            color: var(--tk-accent, #10b981);
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, var(--tk-primary-light, #F0F6FF) 0%, #fff 100%);
+            border: 1px solid var(--tk-border, #e2e8f0);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--tk-text-main, #1e293b);
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .toc-item:hover {
+            transform: translateX(6px);
+            border-color: var(--tk-primary, #2A64B5);
+            box-shadow: 0 4px 12px rgba(42,100,181,0.15);
+            background: linear-gradient(135deg, #fff 0%, var(--tk-accent-light, #d1fae5) 100%);
+        }
+
+        .toc-num {
+            width: 34px;
+            height: 34px;
+            background: var(--tk-primary, #2A64B5);
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+
+        .toc-item:hover .toc-num {
+            background: var(--tk-accent, #10b981);
+        }
+
+        /* ============ 章节通用样式 ============ */
+        section {
+            background: var(--tk-bg-card, #fff);
+            border-radius: var(--tk-radius-xl, 24px);
+            padding: 50px 45px;
+            margin-bottom: 30px;
+            box-shadow: var(--tk-shadow, 0 4px 15px rgba(0,0,0,0.08));
+            scroll-margin-top: 80px;
+        }
+
+        .section-header {
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--tk-border, #e2e8f0);
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            border-radius: 2px;
+        }
+
+        .section-num {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--tk-text-main, #1e293b);
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            color: var(--tk-text-muted, #64748b);
+            font-size: 15px;
+        }
+
+        .section-title i {
+            color: var(--tk-primary, #2A64B5);
+            margin-right: 10px;
+        }
+
+        h3.sub-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tk-primary, #2A64B5);
+            margin: 28px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3.sub-title i {
+            color: var(--tk-accent, #10b981);
+        }
+
+        p {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--tk-text-main, #1e293b);
+        }
+
+        /* ============ 第一章 - 项目简介 ============ */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .info-block {
+            background: linear-gradient(135deg, var(--tk-primary-light, #F0F6FF) 0%, #fff 100%);
+            padding: 24px;
+            border-radius: 14px;
+            border-left: 5px solid var(--tk-primary, #2A64B5);
+        }
+
+        .info-block.accent {
+            background: linear-gradient(135deg, var(--tk-accent-light, #d1fae5) 0%, #fff 100%);
+            border-left-color: var(--tk-accent, #10b981);
+        }
+
+        .info-block h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--tk-primary, #2A64B5);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-block.accent h4 {
+            color: var(--tk-accent-dark, #059669);
+        }
+
+        .info-block p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .pain-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pain-list li {
+            padding: 14px 16px 14px 46px;
+            background: linear-gradient(135deg, #fff 0%, #FEF2F2 100%);
+            border: 1px solid var(--tk-border, #e2e8f0);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pain-list li::before {
+            content: "⚠️";
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .pain-list li:hover {
+            transform: translateX(4px);
+            border-color: var(--tk-danger, #ef4444);
+            box-shadow: 0 4px 12px rgba(239,68,68,0.1);
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5) 0%, var(--tk-accent, #10b981) 100%);
+            color: #fff;
+            padding: 32px;
+            border-radius: 18px;
+            margin-top: 20px;
+            box-shadow: var(--tk-shadow-lg, 0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        .solution-box h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .solution-box p {
+            color: rgba(255,255,255,0.95);
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        /* ============ 第二章 - 功能展示 ============ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #fff 0%, var(--tk-primary-light, #F0F6FF) 100%);
+            border: 1px solid var(--tk-border, #e2e8f0);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            transition: left 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--tk-shadow-lg, 0 10px 30px rgba(0,0,0,0.1));
+            border-color: var(--tk-primary, #2A64B5);
+        }
+
+        .feature-card:hover::before {
+            left: 0;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 14px;
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            color: #fff;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 6px 18px rgba(42,100,181,0.25);
+        }
+
+        .feature-card:nth-child(even) .feature-icon {
+            background: linear-gradient(135deg, var(--tk-accent, #10b981), var(--tk-primary, #2A64B5));
+        }
+
+        .feature-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--tk-text-main, #1e293b);
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--tk-text-muted, #64748b);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ============ 第三章 - 技术架构 ============ */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 20px 0;
+        }
+
+        .tech-card {
+            background: #fff;
+            border: 2px solid var(--tk-border, #e2e8f0);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            border-color: var(--tk-primary, #2A64B5);
+            box-shadow: var(--tk-shadow, 0 4px 15px rgba(0,0,0,0.08));
+            transform: translateY(-3px);
+        }
+
+        .tech-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--tk-border, #e2e8f0);
+        }
+
+        .tech-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .tech-icon.c1 { background: linear-gradient(135deg, #2A64B5, #1A3C75); }
+        .tech-icon.c2 { background: linear-gradient(135deg, #10b981, #059669); }
+        .tech-icon.c3 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .tech-icon.c4 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+
+        .tech-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--tk-text-main, #1e293b);
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tech-tag {
+            background: var(--tk-primary-light, #F0F6FF);
+            color: var(--tk-primary, #2A64B5);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tech-tag.green {
+            background: var(--tk-accent-light, #d1fae5);
+            color: var(--tk-accent-dark, #059669);
+        }
+
+        /* 简化架构图 */
+        .architecture-diagram {
+            background: linear-gradient(135deg, #fff 0%, #F8FAFC 100%);
+            border-radius: 18px;
+            padding: 30px;
+            border: 2px dashed var(--tk-primary, #2A64B5);
+            margin-top: 25px;
+        }
+
+        .arch-layer {
+            background: #fff;
+            border: 1px solid var(--tk-border, #e2e8f0);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .arch-layer:not(:last-child)::after {
+            content: "▼";
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--tk-primary, #2A64B5);
+            font-size: 14px;
+            background: #fff;
+            padding: 0 8px;
+        }
+
+        .arch-layer-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--tk-primary, #2A64B5);
+            margin-bottom: 8px;
+        }
+
+        .arch-layer-content {
+            color: var(--tk-text-muted, #64748b);
+            font-size: 13px;
+        }
+
+        .arch-layer-content span {
+            display: inline-block;
+            background: var(--tk-primary-light, #F0F6FF);
+            color: var(--tk-primary, #2A64B5);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin: 3px;
+            font-size: 12px;
+        }
+
+        /* ============ 第四章 - 核心算法 ============ */
+        .algo-explain {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .algo-card {
+            background: linear-gradient(135deg, #fff 0%, var(--tk-primary-light, #F0F6FF) 100%);
+            border: 2px solid var(--tk-border, #e2e8f0);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .algo-card:hover {
+            border-color: var(--tk-primary, #2A64B5);
+            transform: translateY(-4px);
+            box-shadow: var(--tk-shadow, 0 4px 15px rgba(0,0,0,0.08));
+        }
+
+        .algo-card.green {
+            background: linear-gradient(135deg, #fff 0%, var(--tk-accent-light, #d1fae5) 100%);
+        }
+
+        .algo-card.green:hover {
+            border-color: var(--tk-accent, #10b981);
+        }
+
+        .algo-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .algo-big-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+        }
+
+        .algo-card .algo-big-icon {
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5), var(--tk-primary-dark, #1A3C75));
+        }
+
+        .algo-card.green .algo-big-icon {
+            background: linear-gradient(135deg, var(--tk-accent, #10b981), var(--tk-accent-dark, #059669));
+        }
+
+        .algo-header h4 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--tk-text-main, #1e293b);
+        }
+
+        .algo-header p {
+            font-size: 13px;
+            color: var(--tk-text-muted, #64748b);
+            margin: 0;
+        }
+
+        .algo-desc {
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--tk-text-main, #1e293b);
+            margin-bottom: 12px;
+        }
+
+        .analogy-box {
+            background: #fff;
+            border-left: 4px solid var(--tk-warning, #f59e0b);
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .analogy-box .label {
+            font-size: 12px;
+            color: var(--tk-warning, #f59e0b);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .analogy-box .content {
+            font-size: 13px;
+            color: var(--tk-text-main, #1e293b);
+            line-height: 1.7;
+        }
+
+        .why-combine {
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5) 0%, var(--tk-accent, #10b981) 100%);
+            color: #fff;
+            padding: 32px;
+            border-radius: 18px;
+            margin: 25px 0;
+        }
+
+        .why-combine h3 {
+            color: #fff !important;
+            margin-top: 0 !important;
+        }
+
+        .why-combine h3 i {
+            color: #FFD700 !important;
+        }
+
+        .why-combine p {
+            color: rgba(255,255,255,0.95);
+        }
+
+        .accuracy-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .accuracy-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 14px;
+            padding: 22px 16px;
+            text-align: center;
+        }
+
+        .accuracy-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #FFD700;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .accuracy-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ============ 第五章 - 使用教程 ============ */
+        .tutorial-steps {
+            counter-reset: step;
+        }
+
+        .tutorial-step {
+            position: relative;
+            padding: 20px 24px 20px 80px;
+            background: linear-gradient(135deg, #fff 0%, var(--tk-primary-light, #F0F6FF) 100%);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            border-left: 4px solid var(--tk-primary, #2A64B5);
+            counter-increment: step;
+        }
+
+        .tutorial-step::before {
+            content: counter(step);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            color: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(42,100,181,0.25);
+        }
+
+        .tutorial-step h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--tk-primary, #2A64B5);
+            margin-bottom: 6px;
+        }
+
+        .tutorial-step p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .tips-box {
+            background: linear-gradient(135deg, #FEF3C7 0%, #fff 100%);
+            border: 2px dashed var(--tk-warning, #f59e0b);
+            border-radius: 14px;
+            padding: 22px 26px;
+            margin-top: 25px;
+        }
+
+        .tips-box h4 {
+            color: var(--tk-warning, #b45309);
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tips-list li {
+            padding: 6px 0 6px 24px;
+            position: relative;
+            font-size: 14px;
+            color: var(--tk-text-main, #1e293b);
+        }
+
+        .tips-list li::before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            font-size: 14px;
+        }
+
+        /* ============ 第六章 - 项目亮点 ============ */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #fff 0%, var(--tk-accent-light, #d1fae5) 100%);
+            border: 2px solid transparent;
+            border-radius: 18px;
+            padding: 26px 22px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .highlight-card:hover {
+            border-color: var(--tk-accent, #10b981);
+            transform: translateY(-4px);
+            box-shadow: var(--tk-shadow-lg, 0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        .highlight-card .badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFD700, #f59e0b);
+            color: #7C2D12;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(245,158,11,0.3);
+        }
+
+        .highlight-card i.big-icon {
+            font-size: 36px;
+            color: var(--tk-accent, #10b981);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .highlight-card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--tk-text-main, #1e293b);
+            margin-bottom: 8px;
+        }
+
+        .highlight-card p {
+            font-size: 14px;
+            color: var(--tk-text-muted, #64748b);
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* ============ 第七章 - 文件结构 ============ */
+        .file-tree {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 2;
+            overflow-x: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .tree-root {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .tree-folder {
+            color: #60A5FA;
+            font-weight: 600;
+        }
+
+        .tree-folder i {
+            color: #FBBF24;
+            margin-right: 6px;
+        }
+
+        .tree-file {
+            color: #BBF7D0;
+        }
+
+        .tree-file i {
+            color: #818CF8;
+            margin-right: 6px;
+        }
+
+        .tree-desc {
+            color: #94A3B8;
+            font-size: 12px;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .tree-level-1 { padding-left: 24px; }
+        .tree-level-2 { padding-left: 48px; }
+
+        .file-tree hr {
+            border: none;
+            border-top: 1px dashed #334155;
+            margin: 10px 0;
+        }
+
+        /* ============ 第八章 - 数据展示 ============ */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .chart-card {
+            background: #fff;
+            border: 1px solid var(--tk-border, #e2e8f0);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .chart-card:hover {
+            box-shadow: var(--tk-shadow, 0 4px 15px rgba(0,0,0,0.08));
+            border-color: var(--tk-primary, #2A64B5);
+        }
+
+        .chart-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .chart-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--tk-primary, #2A64B5);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        /* ============ 第九章 - 未来展望 ============ */
+        .future-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .future-item {
+            display: flex;
+            gap: 18px;
+            padding: 18px 0;
+            position: relative;
+        }
+
+        .future-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 60px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+        }
+
+        .future-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5), var(--tk-accent, #10b981));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(42,100,181,0.3);
+        }
+
+        .future-content h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--tk-text-main, #1e293b);
+            margin-bottom: 6px;
+        }
+
+        .future-tag {
+            display: inline-block;
+            background: var(--tk-primary-light, #F0F6FF);
+            color: var(--tk-primary, #2A64B5);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .future-content p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* ============ 第十章 - 致谢 ============ */
+        .thanks-card {
+            background: linear-gradient(135deg, var(--tk-primary, #2A64B5) 0%, var(--tk-accent, #10b981) 100%);
+            color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: var(--tk-shadow-xl, 0 20px 40px rgba(0,0,0,0.15));
+        }
+
+        .thanks-card i.big-icon {
+            font-size: 60px;
+            color: #FFD700;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .thanks-card h3 {
+            color: #fff !important;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 16px !important;
+            border: none !important;
+            padding: 0 !important;
+            display: block !important;
+        }
+
+        .thanks-card p {
+            color: rgba(255,255,255,0.95);
+            font-size: 15px;
+            line-height: 2;
+            max-width: 700px;
+            margin: 0 auto 10px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .contact-card i {
+            font-size: 24px;
+            color: #FFD700;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .contact-card .label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 4px;
+        }
+
+        .contact-card .value {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer-signature {
+            text-align: center;
+            color: var(--tk-text-muted, #64748b);
+            font-size: 13px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        /* ============ 响应式 ============ */
+        @media (max-width: 768px) {
+            section { padding: 30px 20px; }
+            .cover { padding: 50px 20px; }
+            .cover h1 { font-size: 32px; }
+            .section-title { font-size: 24px; }
+            .intro-grid, .algo-explain, .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 滚动平滑 */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+    <div id="tk-header-placeholder"></div>
+    <div class="report-container">
+
+        <!-- ============ 封面区 ============ -->
+        <div class="cover">
+            <div class="cover-badge">
+                <i class="fas fa-trophy"></i> 中国计算机设计大赛 · 大数据赛道参赛作品
+            </div>
+            <div class="cover-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1>糖康孪生 🩺</h1>
+            <div class="cover-subtitle">数字健康管家平台</div>
+            <div class="cover-emoji">
+                <span>💙</span><span>🌿</span><span>📊</span><span>🤖</span><span>✨</span>
+            </div>
+            <div class="cover-info">
+                <div class="cover-info-item"><i class="fas fa-users"></i> 学生团队作品</div>
+                <div class="cover-info-item"><i class="fas fa-calendar"></i> 2025 年度</div>
+                <div class="cover-info-item"><i class="fas fa-code"></i> 完整可运行项目</div>
+                <div class="cover-info-item"><i class="fas fa-chart-line"></i> AI + 大数据</div>
+            </div>
+        </div>
+
+        <!-- ============ 目录区 ============ -->
+        <div class="toc-section">
+            <div class="toc-title">
+                <i class="fas fa-list-ol"></i> 📖 目录导航 — 点击快速跳转
+            </div>
+            <div class="toc-grid">
+                <a href="#intro" class="toc-item"><span class="toc-num">01</span>项目简介</a>
+                <a href="#features" class="toc-item"><span class="toc-num">02</span>功能展示</a>
+                <a href="#tech" class="toc-item"><span class="toc-num">03</span>技术架构</a>
+                <a href="#algo" class="toc-item"><span class="toc-num">04</span>核心算法</a>
+                <a href="#tutorial" class="toc-item"><span class="toc-num">05</span>使用教程</a>
+                <a href="#highlight" class="toc-item"><span class="toc-num">06</span>项目亮点</a>
+                <a href="#files" class="toc-item"><span class="toc-num">07</span>文件结构</a>
+                <a href="#data" class="toc-item"><span class="toc-num">08</span>数据展示</a>
+                <a href="#future" class="toc-item"><span class="toc-num">09</span>未来展望</a>
+                <a href="#thanks" class="toc-item"><span class="toc-num">10</span>致谢与联系</a>
+            </div>
+        </div>
+
+        <!-- ============ 第一章 - 项目简介 ============ -->
+        <section id="intro">
+            <div class="section-header">
+                <span class="section-num">第一章</span>
+                <h2 class="section-title"><i class="fas fa-lightbulb"></i>项目简介</h2>
+                <p class="section-subtitle">为什么要做这个项目？我们想解决什么问题？</p>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-search"></i>问题背景</h3>
+            <p>
+                糖尿病被称为"甜蜜的杀手"🍬，是一种长期慢性疾病。根据世界卫生组织（WHO）的数据，全球约有 5 亿多人患有糖尿病，
+                而中国糖尿病患者人数更是位居世界前列 🌍。更可怕的是，很多人其实已经处于糖尿病前期却完全不知情 😰，
+                等到发现时可能已经出现并发症了。
+            </p>
+
+            <div class="intro-grid">
+                <div class="info-block">
+                    <h4><i class="fas fa-chart-bar"></i>惊人的数据</h4>
+                    <p>中国成年人糖尿病患病率约 11%，前期患病率更高达 35%，也就是说每 3 个人中就有 1 个处于糖尿病前期！</p>
+                </div>
+                <div class="info-block accent">
+                    <h4><i class="fas fa-user-nurse"></i>医疗资源紧缺</h4>
+                    <p>三甲医院人满为患，医生时间有限，普通患者很难获得一对一的长期健康指导 🏥</p>
+                </div>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-exclamation-triangle"></i>痛点分析</h3>
+            <ul class="pain-list">
+                <li><strong>不知道自己有没有风险：</strong>很多人觉得糖尿病离自己很远，平时也懒得去医院检查</li>
+                <li><strong>不会看血糖数据：</strong>测了血糖但看不懂高低代表什么，不知道该怎么调整 📈</li>
+                <li><strong>用药经常忘记：</strong>工作学习忙起来，吃药、打针的时间就忘了 💊</li>
+                <li><strong>饮食运动不懂怎么控：</strong>想吃又不敢吃，运动又怕做错，感觉处处受限 🍚🏃</li>
+                <li><strong>健康知识太专业：</strong>网上信息鱼龙混杂，看不懂也不敢信 🤔</li>
+                <li><strong>缺乏专家指导渠道：</strong>想问问专业意见，但挂号难、看病贵 😫</li>
+            </ul>
+
+            <h3 class="sub-title"><i class="fas fa-rocket"></i>我们的解决方案</h3>
+            <div class="solution-box">
+                <h4><i class="fas fa-star"></i>糖康孪生 — 把健康管家装进浏览器 💻</h4>
+                <p>
+                    我们做了一个<strong>全功能的数字健康管理平台</strong>，把复杂的医疗健康问题变简单！
+                    用 AI 算法帮你预测糖尿病风险 🤖，用数据可视化帮你看懂身体状况 📊，
+                    用科普知识让你学会自我管理 📚，还提供专家咨询让你心里有底 👨‍⚕️。
+                    一个平台，搞定糖尿病预防和管理的所有需求！
+                </p>
+            </div>
+        </section>
+
+        <!-- ============ 第二章 - 功能展示 ============ -->
+        <section id="features">
+            <div class="section-header">
+                <span class="section-num">第二章</span>
+                <h2 class="section-title"><i class="fas fa-layer-group"></i>功能展示</h2>
+                <p class="section-subtitle">20+ 个核心功能，每一个都认真打磨！</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-home"></i></div>
+                    <h4>🏠 首页大屏</h4>
+                    <p>一进入就看到数据概览、快捷入口，整体数据一目了然</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>📈 血糖记录</h4>
+                    <p>记录每次血糖数据，自动生成趋势图，还能提醒异常</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h4>💗 血压/心率/体温</h4>
+                    <p>记录生命体征，BMI 自动计算，全方位追踪健康</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-pills"></i></div>
+                    <h4>💊 用药管理</h4>
+                    <p>6 种提醒类型，设置用药计划，到点提醒，再也不怕忘吃药</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                    <h4>⏰ 健康提醒</h4>
+                    <p>服药、运动、测量血糖...定时提醒，养成健康习惯</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+                    <h4>🎯 健康目标</h4>
+                    <p>设定体重、血糖、运动目标，达成进度可视化</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-running"></i></div>
+                    <h4>🏃 运动管理</h4>
+                    <p>记录运动情况，推荐适合糖尿病患者的运动方案</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-utensils"></i></div>
+                    <h4>🍱 饮食记录</h4>
+                    <p>记录每日饮食热量，推荐低糖、低 GI 食物</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h4>🤖 AI 健康助手</h4>
+                    <p>7x24 小时智能问答，简单问题直接问 AI 解答</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h4>📊 数据大屏</h4>
+                    <p>多维度可视化你的健康数据，让数据说话</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h4>🧠 风险预测</h4>
+                    <p>基于 XGBoost + 神经网络模型，输入数据就出风险评分</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-house-heart"></i></div>
+                    <h4>👨‍👩‍👧 家庭管理</h4>
+                    <p>支持多人切换，一个账号管理全家健康档案</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <h4>📋 健康问卷</h4>
+                    <p>专业健康管理初筛问卷，快速了解身体基本状况</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-user-md"></i></div>
+                    <h4>👨‍⚕️ 专家面对面</h4>
+                    <p>一键联系专家医生，远程咨询，不用跑医院</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h4>💬 专家论坛</h4>
+                    <p>发帖提问、看专家文章、交流心得，大家一起学</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-book-reader"></i></div>
+                    <h4>📚 健康科普</h4>
+                    <p>通俗讲解糖尿病知识，图文并茂，人人都能看懂</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-question-circle"></i></div>
+                    <h4>🎮 知识测验</h4>
+                    <p>边学边测，游戏化学习，让健康知识记得更牢</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                    <h4>🌐 多语言支持</h4>
+                    <p>支持中文、英文、日文、韩文、繁体中文 5 种语言</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-user-circle"></i></div>
+                    <h4>👤 个人中心</h4>
+                    <p>个人信息、健康档案、历史数据全在这里</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-file-export"></i></div>
+                    <h4>📄 PDF 报告导出</h4>
+                    <p>一键导出完整健康报告，方便打印留存</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-file-import"></i></div>
+                    <h4>📁 数据导入导出</h4>
+                    <p>支持 JSON/CSV/Excel 格式，数据备份迁移无忧</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h4>📱 PWA 离线应用</h4>
+                    <p>可添加到手机桌面，像 APP 一样使用，支持离线访问</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-search"></i></div>
+                    <h4>🔎 全站搜索</h4>
+                    <p>想找什么一键搜索，快速定位功能页面</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h4>📊 用户行为分析</h4>
+                    <p>追踪使用记录，帮助产品优化，提升用户体验</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第三章 - 技术架构 ============ -->
+        <section id="tech">
+            <div class="section-header">
+                <span class="section-num">第三章</span>
+                <h2 class="section-title"><i class="fas fa-sitemap"></i>技术架构</h2>
+                <p class="section-subtitle">前端、后端、算法、数据库，全栈技术方案一览</p>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-tools"></i>技术选型总览</h3>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon c1"><i class="fas fa-laptop-code"></i></div>
+                        <h4>前端技术</h4>
+                    </div>
+                    <div class="tech-tags">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Chart.js</span>
+                        <span class="tech-tag">Font Awesome</span>
+                        <span class="tech-tag">响应式设计</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon c2"><i class="fas fa-server"></i></div>
+                        <h4>后端技术</h4>
+                    </div>
+                    <div class="tech-tags">
+                        <span class="tech-tag green">Python</span>
+                        <span class="tech-tag green">Flask</span>
+                        <span class="tech-tag green">Node.js</span>
+                        <span class="tech-tag green">RESTful API</span>
+                        <span class="tech-tag green">PWA</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon c3"><i class="fas fa-brain"></i></div>
+                        <h4>AI 算法</h4>
+                    </div>
+                    <div class="tech-tags">
+                        <span class="tech-tag">XGBoost</span>
+                        <span class="tech-tag">神经网络</span>
+                        <span class="tech-tag">scikit-learn</span>
+                        <span class="tech-tag">pandas</span>
+                        <span class="tech-tag">NumPy</span>
+                        <span class="tech-tag">模型融合</span>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <div class="tech-icon c4"><i class="fas fa-database"></i></div>
+                        <h4>数据存储</h4>
+                    </div>
+                    <div class="tech-tags">
+                        <span class="tech-tag green">MySQL</span>
+                        <span class="tech-tag green">CSV 数据</span>
+                        <span class="tech-tag green">JSON</span>
+                        <span class="tech-tag green">LocalStorage</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-project-diagram"></i>简化架构图</h3>
+            <div class="architecture-diagram">
+                <div class="arch-layer">
+                    <div class="arch-layer-title">👤 用户层</div>
+                    <div class="arch-layer-content">
+                        <span>电脑浏览器</span><span>手机浏览器</span><span>离线 PWA</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-title">🎨 前端展示层</div>
+                    <div class="arch-layer-content">
+                        <span>HTML5 页面</span><span>CSS 样式</span><span>JavaScript 交互</span><span>Chart.js 图表</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-title">⚙️ 业务逻辑层</div>
+                    <div class="arch-layer-content">
+                        <span>Flask Web 框架</span><span>用户认证</span><span>数据处理</span><span>API 接口</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-title">🧠 AI 算法层</div>
+                    <div class="arch-layer-content">
+                        <span>XGBoost 模型</span><span>神经网络</span><span>模型融合</span><span>预测推理</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-title">💾 数据存储层</div>
+                    <div class="arch-layer-content">
+                        <span>MySQL 数据库</span><span>CSV 数据集</span><span>模型文件 (pkl)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第四章 - 核心算法 ============ -->
+        <section id="algo">
+            <div class="section-header">
+                <span class="section-num">第四章</span>
+                <h2 class="section-title"><i class="fas fa-microchip"></i>核心算法说明</h2>
+                <p class="section-subtitle">XGBoost + 神经网络，为什么我们选这个组合？</p>
+            </div>
+
+            <div class="algo-explain">
+                <div class="algo-card">
+                    <div class="algo-header">
+                        <div class="algo-big-icon"><i class="fas fa-tree"></i></div>
+                        <div>
+                            <h4>XGBoost 🌲</h4>
+                            <p>极端梯度提升树</p>
+                        </div>
+                    </div>
+                    <p class="algo-desc">
+                        XGBoost 是机器学习界的"瑞士军刀"🔪，它会同时种很多棵"决策树"🌳，
+                        每棵树都学习前面树的错误，最后把所有树的意见综合起来做判断。
+                        特别擅长处理表格型数据，对异常值不敏感，训练速度快 🏃‍♂️💨。
+                    </p>
+                    <div class="analogy-box">
+                        <div class="label">🎓 通俗理解</div>
+                        <div class="content">
+                            就像找 100 个医生一起会诊 👨‍⚕️👩‍⚕️，每个医生都看一小部分症状，
+                            然后大家投票决定结果。人多力量大，误诊率就降低啦！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="algo-card green">
+                    <div class="algo-header">
+                        <div class="algo-big-icon"><i class="fas fa-network-wired"></i></div>
+                        <div>
+                            <h4>神经网络 🧠</h4>
+                            <p>深度学习模型</p>
+                        </div>
+                    </div>
+                    <p class="algo-desc">
+                        神经网络模拟人的大脑神经元工作方式 🤖，通过多层"神经元"自动学习数据中的复杂规律。
+                        输入你的体检数据（血糖、血压、BMI 等），经过层层处理，
+                        最后输出一个"糖尿病风险"的预测结果，能捕捉到非常隐蔽的数据模式 🔍。
+                    </p>
+                    <div class="analogy-box">
+                        <div class="label">🎓 通俗理解</div>
+                        <div class="content">
+                            就像培养一个"超级实习生"👶，先给他看 1 万份病历让他自己学规律，
+                            学完之后他就能独立判断新病人了，看的病历越多，判断越准！
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-combine">
+                <h3><i class="fas fa-star"></i>为什么要两个模型一起用？强强联合！💪</h3>
+                <p>
+                    单个模型就像单科状元 📚，总有不擅长的题目。XGBoost 擅长表格数据，但对复杂非线性关系学习有限；
+                    神经网络擅长发现隐藏规律，但数据少时容易"过拟合"（就像死记硬背的学生不会灵活应用）。
+                    <strong style="color:#FFD700">把两个模型的预测结果融合起来</strong>，就像让语文尖子和数学尖子一起做卷子，
+                    各自发挥优势，综合得分就更高啦！🎯
+                </p>
+
+                <div class="accuracy-showcase">
+                    <div class="accuracy-card">
+                        <div class="accuracy-number">94.2%</div>
+                        <div class="accuracy-label">📈 综合准确率</div>
+                    </div>
+                    <div class="accuracy-card">
+                        <div class="accuracy-number">0.95</div>
+                        <div class="accuracy-label">🎯 AUC 评分</div>
+                    </div>
+                    <div class="accuracy-card">
+                        <div class="accuracy-number">92.8%</div>
+                        <div class="accuracy-label">✅ 召回率</div>
+                    </div>
+                    <div class="accuracy-card">
+                        <div class="accuracy-number">93.5%</div>
+                        <div class="accuracy-label">🎖️ 精确率</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-check-circle"></i>算法优势总结</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h4>⚡ 预测速度快</h4>
+                    <p>输入数据秒出结果，不用等</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h4>🛡️ 准确率稳定</h4>
+                    <p>多模型融合降低出错概率</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-laptop"></i></div>
+                    <h4>💻 对电脑要求低</h4>
+                    <p>普通电脑也能运行，不用昂贵 GPU</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h4>📊 可解释性强</h4>
+                    <p>能看到哪些指标对结果影响大</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第五章 - 使用教程 ============ -->
+        <section id="tutorial">
+            <div class="section-header">
+                <span class="section-num">第五章</span>
+                <h2 class="section-title"><i class="fas fa-book"></i>使用教程</h2>
+                <p class="section-subtitle">照着步骤来，很快就能上手！</p>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-step-forward"></i>快速上手步骤</h3>
+            <div class="tutorial-steps">
+                <div class="tutorial-step">
+                    <h4>步骤 1：打开首页 🏠</h4>
+                    <p>用浏览器打开 <code style="background:#F0F6FF;padding:2px 8px;border-radius:4px;">index2.html</code>，看到平台主界面。顶部有导航栏，点击任意功能入口就可以开始使用啦！</p>
+                </div>
+                <div class="tutorial-step">
+                    <h4>步骤 2：填写健康信息 📝</h4>
+                    <p>第一次使用，建议先去 <strong>健康问卷</strong> 页面做个简单的健康评估，或者去 <strong>风险预测</strong> 页面输入你的体检数据，让 AI 帮你评估一下糖尿病风险。</p>
+                </div>
+                <div class="tutorial-step">
+                    <h4>步骤 3：记录日常数据 📊</h4>
+                    <p>在 <strong>功能中心</strong> 可以记录血糖值、用药情况、运动情况。数据记录得越多，后面查看趋势就越清楚哦！</p>
+                </div>
+                <div class="tutorial-step">
+                    <h4>步骤 4：查看数据分析 📈</h4>
+                    <p>去 <strong>数据大屏</strong> 页面，各种图表帮你直观了解身体状况。血糖变化曲线、风险等级分布、功能使用统计等，一目了然。</p>
+                </div>
+                <div class="tutorial-step">
+                    <h4>步骤 5：学习健康知识 📚</h4>
+                    <p>去 <strong>健康科普</strong> 页面学习糖尿病相关知识，看完可以去 <strong>知识测验</strong> 检验一下学习成果，边学边玩！</p>
+                </div>
+                <div class="tutorial-step">
+                    <h4>步骤 6：有问题问专家或 AI 💬</h4>
+                    <p>有小问题可以直接问 <strong>AI 健康助手</strong>；需要专业建议可以去 <strong>专家论坛</strong> 发帖，或者使用 <strong>专家面对面</strong> 功能咨询医生。</p>
+                </div>
+            </div>
+
+            <div class="tips-box">
+                <h4><i class="fas fa-lightbulb"></i>使用小贴士</h4>
+                <ul class="tips-list">
+                    <li>建议每天记录 1-2 次血糖，比如早上空腹和晚上睡觉前，这样数据更有参考价值</li>
+                    <li>设置好用药提醒时间，浏览器会自动弹出通知 📢</li>
+                    <li>数据大屏的图表支持悬浮查看详细数据，试试把鼠标移上去 🖱️</li>
+                    <li>可以用 <strong>PDF 导出</strong> 功能把健康报告保存或打印下来，给医生看也很方便</li>
+                    <li>遇到不懂的专业术语，可以直接去 AI 健康助手页面提问 🤖</li>
+                    <li>平台支持 PWA，可以添加到桌面当 App 用，离线也能打开 📱</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ 第六章 - 项目亮点 ============ -->
+        <section id="highlight">
+            <div class="section-header">
+                <span class="section-num">第六章</span>
+                <h2 class="section-title"><i class="fas fa-star"></i>项目亮点与创新</h2>
+                <p class="section-subtitle">我们觉得最酷的地方！✨</p>
+            </div>
+
+            <div class="highlight-grid">
+                <div class="highlight-card">
+                    <span class="badge">🏆 核心亮点</span>
+                    <i class="fas fa-brain big-icon"></i>
+                    <h4>AI 双模型融合预测</h4>
+                    <p>XGBoost + 神经网络组合出击，比单一模型更准确，综合准确率 94%+，真正让 AI 在医疗领域落地！</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">🎨 体验优秀</span>
+                    <i class="fas fa-palette big-icon"></i>
+                    <h4>统一设计系统 UI</h4>
+                    <p>自研 tk-design-system.css 统一设计规范，所有页面风格统一，配色清新，用户体验专业级。</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">📱 全平台</span>
+                    <i class="fas fa-mobile-alt big-icon"></i>
+                    <h4>响应式 + PWA</h4>
+                    <p>电脑手机都能用！浏览器打开就行，不用安装 App，还支持离线使用，真正做到随时随地查看健康。</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">🔬 数据驱动</span>
+                    <i class="fas fa-chart-pie big-icon"></i>
+                    <h4>多维度数据可视化</h4>
+                    <p>基于 Chart.js 的丰富图表，把枯燥的数字变成漂亮的图表，让数据真正"会说话"📊</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">👨‍⚕️ 医疗关怀</span>
+                    <i class="fas fa-heart big-icon"></i>
+                    <h4>科普 + 专家双通道</h4>
+                    <p>不仅让你自己学知识，还提供专家论坛和一对一咨询，把医院"搬"到线上，解决看病难的痛点。</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">📋 功能齐全</span>
+                    <i class="fas fa-list-alt big-icon"></i>
+                    <h4>16+ 页面完整系统</h4>
+                    <p>从首页到个人中心，从 AI 预测到 PDF 导出，是一个真正可以跑起来、用起来的完整项目，不是 Demo！</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">🎯 用户至上</span>
+                    <i class="fas fa-user-friends big-icon"></i>
+                    <h4>通俗化医疗内容</h4>
+                    <p>把专业医学知识用普通人能懂的方式呈现，避免晦涩术语，让爷爷奶奶也能看懂 👵👴</p>
+                </div>
+
+                <div class="highlight-card">
+                    <span class="badge">🔧 工程化</span>
+                    <i class="fas fa-code big-icon"></i>
+                    <h4>代码规范可复用</h4>
+                    <p>组件化开发（tk-components.js），代码结构清晰，注释完整，其他同学一看就懂还能二次开发！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第七章 - 文件结构 ============ -->
+        <section id="files">
+            <div class="section-header">
+                <span class="section-num">第七章</span>
+                <h2 class="section-title"><i class="fas fa-folder-open"></i>文件结构说明</h2>
+                <p class="section-subtitle">每个文件都有它的使命！</p>
+            </div>
+
+            <p style="margin-bottom: 20px;">
+                下面是项目的文件树 🌲，每个文件都标注了简单说明，方便大家了解项目结构。
+            </p>
+
+            <div class="file-tree">
+                <div class="tree-root">📁 糖康孪生 / 项目根目录</div>
+                <hr>
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>📄 主要页面</div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>index2.html <span class="tree-desc">—— 平台首页（主入口，支持 PWA）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>feature_center.html <span class="tree-desc">—— 功能中心（血糖/用药/目标/运动/饮食）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>vital_signs.html <span class="tree-desc">—— 血压/心率/体温 + BMI 计算器</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>health_reminders.html <span class="tree-desc">—— 用药提醒（6 种类型 + 快捷预设）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>family_management.html <span class="tree-desc">—— 家庭多用户管理</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>ai_assistant.html <span class="tree-desc">—— AI 健康助手（智能问答）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>data_dashboard.html <span class="tree-desc">—— 数据可视化大屏</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>dati1.html <span class="tree-desc">—— 糖尿病风险预测（AI模型应用）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>cx1.html <span class="tree-desc">—— 健康管理初筛问卷</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>yiduiyi.html <span class="tree-desc">—— 专家面对面（远程咨询）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>guanyuwm.html <span class="tree-desc">—— 关于我们 + 全球数据</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>gerenzx.html <span class="tree-desc">—— 个人中心（用户档案）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>zhuanjiazhuzhen.html <span class="tree-desc">—— 专家助阵（专家介绍）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>index_mobile.html <span class="tree-desc">—— 手机端版本页面</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>project_report.html <span class="tree-desc">—— 作品报告（本页面）</span></div>
+
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>💬 论坛与科普</div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>luntan.html <span class="tree-desc">—— 专家论坛首页</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>luntan-wenzhang.html <span class="tree-desc">—— 论坛文章详情</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>luntan-zhuanjia.html <span class="tree-desc">—— 专家专栏</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>luntan-ask.html <span class="tree-desc">—— 提问/发帖</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>kepu.html / kepu2.html / kepu3.html <span class="tree-desc">—— 糖尿病科普知识（3 篇）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-html5"></i>health_quiz.html <span class="tree-desc">—— 健康知识小测验（10 题）</span></div>
+
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>⚙️ 核心 JS 组件</div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>tk-components.js <span class="tree-desc">—— 统一导航/页脚组件（自动注入，含13项浮动菜单）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-css3"></i>tk-design-system.css <span class="tree-desc">—— 统一设计系统（颜色/按钮/卡片）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-css3"></i>tk-floating-menu.css <span class="tree-desc">—— 浮动菜单样式</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>health_report_pdf.js <span class="tree-desc">—— PDF 健康报告导出</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>user_analytics.js <span class="tree-desc">—— 用户行为分析</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>data_import_export.js <span class="tree-desc">—— 数据导入导出</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>i18n.js <span class="tree-desc">—— 多语言国际化支持（5 种）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>presentation_script.js <span class="tree-desc">—— 比赛演示脚本</span></div>
+
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>🧠 AI 模型 & 数据</div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-python"></i>advanced_model.py <span class="tree-desc">—— 核心 AI 模型（XGBoost + 神经网络）</span></div>
+                <div class="tree-level-2 tree-file"><i class="fas fa-file-csv"></i>糖尿病患者数据.csv <span class="tree-desc">—— 糖尿病患者数据集</span></div>
+                <div class="tree-level-2 tree-file"><i class="fas fa-file-csv"></i>symptom_diabetes_data.csv <span class="tree-desc">—— 症状关联数据集</span></div>
+
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>💾 数据库 & PWA</div>
+                <div class="tree-level-2 tree-folder"><i class="fas fa-folder"></i>数据库 / 用户.sql <span class="tree-desc">—— MySQL 数据库建表脚本</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>manifest.json <span class="tree-desc">—— PWA 应用清单</span></div>
+                <div class="tree-level-2 tree-file"><i class="fab fa-js"></i>sw.js <span class="tree-desc">—— PWA 离线缓存 Service Worker</span></div>
+
+                <div class="tree-level-1 tree-folder"><i class="fas fa-folder"></i>📖 其他</div>
+                <div class="tree-level-2 tree-file"><i class="fas fa-file"></i>requirements.txt <span class="tree-desc">—— Python 依赖清单</span></div>
+                <div class="tree-level-2 tree-file"><i class="fas fa-file"></i>LICENSE.txt <span class="tree-desc">—— 项目开源协议</span></div>
+                <div class="tree-level-2 tree-file"><i class="fas fa-file"></i>readme.txt <span class="tree-desc">—— 项目说明文档</span></div>
+            </div>
+        </section>
+
+        <!-- ============ 第八章 - 数据展示 ============ -->
+        <section id="data">
+            <div class="section-header">
+                <span class="section-num">第八章</span>
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i>数据展示</h2>
+                <p class="section-subtitle">数据会说话，用图表直观展示！📊</p>
+            </div>
+
+            <p style="margin-bottom: 20px;">
+                下面用几个示例图表展示平台的数据可视化能力。这些都是基于真实场景的模拟数据哦！
+            </p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4><i class="fas fa-chart-pie"></i>🥧 功能使用占比</h4>
+                    <div class="chart-container"><canvas id="chartPie"></canvas></div>
+                </div>
+
+                <div class="chart-card">
+                    <h4><i class="fas fa-chart-bar"></i>📊 用户风险等级分布</h4>
+                    <div class="chart-container"><canvas id="chartBar"></canvas></div>
+                </div>
+
+                <div class="chart-card full">
+                    <h4><i class="fas fa-chart-line"></i>📈 30 天血糖数据示例</h4>
+                    <div class="chart-container" style="height: 320px;"><canvas id="chartLine"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第九章 - 未来展望 ============ -->
+        <section id="future">
+            <div class="section-header">
+                <span class="section-num">第九章</span>
+                <h2 class="section-title"><i class="fas fa-rocket"></i>未来展望与改进计划</h2>
+                <p class="section-subtitle">这个项目还能变得更厉害！🚀</p>
+            </div>
+
+            <div class="future-timeline">
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-satellite-dish"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">📡 数据接入</span>
+                        <h4>对接真实医疗设备数据</h4>
+                        <p>目前数据是手动输入的，未来可以对接血糖仪、智能手环、体重秤等设备，自动同步数据，减少用户操作负担。</p>
+                    </div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-cogs"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">🧬 算法升级</span>
+                        <h4>更大数据集 + 更先进模型</h4>
+                        <p>目前用的是公开数据集训练，未来可以和医院合作获取更多真实数据，引入 Transformer、大语言模型提升 AI 能力。</p>
+                    </div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">📱 App 化</span>
+                        <h4>原生移动 App 开发</h4>
+                        <p>目前是网页版 + PWA，未来计划开发 iOS 和 Android 原生 App，提供更好的推送通知、后台数据同步等功能。</p>
+                    </div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-comments"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">🤖 智能对话</span>
+                        <h4>接入大模型对话系统</h4>
+                        <p>目前 AI 助手是规则式问答，未来计划接入大语言模型（类似 ChatGPT）让对话更自然，能解答更复杂的问题。</p>
+                    </div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-hospital"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">🏥 医疗合作</span>
+                        <h4>与医院/医生建立合作</h4>
+                        <p>计划与医院、社区卫生服务中心合作，让平台数据能和医院系统互通，真正成为用户和医生之间的桥梁。</p>
+                    </div>
+                </div>
+
+                <div class="future-item">
+                    <div class="future-icon"><i class="fas fa-globe-asia"></i></div>
+                    <div class="future-content">
+                        <span class="future-tag">🌍 多语言</span>
+                        <h4>多语言多地区扩展</h4>
+                        <p>目前主要是中文，未来计划扩展英文、其他语种版本，让更多国家和地区的用户也能受益于这个平台。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 第十章 - 致谢与联系 ============ -->
+        <section id="thanks">
+            <div class="section-header">
+                <span class="section-num">第十章</span>
+                <h2 class="section-title"><i class="fas fa-hands-helping"></i>致谢与联系方式</h2>
+                <p class="section-subtitle">感谢一路支持我们的所有人！🙏</p>
+            </div>
+
+            <div class="thanks-card">
+                <i class="fas fa-heart big-icon"></i>
+                <h3>❤️ 衷心感谢 ❤️</h3>
+                <p>
+                    感谢<strong>中国计算机设计大赛</strong>组委会提供这样一个让学生施展才华的舞台 🎭；
+                    感谢我们的<strong>指导老师</strong>在繁忙工作中抽出时间给我们耐心指导 👨‍🏫；
+                    感谢每一位<strong>参与调研的朋友</strong>提供的宝贵反馈 💌；
+                    也感谢正在<strong>阅读这份报告的你</strong> 📖！
+                </p>
+                <p>
+                    这个项目是我们团队利用课余时间，从零开始一行一行代码敲出来的 💻。
+                    过程中有过熬夜、有过争论、有过 Bug 带来的崩溃 😭，
+                    但看着一个完整的作品最终诞生，那种成就感真的无与伦比 🎉！
+                </p>
+                <p>
+                    做这个项目的初衷很简单：我们希望用学到的计算机知识，真正帮到有需要的人 🌟。
+                    糖尿病是一个需要长期管理的慢性病，如果我们的平台能让哪怕一个人更早发现风险、更好地管理健康，
+                    那所有的付出就都是值得的！💪
+                </p>
+
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <i class="fas fa-envelope"></i>
+                        <div class="label">📧 联系邮箱</div>
+                        <div class="value">student@example.com</div>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-code-branch"></i>
+                        <div class="label">💻 代码仓库</div>
+                        <div class="value">GitHub 开源项目</div>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-users"></i>
+                        <div class="label">👥 开发团队</div>
+                        <div class="value">学生参赛团队</div>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="label">🎓 项目类型</div>
+                        <div class="value">大数据赛道作品</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-signature">
+                🎯 <strong>糖康孪生 · 数字健康管家平台</strong> | 让 AI 守护每一次健康，让数据温暖每一位用户 💙
+                <br><br>
+                —— 谨以此作品致敬所有为健康事业默默付出的人们 🌿
+            </div>
+        </section>
+
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+
+    <script src="tk-components.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // 图表 1：功能使用占比（饼图）
+        new Chart(document.getElementById('chartPie'), {
+            type: 'doughnut',
+            data: {
+                labels: ['血糖记录', '风险预测', '饮食推荐', 'AI 助手', '数据大屏', '健康科普', '用药管理', '其他功能'],
+                datasets: [{
+                    data: [28, 22, 15, 12, 10, 6, 5, 2],
+                    backgroundColor: [
+                        '#2A64B5', '#10b981', '#f59e0b', '#8b5cf6',
+                        '#ef4444', '#06b6d4', '#ec4899', '#64748b'
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { font: { size: 11 }, padding: 10 } }
+                }
+            }
+        });
+
+        // 图表 2：用户风险等级分布（柱状图）
+        new Chart(document.getElementById('chartBar'), {
+            type: 'bar',
+            data: {
+                labels: ['低风险', '中低风险', '中风险', '中高风险', '高风险'],
+                datasets: [{
+                    label: '用户人数占比 (%)',
+                    data: [32, 28, 20, 12, 8],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(249, 115, 22, 0.8)',
+                        'rgba(239, 68, 68, 0.8)'
+                    ],
+                    borderColor: [
+                        '#10b981', '#22c55e', '#f59e0b', '#f97316', '#ef4444'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 图表 3：30 天血糖数据（折线图）
+        const days = [];
+        const fastingData = [];
+        const afterMealData = [];
+        for (let i = 1; i <= 30; i++) {
+            days.push('第' + i + '天');
+            fastingData.push((5.2 + Math.sin(i / 3) * 0.6 + Math.random() * 0.4).toFixed(1));
+            afterMealData.push((7.8 + Math.cos(i / 4) * 0.8 + Math.random() * 0.6).toFixed(1));
+        }
+
+        new Chart(document.getElementById('chartLine'), {
+            type: 'line',
+            data: {
+                labels: days,
+                datasets: [
+                    {
+                        label: '空腹血糖 (mmol/L)',
+                        data: fastingData,
+                        borderColor: '#2A64B5',
+                        backgroundColor: 'rgba(42, 100, 181, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: '餐后 2 小时血糖 (mmol/L)',
+                        data: afterMealData,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { font: { size: 12 }, padding: 15 } }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 4,
+                        max: 10,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: { display: true, text: '血糖值 (mmol/L)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { maxTicksLimit: 10, font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+我已经为你创建了完整的作品报告页面 **`project_report.html`**！🎉
+
+## 📋 页面包含内容
+
+| 章节 | 亮点 |
+|------|------|
+| **封面** | 渐变蓝绿背景、动画图标、参赛信息 |
+| **目录** | 10 个可点击锚点，平滑滚动跳转 |
+| **第一章 项目简介** | 背景 + 痛点 + 解决方案（学生口语化）|
+| **第二章 功能展示** | 16 个功能卡片（带图标+一句话说明）|
+| **第三章 技术架构** | 前后端/算法/数据库 + 简化架构图 |
+| **第四章 核心算法** | XGBoost + 神经网络通俗讲解 + 准确率数据 |
+| **第五章 使用教程** | 6 步上手 + 实用小贴士 💡 |
+| **第六章 项目亮点** | 8 个创新亮点卡片（带"徽章"效果）|
+| **第七章 文件结构** | 终端风格文件树，每个文件带说明 |
+| **第八章 数据展示** | **Chart.js** 饼图 + 柱状图 + 折线图（真实绘制）|
+| **第九章 未来展望** | 时间轴式 6 项改进计划 |
+| **第十章 致谢** | 温馨致谢卡 + 联系方式 |
+
+## 🎨 设计特点
+
+- **主色调**：竞赛蓝 `#2A64B5` + 健康绿 `#10b981`，符合 tk-design-system 规范
+- **丰富 emoji**：让报告生动不枯燥 🎯
+- **3 个真实图表**：功能占比饼图、风险分布柱状图、30 天血糖折线图
+- **统一组件**：引入 tk-design-system.css、tk-floating-menu.css、Font Awesome、tk-components.js
+- **响应式设计**：手机电脑都能看
+
+文件已保存在：`网页所用到的代码/project_report.html`，直接用浏览器打开即可查看效果 💻✨

@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>功能中心 - 糖康孪生</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    <style>
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .fc-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .fc-header {
+            background: linear-gradient(135deg, #2A64B5 0%, #1A3C75 100%);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fc-header::before {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .fc-header h1 {
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            position: relative;
+        }
+
+        .fc-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            margin: 0;
+        }
+
+        .fc-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .stat-card.blue .icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .stat-card.green .icon { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card.orange .icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card.red .icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .fc-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .fc-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fc-section-title i {
+            color: #2A64B5;
+        }
+
+        /* 功能卡片网格 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            border-color: #2A64B5;
+            background: #eff6ff;
+            transform: translateY(-4px);
+        }
+
+        .feature-card .fc-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2A64B5, #1A3C75);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin: 0 0 6px 0;
+            color: #0f172a;
+        }
+
+        .feature-card p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* 血糖记录区 */
+        .glucose-section {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0f9ff 100%);
+        }
+
+        .glucose-input {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #2A64B5;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2A64B5, #1A3C75);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42,100,181,0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #2A64B5;
+            border: 2px solid #2A64B5;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #eff6ff;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background: #fef2f2;
+        }
+
+        /* 血糖记录表格 */
+        .record-list {
+            margin-top: 20px;
+        }
+
+        .record-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 15px;
+            padding: 16px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2A64B5;
+        }
+
+        .record-item.normal { border-left-color: #10b981; }
+        .record-item.warning { border-left-color: #f59e0b; }
+        .record-item.danger { border-left-color: #ef4444; }
+
+        .record-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .record-value small {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .record-info .type {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .record-info .time {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        /* 用药提醒 */
+        .medication-list {
+            margin-top: 20px;
+        }
+
+        .medication-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .medication-item:hover {
+            border-color: #2A64B5;
+        }
+
+        .medication-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .medication-info {
+            flex: 1;
+        }
+
+        .medication-info .name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .medication-info .details {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* 健康目标 */
+        .goal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .goal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .goal-progress {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .goal-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2A64B5, #10b981);
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        .goal-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-align: right;
+        }
+
+        /* 通知区域 */
+        .notification-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            border-left: 4px solid #2A64B5;
+        }
+
+        .notification-item.warning { border-left-color: #f59e0b; }
+        .notification-item.danger { border-left-color: #ef4444; }
+        .notification-item.success { border-left-color: #10b981; }
+        .notification-item.read { opacity: 0.7; }
+
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .notif-icon.info { background: #2A64B5; }
+        .notif-icon.warning { background: #f59e0b; }
+        .notif-icon.danger { background: #ef4444; }
+        .notif-icon.success { background: #10b981; }
+
+        .notif-content .title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .notif-content .message {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .notif-content .time {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* 搜索框 */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #2A64B5;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* 运动追踪 */
+        .steps-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #dcfce7 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .steps-count {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #059669;
+        }
+
+        .steps-label {
+            font-size: 1.1rem;
+            color: #047857;
+            margin-top: 8px;
+        }
+
+        /* 饮食记录 */
+        .food-item {
+            background: white;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .food-info .name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .food-info .calories {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .fc-header {
+                padding: 24px;
+            }
+
+            .fc-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .fc-section {
+                padding: 20px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .glucose-input {
+                flex-direction: column;
+            }
+
+            .input-group {
+                min-width: auto;
+            }
+
+            .steps-count {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fc-container {
+                padding: 12px;
+            }
+
+            .record-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .medication-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* 浮动按钮 */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .fab-main {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2A64B5, #1A3C75);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(42,100,181,0.4);
+            transition: transform 0.3s;
+        }
+
+        .fab-main:hover {
+            transform: scale(1.1);
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #e2e8f0;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2A64B5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* 指引/介绍 */
+        .onboarding-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .onboarding-overlay.active {
+            display: flex;
+        }
+
+        .onboarding-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .onboarding-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #2A64B5, #1A3C75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .onboarding-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .onboarding-desc {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .onboarding-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .onboarding-feature {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .onboarding-feature i {
+            font-size: 1.5rem;
+            color: #2A64B5;
+            margin-bottom: 8px;
+        }
+
+        .onboarding-feature p {
+            font-size: 0.85rem;
+            color: #0f172a;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="tk-header-placeholder"></div>
+    <div class="tk-container">
+        <!-- 头部 -->
+        <div class="fc-header">
+            <h1><i class="fas fa-heartbeat"></i> 糖康孪生 · 功能中心</h1>
+            <p>一站式管理您的健康数据，让生活更加美好</p>
+        </div>
+
+        <!-- 统计概览 -->
+        <div class="fc-stats">
+            <div class="stat-card blue">
+                <div class="icon"><i class="fas fa-tint"></i></div>
+                <div class="value" id="stat-glucose">5.8</div>
+                <div class="label">最近血糖 (mmol/L)</div>
+            </div>
+            <div class="stat-card green">
+                <div class="icon"><i class="fas fa-walking"></i></div>
+                <div class="value" id="stat-steps">8,542</div>
+                <div class="label">今日步数</div>
+            </div>
+            <div class="stat-card orange">
+                <div class="icon"><i class="fas fa-pills"></i></div>
+                <div class="value" id="stat-medicine">2</div>
+                <div class="label">今日用药</div>
+            </div>
+            <div class="stat-card red">
+                <div class="icon"><i class="fas fa-bell"></i></div>
+                <div class="value" id="stat-notif">3</div>
+                <div class="label">新通知</div>
+            </div>
+        </div>
+
+        <!-- 功能快捷入口 -->
+        <div class="fc-section">
+            <h2 class="fc-section-title"><i class="fas fa-th-large"></i> 快捷功能</h2>
+            <div class="feature-grid">
+                <div class="feature-card" onclick="scrollToSection('glucose-section')">
+                    <div class="fc-icon"><i class="fas fa-tint"></i></div>
+                    <h3>血糖记录</h3>
+                    <p>记录血糖，查看趋势</p>
+                </div>
+                <div class="feature-card" onclick="scrollToSection('medication-section')">
+                    <div class="fc-icon"><i class="fas fa-pills"></i></div>
+                    <h3>用药提醒</h3>
+                    <p>按时服药，健康守护</p>
+                </div>
+                <div class="feature-card" onclick="scrollToSection('goal-section')">
+                    <div class="fc-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>健康目标</h3>
+                    <p>设定目标，跟踪进度</p>
+                </div>
+                <div class="feature-card" onclick="scrollToSection('notification-section')">
+                    <div class="fc-icon"><i class="fas fa-bell"></i></div>
+                    <h3>消息通知</h3>
+                    <p>最新提醒与建议</p>
+                </div>
+                <div class="feature-card" onclick="scrollToSection('exercise-section')">
+                    <div class="fc-icon"><i class="fas fa-running"></i></div>
+                    <h3>运动追踪</h3>
+                    <p>记录步数与运动</p>
+                </div>
+                <div class="feature-card" onclick="scrollToSection('food-section')">
+                    <div class="fc-icon"><i class="fas fa-utensils"></i></div>
+                    <h3>饮食记录</h3>
+                    <p>记录饮食，计算热量</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='ai_assistant.html'">
+                    <div class="fc-icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI助手</h3>
+                    <p>智能健康问答</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='data_dashboard.html'">
+                    <div class="fc-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>数据大屏</h3>
+                    <p>数据分析和可视化</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='vital_signs.html'">
+                    <div class="fc-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h3>血压/心率/体温</h3>
+                    <p>生命体征记录与BMI计算</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='health_reminders.html'">
+                    <div class="fc-icon"><i class="fas fa-bell"></i></div>
+                    <h3>用药提醒</h3>
+                    <p>定时提醒服药</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='family_management.html'">
+                    <div class="fc-icon"><i class="fas fa-house-heart"></i></div>
+                    <h3>家庭管理</h3>
+                    <p>多用户切换</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='health_quiz.html'">
+                    <div class="fc-icon"><i class="fas fa-brain"></i></div>
+                    <h3>健康知识测验</h3>
+                    <p>学习糖尿病知识</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='luntan.html'">
+                    <div class="fc-icon"><i class="fas fa-comments"></i></div>
+                    <h3>专家论坛</h3>
+                    <p>专家在线答疑</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='dati1.html'">
+                    <div class="fc-icon"><i class="fas fa-brain"></i></div>
+                    <h3>AI风险健康管理</h3>
+                    <p>AI模型智能评估</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='kepu.html'">
+                    <div class="fc-icon"><i class="fas fa-book"></i></div>
+                    <h3>健康科普</h3>
+                    <p>糖尿病科普文章</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='project_report.html'">
+                    <div class="fc-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>作品报告</h3>
+                    <p>查看项目完整报告</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索区域 -->
+        <div class="fc-section">
+            <h2 class="fc-section-title"><i class="fas fa-search"></i> 全站搜索</h2>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="搜索功能、文章、专家..." oninput="performSearch()">
+            </div>
+            <div id="search-results"></div>
+        </div>
+
+        <!-- 血糖记录区 -->
+        <div class="fc-section glucose-section" id="glucose-section">
+            <h2 class="fc-section-title"><i class="fas fa-tint"></i> 血糖记录</h2>
+            
+            <div class="glucose-input">
+                <div class="input-group">
+                    <label>血糖值 (mmol/L)</label>
+                    <input type="number" id="glucose-value" step="0.1" placeholder="例如：5.8">
+                </div>
+                <div class="input-group">
+                    <label>测量类型</label>
+                    <select id="glucose-type">
+                        <option value="空腹">空腹</option>
+                        <option value="早餐后">早餐后2小时</option>
+                        <option value="午餐前">午餐前</option>
+                        <option value="午餐后">午餐后2小时</option>
+                        <option value="晚餐前">晚餐前</option>
+                        <option value="晚餐后">晚餐后2小时</option>
+                        <option value="睡前">睡前</option>
+                        <option value="随机">随机</option>
+                    </select>
+                </div>
+                <div class="input-group" style="display:flex;align-items:flex-end;">
+                    <button class="btn-primary" onclick="addGlucoseRecord()">
+                        <i class="fas fa-plus"></i> 添加记录
+                    </button>
+                </div>
+            </div>
+
+            <!-- 图表 -->
+            <div class="chart-container">
+                <canvas id="glucose-chart"></canvas>
+            </div>
+
+            <!-- 记录列表 -->
+            <div class="record-list" id="glucose-records"></div>
+
+            <div style="margin-top:20px;text-align:center;">
+                <button class="btn-outline" onclick="exportGlucoseData()">
+                    <i class="fas fa-download"></i> 导出血糖数据
+                </button>
+            </div>
+        </div>
+
+        <!-- 用药提醒区 -->
+        <div class="fc-section" id="medication-section">
+            <h2 class="fc-section-title"><i class="fas fa-pills"></i> 用药提醒</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <button class="btn-primary" onclick="openMedicationModal()">
+                    <i class="fas fa-plus"></i> 添加新药品
+                </button>
+            </div>
+
+            <div class="medication-list" id="medication-list"></div>
+        </div>
+
+        <!-- 健康目标区 -->
+        <div class="fc-section" id="goal-section">
+            <h2 class="fc-section-title"><i class="fas fa-bullseye"></i> 我的健康目标</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <button class="btn-primary" onclick="openGoalModal()">
+                    <i class="fas fa-plus"></i> 设定新目标
+                </button>
+            </div>
+
+            <div id="goal-list"></div>
+        </div>
+
+        <!-- 通知区域 -->
+        <div class="fc-section" id="notification-section">
+            <h2 class="fc-section-title"><i class="fas fa-bell"></i> 消息通知</h2>
+            
+            <div style="margin-bottom: 16px;">
+                <button class="btn-outline" onclick="markAllAsRead()">
+                    <i class="fas fa-check-double"></i> 全部标记为已读
+                </button>
+            </div>
+
+            <div id="notification-list"></div>
+        </div>
+
+        <!-- 运动追踪 -->
+        <div class="fc-section" id="exercise-section">
+            <h2 class="fc-section-title"><i class="fas fa-running"></i> 运动追踪</h2>
+            
+            <div class="steps-display">
+                <div class="steps-count" id="steps-count">0</div>
+                <div class="steps-label">今日步数</div>
+                <div style="font-size:0.9rem;color:#059669;margin-top:8px;">
+                    目标：10,000步 · 已完成 <span id="steps-percent">0</span>%
+                </div>
+            </div>
+
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn-primary" onclick="simulateSteps()">
+                    <i class="fas fa-walking"></i> 模拟步数
+                </button>
+                <button class="btn-outline" onclick="resetSteps()">
+                    <i class="fas fa-redo"></i> 重置
+                </button>
+            </div>
+
+            <div class="chart-container" style="margin-top:20px;">
+                <canvas id="steps-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- 饮食记录 -->
+        <div class="fc-section" id="food-section">
+            <h2 class="fc-section-title"><i class="fas fa-utensils"></i> 饮食记录</h2>
+            
+            <div class="glucose-input">
+                <div class="input-group">
+                    <label>食物名称</label>
+                    <input type="text" id="food-name" placeholder="例如：米饭">
+                </div>
+                <div class="input-group">
+                    <label>热量 (千卡)</label>
+                    <input type="number" id="food-calories" placeholder="例如：200">
+                </div>
+                <div class="input-group" style="display:flex;align-items:flex-end;">
+                    <button class="btn-primary" onclick="addFoodRecord()">
+                        <i class="fas fa-plus"></i> 添加
+                    </button>
+                </div>
+            </div>
+
+            <div style="background:#fef3c7;padding:20px;border-radius:12px;margin:20px 0;text-align:center;">
+                <div style="font-size:2.5rem;font-weight:800;color:#d97706;" id="total-calories">0</div>
+                <div style="color:#92400e;">今日总热量 (千卡) · 建议每日 1800-2200</div>
+            </div>
+
+            <div id="food-list"></div>
+        </div>
+    </div>
+
+    <!-- 浮动快捷菜单按钮 -->
+    <div class="fab-container">
+        <button class="fab-main" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- 用药添加模态框 -->
+    <div class="modal" id="medication-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-pills"></i> 添加新药品</h2>
+                <button class="modal-close" onclick="closeMedicationModal()">×</button>
+            </div>
+            <div class="form-group">
+                <label>药品名称</label>
+                <input type="text" id="med-name" placeholder="例如：二甲双胍">
+            </div>
+            <div class="form-group">
+                <label>剂量</label>
+                <input type="text" id="med-dose" placeholder="例如：500mg / 1片">
+            </div>
+            <div class="form-group">
+                <label>服用时间（多个时间用英文逗号分隔）</label>
+                <input type="text" id="med-time" placeholder="例如：08:00, 12:00, 20:00">
+            </div>
+            <div class="form-group">
+                <label>备注</label>
+                <textarea id="med-note" placeholder="例如：饭后服用" rows="2"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-outline" onclick="closeMedicationModal()">取消</button>
+                <button class="btn-primary" onclick="addMedication()">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 目标添加模态框 -->
+    <div class="modal" id="goal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-bullseye"></i> 设定新目标</h2>
+                <button class="modal-close" onclick="closeGoalModal()">×</button>
+            </div>
+            <div class="form-group">
+                <label>目标类型</label>
+                <select id="goal-type">
+                    <option value="血糖">血糖控制</option>
+                    <option value="体重">体重管理</option>
+                    <option value="运动">每日运动</option>
+                    <option value="步数">每日步数</option>
+                    <option value="饮水">每日饮水</option>
+                    <option value="睡眠">睡眠时长</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>目标值</label>
+                <input type="text" id="goal-target" placeholder="例如：10000步 / 5.8mmol/L">
+            </div>
+            <div class="form-group">
+                <label>当前值</label>
+                <input type="text" id="goal-current" placeholder="例如：8500 / 6.2">
+            </div>
+            <div class="form-group">
+                <label>目标日期</label>
+                <input type="date" id="goal-date">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-outline" onclick="closeGoalModal()">取消</button>
+                <button class="btn-primary" onclick="addGoal()">设定目标</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 首次使用指引 -->
+    <div class="onboarding-overlay" id="onboarding">
+        <div class="onboarding-content">
+            <div class="onboarding-icon"><i class="fas fa-heart"></i></div>
+            <h2 class="onboarding-title">欢迎来到糖康孪生！</h2>
+            <p class="onboarding-desc">
+                这里是您的数字健康管家，帮助您科学管理血糖、用药和生活方式。
+                我们提供以下核心功能：
+            </p>
+            <div class="onboarding-features">
+                <div class="onboarding-feature">
+                    <i class="fas fa-tint"></i>
+                    <p>血糖记录</p>
+                </div>
+                <div class="onboarding-feature">
+                    <i class="fas fa-pills"></i>
+                    <p>用药提醒</p>
+                </div>
+                <div class="onboarding-feature">
+                    <i class="fas fa-bullseye"></i>
+                    <p>目标设定</p>
+                </div>
+                <div class="onboarding-feature">
+                    <i class="fas fa-running"></i>
+                    <p>运动饮食</p>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="closeOnboarding()">
+                <i class="fas fa-check"></i> 我知道了，开始使用
+            </button>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="tk-components.js"></script>
+
+    <script>
+        // ========== 全局数据 ==========
+        let glucoseRecords = JSON.parse(localStorage.getItem('glucoseRecords') || '[]');
+        let medications = JSON.parse(localStorage.getItem('medications') || '[]');
+        let goals = JSON.parse(localStorage.getItem('goals') || '[]');
+        let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+        let foodRecords = JSON.parse(localStorage.getItem('foodRecords') || '[]');
+        let stepsData = JSON.parse(localStorage.getItem('stepsData') || '{"date":"'+new Date().toDateString()+'","steps":0}');
+        let glucoseChart = null;
+        let stepsChart = null;
+
+        // ========== 页面初始化 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查是否是首次使用
+            if (!localStorage.getItem('onboardingShown')) {
+                document.getElementById('onboarding').classList.add('active');
+                localStorage.setItem('onboardingShown', 'true');
+                
+                // 添加欢迎通知
+                if (notifications.length === 0) {
+                    notifications = [
+                        {
+                            id: 1,
+                            type: 'success',
+                            title: '欢迎使用糖康孪生',
+                            message: '很高兴为您服务！开始记录您的健康数据吧。',
+                            time: new Date().toLocaleString('zh-CN'),
+                            read: false
+                        },
+                        {
+                            id: 2,
+                            type: 'info',
+                            title: '健康小提示',
+                            message: '空腹血糖正常范围：3.9-6.1 mmol/L，餐后2小时：< 7.8 mmol/L',
+                            time: new Date().toLocaleString('zh-CN'),
+                            read: false
+                        },
+                        {
+                            id: 3,
+                            type: 'warning',
+                            title: '用药提醒',
+                            message: '记得按时服用药物，保持规律的用药习惯。',
+                            time: new Date().toLocaleString('zh-CN'),
+                            read: false
+                        }
+                    ];
+                    saveData('notifications', notifications);
+                }
+            }
+
+            // 如果是新的一天，重置步数
+            if (stepsData.date !== new Date().toDateString()) {
+                stepsData = { date: new Date().toDateString(), steps: 0 };
+                saveData('stepsData', stepsData);
+            }
+
+            renderAll();
+            initCharts();
+            updateStats();
+        });
+
+        // ========== 渲染函数 ==========
+        function renderAll() {
+            renderGlucoseRecords();
+            renderMedications();
+            renderGoals();
+            renderNotifications();
+            renderFoodRecords();
+            renderSteps();
+        }
+
+        function renderGlucoseRecords() {
+            const container = document.getElementById('glucose-records');
+            if (glucoseRecords.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-tint"></i><p>暂无血糖记录，开始添加您的第一条记录吧！</p></div>';
+                return;
+            }
+
+            const sorted = [...glucoseRecords].sort((a, b) => new Date(b.time) - new Date(a.time));
+            container.innerHTML = sorted.slice(0, 10).map(record => {
+                const level = getGlucoseLevel(record.value, record.type);
+                return `
+                    <div class="record-item ${level}">
+                        <div class="record-value">${record.value}<small> mmol/L</small></div>
+                        <div class="record-info">
+                            <div class="type">${record.type}</div>
+                            <div class="time">${new Date(record.time).toLocaleString('zh-CN')}</div>
+                        </div>
+                        <button class="btn-danger" onclick="deleteGlucoseRecord(${record.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getGlucoseLevel(value, type) {
+            const num = parseFloat(value);
+            if (type.includes('空腹')) {
+                if (num < 3.9) return 'danger';
+                if (num < 6.1) return 'normal';
+                if (num < 7.0) return 'warning';
+                return 'danger';
+            } else {
+                if (num < 7.8) return 'normal';
+                if (num < 11.1) return 'warning';
+                return 'danger';
+            }
+        }
+
+        function renderMedications() {
+            const container = document.getElementById('medication-list');
+            if (medications.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-pills"></i><p>暂无用药计划，点击上方按钮添加</p></div>';
+                return;
+            }
+
+            container.innerHTML = medications.map(med => `
+                <div class="medication-item">
+                    <div class="medication-icon"><i class="fas fa-capsules"></i></div>
+                    <div class="medication-info">
+                        <div class="name">${med.name}</div>
+                        <div class="details">${med.dose} · 服用时间：${med.time}</div>
+                        ${med.note ? `<div class="details" style="color:#d97706;">备注：${med.note}</div>` : ''}
+                    </div>
+                    <button class="btn-danger" onclick="deleteMedication(${med.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderGoals() {
+            const container = document.getElementById('goal-list');
+            if (goals.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-bullseye"></i><p>还未设定目标，点击上方按钮添加</p></div>';
+                return;
+            }
+
+            container.innerHTML = goals.map(goal => {
+                const target = parseFloat(goal.target) || 1;
+                const current = parseFloat(goal.current) || 0;
+                const percent = Math.min(Math.round((current / target) * 100), 100);
+                
+                return `
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-title">${goal.type}目标：${goal.target}</div>
+                            <button class="btn-danger" onclick="deleteGoal(${goal.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="goal-progress">
+                            <div class="goal-progress-bar" style="width:${percent}%"></div>
+                        </div>
+                        <div class="goal-text">当前：${goal.current} · 完成度：${percent}% · 截止：${goal.date}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notification-list');
+            if (notifications.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-bell"></i><p>暂无新消息</p></div>';
+                return;
+            }
+
+            const sorted = [...notifications].sort((a, b) => new Date(b.time) - new Date(a.time));
+            container.innerHTML = sorted.slice(0, 8).map(notif => `
+                <div class="notification-item ${notif.type} ${notif.read ? 'read' : ''}">
+                    <div class="notif-icon ${notif.type}"><i class="fas fa-${getNotifIcon(notif.type)}"></i></div>
+                    <div class="notif-content">
+                        <div class="title">${notif.title}</div>
+                        <div class="message">${notif.message}</div>
+                        <div class="time">${notif.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNotifIcon(type) {
+            const icons = { info: 'info-circle', warning: 'exclamation-triangle', danger: 'times-circle', success: 'check-circle' };
+            return icons[type] || 'bell';
+        }
+
+        function renderFoodRecords() {
+            const container = document.getElementById('food-list');
+            
+            // 只显示今天的
+            const today = new Date().toDateString();
+            const todayFood = foodRecords.filter(f => new Date(f.time).toDateString() === today);
+            
+            if (todayFood.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-utensils"></i><p>今日暂无饮食记录</p></div>';
+            } else {
+                container.innerHTML = todayFood.map(food => `
+                    <div class="food-item">
+                        <div class="food-info">
+                            <div class="name">${food.name}</div>
+                            <div class="calories">${new Date(food.time).toLocaleTimeString('zh-CN')}</div>
+                        </div>
+                        <div style="color:#d97706;font-weight:600;">${food.calories} 千卡</div>
+                        <button class="btn-danger" onclick="deleteFoodRecord(${food.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+
+            // 更新总热量
+            const total = todayFood.reduce((sum, f) => sum + (parseFloat(f.calories) || 0), 0);
+            document.getElementById('total-calories').textContent = total.toFixed(0);
+        }
+
+        function renderSteps() {
+            const steps = stepsData.steps || 0;
+            document.getElementById('steps-count').textContent = steps.toLocaleString();
+            const percent = Math.min(Math.round((steps / 10000) * 100), 100);
+            document.getElementById('steps-percent').textContent = percent;
+        }
+
+        // ========== 操作函数 ==========
+        function addGlucoseRecord() {
+            const value = document.getElementById('glucose-value').value;
+            const type = document.getElementById('glucose-type').value;
+            if (!value) { tk_showToast('请输入血糖值'); return; }
+
+            const record = {
+                id: Date.now(),
+                value: value,
+                type: type,
+                time: new Date().toISOString()
+            };
+            glucoseRecords.push(record);
+            saveData('glucoseRecords', glucoseRecords);
+
+            document.getElementById('glucose-value').value = '';
+            renderGlucoseRecords();
+            updateStats();
+            updateGlucoseChart();
+            
+            tk_showToast('血糖记录添加成功');
+        }
+
+        function deleteGlucoseRecord(id) {
+            glucoseRecords = glucoseRecords.filter(r => r.id !== id);
+            saveData('glucoseRecords', glucoseRecords);
+            renderGlucoseRecords();
+            updateStats();
+            updateGlucoseChart();
+            tk_showToast('记录已删除');
+        }
+
+        function openMedicationModal() {
+            document.getElementById('medication-modal').classList.add('active');
+        }
+
+        function closeMedicationModal() {
+            document.getElementById('medication-modal').classList.remove('active');
+        }
+
+        function addMedication() {
+            const name = document.getElementById('med-name').value;
+            const dose = document.getElementById('med-dose').value;
+            const time = document.getElementById('med-time').value;
+            const note = document.getElementById('med-note').value;
+
+            if (!name || !dose || !time) {
+                tk_showToast('请填写完整信息');
+                return;
+            }
+
+            medications.push({
+                id: Date.now(),
+                name, dose, time, note
+            });
+            saveData('medications', medications);
+            
+            document.getElementById('med-name').value = '';
+            document.getElementById('med-dose').value = '';
+            document.getElementById('med-time').value = '';
+            document.getElementById('med-note').value = '';
+            
+            closeMedicationModal();
+            renderMedications();
+            updateStats();
+            tk_showToast('用药计划已添加');
+        }
+
+        function deleteMedication(id) {
+            medications = medications.filter(m => m.id !== id);
+            saveData('medications', medications);
+            renderMedications();
+            updateStats();
+            tk_showToast('已删除');
+        }
+
+        function openGoalModal() {
+            document.getElementById('goal-date').valueAsDate = new Date();
+            document.getElementById('goal-modal').classList.add('active');
+        }
+
+        function closeGoalModal() {
+            document.getElementById('goal-modal').classList.remove('active');
+        }
+
+        function addGoal() {
+            const type = document.getElementById('goal-type').value;
+            const target = document.getElementById('goal-target').value;
+            const current = document.getElementById('goal-current').value;
+            const date = document.getElementById('goal-date').value;
+
+            if (!target || !current) {
+                tk_showToast('请填写目标值和当前值');
+                return;
+            }
+
+            goals.push({
+                id: Date.now(),
+                type, target, current, date: date || new Date().toISOString().split('T')[0]
+            });
+            saveData('goals', goals);
+
+            closeGoalModal();
+            renderGoals();
+            tk_showToast('目标设定成功');
+        }
+
+        function deleteGoal(id) {
+            goals = goals.filter(g => g.id !== id);
+            saveData('goals', goals);
+            renderGoals();
+            tk_showToast('已删除目标');
+        }
+
+        function markAllAsRead() {
+            notifications = notifications.map(n => ({...n, read: true}));
+            saveData('notifications', notifications);
+            renderNotifications();
+            updateStats();
+            tk_showToast('已全部标记为已读');
+        }
+
+        function addFoodRecord() {
+            const name = document.getElementById('food-name').value;
+            const calories = document.getElementById('food-calories').value;
+            if (!name || !calories) {
+                tk_showToast('请填写完整信息');
+                return;
+            }
+
+            foodRecords.push({
+                id: Date.now(),
+                name,
+                calories,
+                time: new Date().toISOString()
+            });
+            saveData('foodRecords', foodRecords);
+
+            document.getElementById('food-name').value = '';
+            document.getElementById('food-calories').value = '';
+            
+            renderFoodRecords();
+            tk_showToast('饮食记录已添加');
+        }
+
+        function deleteFoodRecord(id) {
+            foodRecords = foodRecords.filter(f => f.id !== id);
+            saveData('foodRecords', foodRecords);
+            renderFoodRecords();
+            tk_showToast('已删除');
+        }
+
+        function simulateSteps() {
+            const add = Math.floor(Math.random() * 500) + 100;
+            stepsData.steps = (stepsData.steps || 0) + add;
+            stepsData.date = new Date().toDateString();
+            saveData('stepsData', stepsData);
+            renderSteps();
+            updateStepsChart();
+            tk_showToast(`增加了 ${add} 步`);
+        }
+
+        function resetSteps() {
+            stepsData = { date: new Date().toDateString(), steps: 0 };
+            saveData('stepsData', stepsData);
+            renderSteps();
+            updateStepsChart();
+            tk_showToast('步数已重置');
+        }
+
+        function exportGlucoseData() {
+            if (glucoseRecords.length === 0) {
+                tk_showToast('暂无数据可导出');
+                return;
+            }
+
+            let csv = '\ufeff血糖值,测量类型,测量时间\n';
+            glucoseRecords.forEach(r => {
+                csv += `${r.value},${r.type},${new Date(r.time).toLocaleString('zh-CN')}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `血糖记录_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+            tk_showToast('导出成功');
+        }
+
+        // ========== 搜索功能 ==========
+        const searchIndex = [
+            { name: '血糖记录', desc: '记录和管理血糖数据', url: 'javascript:scrollToSection("glucose-section")', icon: 'tint' },
+            { name: '用药提醒', desc: '管理用药计划', url: 'javascript:scrollToSection("medication-section")', icon: 'pills' },
+            { name: '健康目标', desc: '设定和追踪目标', url: 'javascript:scrollToSection("goal-section")', icon: 'bullseye' },
+            { name: '消息通知', desc: '查看最新通知', url: 'javascript:scrollToSection("notification-section")', icon: 'bell' },
+            { name: '运动追踪', desc: '记录步数运动', url: 'javascript:scrollToSection("exercise-section")', icon: 'running' },
+            { name: '饮食记录', desc: '记录饮食热量', url: 'javascript:scrollToSection("food-section")', icon: 'utensils' },
+            { name: 'AI健康助手', desc: '智能健康问答', url: 'ai_assistant.html', icon: 'robot' },
+            { name: '数据大屏', desc: '数据可视化', url: 'data_dashboard.html', icon: 'chart-line' },
+            { name: '专家论坛', desc: '专家在线答疑', url: 'luntan.html', icon: 'users' },
+            { name: 'AI风险健康管理', desc: 'AI模型风险评估', url: 'dati1.html', icon: 'brain' },
+            { name: '糖尿病风险预测系统', desc: '综合健康评估', url: 'cx1.html', icon: 'heartbeat' },
+            { name: '全球数据分析', desc: '全球糖尿病数据', url: 'guanyuwm.html', icon: 'globe' },
+            { name: '个人中心', desc: '个人健康档案', url: 'gerenzx.html', icon: 'user' },
+            { name: '科普知识', desc: '糖尿病科普文章', url: 'kepu.html', icon: 'book' }
+        ];
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const container = document.getElementById('search-results');
+            
+            if (!query) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const results = searchIndex.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.desc.toLowerCase().includes(query)
+            );
+
+            if (results.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>未找到相关内容</p></div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <h3 style="margin-bottom:16px;font-size:1.1rem;color:#0f172a;">找到 ${results.length} 个结果</h3>
+                <div class="feature-grid">
+                    ${results.map(item => `
+                        <div class="feature-card" onclick="${item.url}">
+                            <div class="fc-icon"><i class="fas fa-${item.icon}"></i></div>
+                            <h3>${item.name}</h3>
+                            <p>${item.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // ========== 图表功能 ==========
+        function initCharts() {
+            const ctx1 = document.getElementById('glucose-chart').getContext('2d');
+            glucoseChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '血糖 (mmol/L)',
+                        data: [],
+                        borderColor: '#2A64B5',
+                        backgroundColor: 'rgba(42, 100, 181, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#2A64B5'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '血糖趋势图' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 3,
+                            max: 12,
+                            grid: { color: '#e2e8f0' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('steps-chart').getContext('2d');
+            stepsChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '今日'],
+                    datasets: [{
+                        label: '步数',
+                        data: [6500, 8200, 7500, 9200, 8800, 10500, stepsData.steps || 0],
+                        backgroundColor: ['#93c5fd', '#93c5fd', '#93c5fd', '#93c5fd', '#93c5fd', '#10b981', '#2A64B5'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '近7日步数统计' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            updateGlucoseChart();
+        }
+
+        function updateGlucoseChart() {
+            if (!glucoseChart) return;
+            
+            const sorted = [...glucoseRecords].sort((a, b) => new Date(a.time) - new Date(b.time));
+            const recent = sorted.slice(-8);
+            
+            glucoseChart.data.labels = recent.map(r => {
+                const date = new Date(r.time);
+                return `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2,'0')}`;
+            });
+            glucoseChart.data.datasets[0].data = recent.map(r => parseFloat(r.value));
+            glucoseChart.update();
+        }
+
+        function updateStepsChart() {
+            if (!stepsChart) return;
+            const data = stepsChart.data.datasets[0].data;
+            data[6] = stepsData.steps || 0;
+            stepsChart.data.datasets[0].data = data;
+            stepsChart.update();
+        }
+
+        // ========== 工具函数 ==========
+        function saveData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function updateStats() {
+            const sorted = [...glucoseRecords].sort((a, b) => new Date(b.time) - new Date(a.time));
+            document.getElementById('stat-glucose').textContent = sorted[0]?.value || '--';
+            document.getElementById('stat-steps').textContent = (stepsData.steps || 0).toLocaleString();
+            document.getElementById('stat-medicine').textContent = medications.length;
+            document.getElementById('stat-notif').textContent = notifications.filter(n => !n.read).length;
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeOnboarding() {
+            document.getElementById('onboarding').classList.remove('active');
+        }
+
+        // 提供给 tk-components.js 的 toast
+        if (typeof tk_showToast !== 'function') {
+            window.tk_showToast = function(msg) {
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:14px 28px;border-radius:10px;z-index:10000;font-weight:500;box-shadow:0 8px 25px rgba(0,0,0,0.2);';
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2500);
+            };
+        }
+    </script>
+</body>
+</html>

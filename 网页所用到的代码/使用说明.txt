@@ -1,0 +1,72 @@
+糖康孪生 - 糖尿病健康管理系统 使用说明
+==========================================
+
+一、项目简介
+    糖康孪生是一个糖尿病风险预测与健康管理平台，包含：
+    - AI糖尿病风险预测（症状评估 + 临床数据融合预测）
+    - 数据可视化大屏
+    - 健康科普与知识问答
+    - 桌宠陪伴系统（健康提醒、用药提醒）
+    - 用户系统（注册/登录/个人中心）
+    - 论坛与专家咨询
+
+二、环境要求
+    - Python 3.10+（推荐 3.13）
+    - Node.js 18+
+    - MySQL 数据库
+
+三、安装步骤
+
+    1. 安装 Python 依赖
+       pip install -r requirements.txt
+
+    2. 安装 Node.js 依赖
+       npm install
+
+    3. 配置 .env 文件（项目根目录下）
+       DB_HOST=localhost
+       DB_USER=root
+       DB_PASSWORD=你的数据库密码
+       DB_NAME=tangkang_db
+       DB_PORT=3306
+       JWT_SECRET=tk_secret_key_2026
+       OPENAI_API_KEY=你的DeepSeek API Key（可选，用于AI分析功能）
+
+四、启动方式
+
+    后端（XGBoost+神经网络融合模型，端口 5000）
+       python advanced_model.py
+
+    Node.js 后端（用户系统+桌宠+提醒，端口 3001）
+       node server.js
+
+    说明：
+    - Python 后端提供 AI 预测和前端页面托管
+    - Node.js 后端提供用户注册登录、桌宠状态、健康提醒等功能
+    - 两个后端需同时运行才能使用完整功能
+    - 启动后浏览器访问 http://127.0.0.1:5000
+
+五、核心页面说明
+
+    首页              ：denglu.html / denglv.html（登录/注册）
+    AI预测            ：ai_assistant.html
+    症状评估          ：fenxi.html
+    数据大屏          ：data_dashboard.html
+    健康科普          ：kepu.html / kepu2.html / kepu3.html
+    健康问答          ：health_quiz.html
+    论坛              ：luntan.html
+    专家咨询          ：luntan-zhuanjia.html / zhuanjiazhuzhen.html
+    个人中心          ：gerenzx.html
+    家庭管理          ：family_management.html
+    健康提醒          ：health_reminders.html
+    体征记录          ：vital_signs.html
+    功能中心          ：feature_center.html
+    关于我们          ：guanyuwm.html
+
+六、手机版
+    手机版独立页面位于 糖康孪生_手机版/ 目录，支持 PWA 离线访问。
+    启动后将 糖康孪生_手机版/ 部署到任意静态托管即可。
+
+七、注意事项
+    - advanced_model.py 首次启动需要训练模型，耗时约1-3分钟
+   

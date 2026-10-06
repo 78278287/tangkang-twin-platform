@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命体征记录 - 糖康孪生</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .tk-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin: 0 0 8px 0;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        /* 记录表单 */
+        .record-form {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .form-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .form-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-item label {
+            font-size: 0.9rem;
+            color: #475569;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-item input,
+        .form-item select {
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-item input:focus,
+        .form-item select:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+        }
+
+        /* 统计卡片 */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .stat-icon.blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .stat-icon.pink { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .stat-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* BMI 计算器 */
+        .bmi-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .bmi-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .bmi-result.show {
+            display: block;
+        }
+
+        .bmi-result.normal { background: #dcfce7; }
+        .bmi-result.warning { background: #fef3c7; }
+        .bmi-result.danger { background: #fee2e2; }
+
+        .bmi-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .bmi-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 8px;
+        }
+
+        /* 历史记录 */
+        .history-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .record-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #f8fafc;
+            border-left: 4px solid #f59e0b;
+            align-items: center;
+        }
+
+        .record-type {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+
+        .record-time {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .record-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .record-value-item {
+            padding: 4px 10px;
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .btn-delete {
+            background: white;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-delete:hover {
+            background: #fef2f2;
+        }
+
+        /* 图表 */
+        .chart-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.5rem; }
+            .stat-value { font-size: 1.4rem; }
+            .bmi-number { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="tk-header-placeholder"></div>
+    <div class="tk-container">
+        <!-- 页头 -->
+        <div class="page-header">
+            <h1><i class="fas fa-heartbeat"></i> 生命体征记录中心</h1>
+            <p>记录您的血压、心率、体温，实时追踪健康状况 💚</p>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon red"><i class="fas fa-tint"></i></div>
+                <div class="stat-value" id="stat-bp">--/--</div>
+                <div class="stat-label">最近血压 (mmHg)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-heart"></i></div>
+                <div class="stat-value" id="stat-hr">--</div>
+                <div class="stat-label">最近心率 (次/分)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pink"><i class="fas fa-thermometer-half"></i></div>
+                <div class="stat-value" id="stat-temp">--</div>
+                <div class="stat-label">最近体温 (°C)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-calculator"></i></div>
+                <div class="stat-value" id="stat-bmi">--</div>
+                <div class="stat-label">BMI 指数</div>
+            </div>
+        </div>
+
+        <!-- 血压心率体温记录表单 -->
+        <div class="record-form">
+            <div class="form-title"><i class="fas fa-edit" style="color:#f59e0b"></i> 添加新记录</div>
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>收缩压 (高压，mmHg)</label>
+                    <input type="number" id="bp-systolic" placeholder="例如：120">
+                </div>
+                <div class="form-item">
+                    <label>舒张压 (低压，mmHg)</label>
+                    <input type="number" id="bp-diastolic" placeholder="例如：80">
+                </div>
+                <div class="form-item">
+                    <label>心率 (次/分钟)</label>
+                    <input type="number" id="heart-rate" placeholder="例如：75">
+                </div>
+                <div class="form-item">
+                    <label>体温 (°C)</label>
+                    <input type="number" id="temperature" step="0.1" placeholder="例如：36.5">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="addVitalRecord()">
+                <i class="fas fa-save"></i> 保存这条记录
+            </button>
+        </div>
+
+        <!-- BMI 计算器 -->
+        <div class="bmi-section">
+            <div class="form-title"><i class="fas fa-weight" style="color:#10b981"></i> BMI 健康指数计算器</div>
+            <div class="form-grid">
+                <div class="form-item">
+                    <label>身高 (cm)</label>
+                    <input type="number" id="bmi-height" placeholder="例如：170">
+                </div>
+                <div class="form-item">
+                    <label>体重 (kg)</label>
+                    <input type="number" id="bmi-weight" placeholder="例如：65">
+                </div>
+            </div>
+            <button class="btn-primary" style="margin-top:20px;" onclick="calculateBMI()">
+                <i class="fas fa-calculator"></i> 计算我的 BMI
+            </button>
+            <div class="bmi-result" id="bmi-result">
+                <div class="bmi-number" id="bmi-number">--</div>
+                <div class="bmi-status" id="bmi-status">请输入身高体重</div>
+            </div>
+        </div>
+
+        <!-- 图表区 -->
+        <div class="chart-section">
+            <div class="form-title"><i class="fas fa-chart-line" style="color:#3b82f6"></i> 血压趋势图（近 7 天）</div>
+            <div class="chart-container">
+                <canvas id="bp-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history-section">
+            <div class="form-title"><i class="fas fa-history" style="color:#8b5cf6"></i> 历史记录</div>
+            <div id="history-list"></div>
+        </div>
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+    <script src="tk-components.js"></script>
+
+    <script>
+        let vitalRecords = JSON.parse(localStorage.getItem('vitalRecords') || '[]');
+        let bpChart = null;
+
+        function addVitalRecord() {
+            const systolic = document.getElementById('bp-systolic').value;
+            const diastolic = document.getElementById('bp-diastolic').value;
+            const heartRate = document.getElementById('heart-rate').value;
+            const temperature = document.getElementById('temperature').value;
+
+            if (!systolic && !diastolic && !heartRate && !temperature) {
+                alert('请至少填写一项数据！');
+                return;
+            }
+
+            const record = {
+                id: Date.now(),
+                systolic: systolic || '',
+                diastolic: diastolic || '',
+                heartRate: heartRate || '',
+                temperature: temperature || '',
+                time: new Date().toLocaleString('zh-CN')
+            };
+
+            vitalRecords.unshift(record);
+            localStorage.setItem('vitalRecords', JSON.stringify(vitalRecords));
+
+            // 清空
+            document.getElementById('bp-systolic').value = '';
+            document.getElementById('bp-diastolic').value = '';
+            document.getElementById('heart-rate').value = '';
+            document.getElementById('temperature').value = '';
+
+            renderVitals();
+            showToast('记录已保存！✅');
+        }
+
+        function deleteVitalRecord(id) {
+            if (!confirm('确定要删除这条记录吗？')) return;
+            vitalRecords = vitalRecords.filter(r => r.id !== id);
+            localStorage.setItem('vitalRecords', JSON.stringify(vitalRecords));
+            renderVitals();
+        }
+
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('bmi-height').value);
+            const weight = parseFloat(document.getElementById('bmi-weight').value);
+
+            if (!height || !weight) {
+                alert('请输入身高和体重！');
+                return;
+            }
+
+            const bmi = weight / Math.pow(height / 100, 2);
+            const resultEl = document.getElementById('bmi-result');
+            const numberEl = document.getElementById('bmi-number');
+            const statusEl = document.getElementById('bmi-status');
+
+            resultEl.classList.add('show');
+            numberEl.textContent = bmi.toFixed(1);
+
+            let status = '', emoji = '';
+            resultEl.classList.remove('normal', 'warning', 'danger');
+
+            if (bmi < 18.5) {
+                status = '偏瘦 - 建议加强营养，适当运动增肌';
+                emoji = '🌱';
+                resultEl.classList.add('warning');
+            } else if (bmi < 24) {
+                status = '正常 - 继续保持健康的生活方式！';
+                emoji = '✨';
+                resultEl.classList.add('normal');
+            } else if (bmi < 28) {
+                status = '超重 - 建议控制饮食，增加运动量';
+                emoji = '⚠️';
+                resultEl.classList.add('warning');
+            } else {
+                status = '肥胖 - 建议咨询医生，制定减重计划';
+                emoji = '❗';
+                resultEl.classList.add('danger');
+            }
+
+            statusEl.textContent = emoji + ' ' + status;
+
+            // 保存到统计
+            document.getElementById('stat-bmi').textContent = bmi.toFixed(1);
+        }
+
+        function renderVitals() {
+            // 更新统计卡片
+            const last = vitalRecords[0];
+            if (last) {
+                document.getElementById('stat-bp').textContent = 
+                    (last.systolic || '--') + '/' + (last.diastolic || '--');
+                document.getElementById('stat-hr').textContent = last.heartRate || '--';
+                document.getElementById('stat-temp').textContent = last.temperature || '--';
+            }
+
+            // 更新列表
+            const listEl = document.getElementById('history-list');
+            if (vitalRecords.length === 0) {
+                listEl.innerHTML = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>暂无记录，开始添加您的第一条生命体征吧！</p></div>';
+            } else {
+                listEl.innerHTML = vitalRecords.slice(0, 10).map(r => `
+                    <div class="record-item">
+                        <div>
+                            <div class="record-type">💓 生命体征</div>
+                            <div class="record-time">${r.time}</div>
+                        </div>
+                        <div class="record-values">
+                            ${r.systolic ? `<span class="record-value-item">血压：${r.systolic}/${r.diastolic} mmHg</span>` : ''}
+                            ${r.heartRate ? `<span class="record-value-item">心率：${r.heartRate} 次/分</span>` : ''}
+                            ${r.temperature ? `<span class="record-value-item">体温：${r.temperature} °C</span>` : ''}
+                        </div>
+                        <button class="btn-delete" onclick="deleteVitalRecord(${r.id})">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // 更新图表
+            updateBPChart();
+        }
+
+        function updateBPChart() {
+            const canvas = document.getElementById('bp-chart');
+            if (!canvas) return;
+
+            const recent = [...vitalRecords].reverse().slice(-7).filter(r => r.systolic);
+            const labels = recent.map(r => r.time.split(' ')[0] || '');
+            const systolicData = recent.map(r => parseInt(r.systolic) || 0);
+            const diastolicData = recent.map(r => parseInt(r.diastolic) || 0);
+
+            if (bpChart) bpChart.destroy();
+
+            bpChart = new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels.length ? labels : ['暂无数据'],
+                    datasets: [
+                        {
+                            label: '收缩压(高压)',
+                            data: systolicData.length ? systolicData : [0],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239,68,68,0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: '舒张压(低压)',
+                            data: diastolicData.length ? diastolicData : [0],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59,130,246,0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: false, min: 50, max: 160 }
+                    }
+                }
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:14px 24px;border-radius:10px;z-index:99999;font-weight:500;box-shadow:0 8px 25px rgba(0,0,0,0.2)';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // 初始化
+        renderVitals();
+    </script>
+</body>
+</html>

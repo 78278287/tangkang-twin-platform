@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI风险健康管理系统</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    :root {
+        --medical-blue: #1a73e8;
+        --medical-blue-dark: #0d47a1;
+        --medical-blue-light: #e3f2fd;
+        --medical-green: #4caf50;
+        --medical-green-light: #e8f5e9;
+        --medical-orange: #ff9800;
+        --medical-orange-light: #fff3e0;
+        --medical-red: #f44336;
+        --medical-red-light: #ffebee;
+        --neutral-dark: #263238;
+        --neutral-medium: #546e7a;
+        --neutral-light: #eceff1;
+        --neutral-ultralight: #f5f9fc;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.12);
+        --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.15);
+        --border-radius: 12px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Microsoft YaHei', system-ui, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        line-height: 1.6;
+        color: var(--neutral-dark);
+        background-color: var(--neutral-ultralight);
+        background-image: 
+            linear-gradient(to right, rgba(26, 115, 232, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(26, 115, 232, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+
+    /* 标题样式 */
+    h1 {
+        color: var(--medical-blue-dark);
+        text-align: center;
+        margin: 2.5rem 0 1.5rem;
+        padding-bottom: 1.2rem;
+        position: relative;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        font-size: 2.2rem;
+    }
+
+    h1::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--medical-blue), var(--medical-green));
+        border-radius: 2px;
+    }
+
+    .icon-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .header-icon {
+        color: var(--medical-blue);
+        font-size: 1.8rem;
+    }
+
+    /* 介绍卡片 */
+    .intro {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 2.5rem;
+        box-shadow: var(--shadow-sm);
+        border-left: 5px solid var(--medical-blue);
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .intro:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .intro::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+            linear-gradient(45deg, rgba(26, 115, 232, 0.03) 0%, transparent 30%, rgba(0, 151, 167, 0.02) 70%),
+            linear-gradient(135deg, rgba(26, 115, 232, 0.02) 0%, transparent 30%, rgba(0, 151, 167, 0.01) 70%);
+        z-index: 0;
+    }
+
+    .intro p {
+        position: relative;
+        z-index: 1;
+    }
+
+    .intro p strong {
+        color: var(--medical-red);
+        font-weight: 600;
+    }
+
+    /* 问题卡片 */
+    .question {
+        margin-bottom: 1.8rem;
+        padding: 1.8rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .question:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .question::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--medical-blue), var(--medical-green));
+        opacity: 0.7;
+    }
+
+    .question h3 {
+        color: var(--medical-blue-dark);
+        margin-top: 0;
+        margin-bottom: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.25rem;
+    }
+
+    .question-icon {
+        color: var(--medical-blue);
+        font-size: 1.1rem;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--medical-blue-light);
+        border-radius: 50%;
+    }
+
+    /* 表单元素 */
+    .input-group {
+        margin-top: 1.2rem;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 0.6rem;
+        font-weight: 500;
+        color: var(--neutral-dark);
+        font-size: 0.95rem;
+        transition: var(--transition);
+    }
+
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+        border-color: var(--medical-blue);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2), 0 4px 12px rgba(26, 115, 232, 0.15);
+        background-color: white;
+    }
+
+    /* 按钮样式 */
+    button {
+        padding: 0.9rem 2rem;
+        background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-blue-dark) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 2.5rem auto;
+        transition: var(--transition);
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(26, 115, 232, 0.35);
+    }
+
+    button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: var(--transition);
+    }
+
+    button:hover::after {
+        left: 100%;
+    }
+
+    button i {
+        transition: var(--transition);
+    }
+
+    button:hover i {
+        transform: translateX(5px);
+    }
+
+    /* 结果容器优化 */
+    #resultContainer {
+        display: none;
+        background: white;
+        padding: 2.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin: 2.5rem auto;
+        border: none;
+        animation: fadeIn 0.5s ease-out forwards;
+        position: relative;
+    }
+
+    #resultContainer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--medical-red), var(--medical-orange), var(--medical-green));
+    }
+
+    #resultContainer h3 {
+        color: var(--medical-blue-dark);
+        font-size: 1.5rem;
+        margin: 0 0 1.8rem;
+        padding-bottom: 1rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    #resultContainer h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 90px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--medical-blue), var(--medical-green));
+    }
+
+    #riskValue {
+        font-weight: 700;
+        font-size: 1.8rem;
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        margin: 0.5rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .risk-high {
+        color: white;
+        background-color: var(--medical-red);
+    }
+
+    .risk-medium {
+        color: white;
+        background-color: var(--medical-orange);
+    }
+
+    .risk-low {
+        color: white;
+        background-color: var(--medical-green);
+    }
+
+    /* 加载样式优化 */
+    .loading-spinner {
+        display: inline-block;
+        width: 3rem;
+        height: 3rem;
+        border: 4px solid rgba(0, 151, 167, 0.15);
+        border-radius: 50%;
+        border-top-color: var(--medical-blue);
+        animation: spin 1s linear infinite;
+        margin: 1.5rem auto;
+    }
+
+    .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .skeleton-loading {
+        height: 18px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .skeleton-loading:nth-child(2) { width: 80%; }
+    .skeleton-loading:nth-child(3) { width: 60%; }
+
+    /* AI响应样式 */
+    .ai-response {
+        background: var(--medical-blue-light);
+        border-radius: 10px;
+        padding: 1.8rem;
+        margin-top: 1.8rem;
+        border: none;
+        position: relative;
+    }
+
+    .ai-response::before {
+        content: "AI健康建议";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background-color: var(--medical-blue);
+        color: white;
+        padding: 0 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .ai-title {
+        color: var(--medical-blue-dark);
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.8rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid rgba(0, 151, 167, 0.2);
+    }
+
+    .ai-list {
+        padding-left: 1.8rem;
+        margin: 1rem 0;
+    }
+
+    .ai-list li {
+        margin: 0.8rem 0;
+        line-height: 1.8;
+        color: var(--neutral-dark);
+        position: relative;
+    }
+
+    .ai-list li::before {
+        content: "";
+        position: absolute;
+        left: -1.5rem;
+        top: 0.7rem;
+        width: 8px;
+        height: 8px;
+        background: var(--medical-blue);
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 概率框样式 */
+    .probability-box {
+        background: rgba(0, 151, 167, 0.08);
+        padding: 1.3rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        text-align: center;
+        border: 2px dashed rgba(0, 151, 167, 0.3);
+        position: relative;
+    }
+
+    .probability-box::before {
+        content: "💡";
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        padding: 0 8px;
+        font-size: 1rem;
+    }
+
+    .highlight-number {
+        color: var(--medical-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        body {
+            padding: 1.5rem 1rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .intro, .question, #resultContainer {
+            padding: 1.5rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            max-width: 260px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 1.6rem;
+        }
+
+        .question h3 {
+            font-size: 1.1rem;
+        }
+
+        .input-group input, .input-group select {
+            padding: 0.7rem 1rem;
+        }
+    }
+
+    /* 动画效果 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    
+    .image-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: var(--neutral-light);
+        border-radius: 8px;
+        gap: 15px;
+    }
+    </style>
+</head>
+<body>
+    <div id="tk-header-placeholder"></div>
+    <h1>
+        <div class="icon-header">
+            <i class="fas fa-heartbeat header-icon"></i>
+            AI风险健康管理系统
+        </div>
+    </h1>
+
+    <div class="intro">
+        <p><i class="fas fa-info-circle" style="color: var(--medical-blue); margin-right: 0.5rem;"></i>本问卷基于国际通用的糖尿病风险评估标准，结合AI分析技术，为您提供个性化的糖尿病风险评价和健康建议。请根据实际情况如实作答。</p>
+        <p><strong>注意：</strong> 本评估结果仅供参考，不能替代专业医疗诊断。</p>
+    </div>
+
+    <div id="quiz-container">
+        <div class="question" id="q1">
+            <h3>
+                <span class="question-icon">
+                    <i class="fas fa-user"></i>
+                </span>
+                1. 您的性别是？
+            </h3>
+            <div class="input-group">
+                <select id="gender" required>
+                    <option value="">请选择</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+                <div class="error-message" id="genderError" style="display:none;">请选择您的性别</div>
+            </div>
+        </div>
+
+       <div class="question" id="q0">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-birthday-cake"></i>
+               </span>
+               2. 您的年龄是？
+           </h3>
+           <div class="input-group">
+               <label for="age">请输入您的年龄（岁）：</label>
+               <input type="number" id="age" min="1" max="120" placeholder="例如：45" required>
+               <div class="error-message" id="ageError" style="display:none;">请输入1-120之间的有效年龄</div>
+           </div>
+       </div>
+
+       <div class="question" id="q2">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-weight-scale"></i>
+               </span>
+               3. 您的体重指数(BMI)
+           </h3>
+           <div class="input-group">
+               <label for="bmi">请输入您的BMI值：</label>
+               <input type="number" id="bmi" step="0.1" min="10" max="50" placeholder="例如：22.5" required>
+               <div class="error-message" id="bmiError" style="display:none;">请输入10-50之间的有效BMI值</div>
+               <div class="bmi-info" style="font-size:0.9rem; color:#546e7a; margin-top:0.5rem;">
+                   BMI = 体重(kg) / 身高²(m²)。<a href="https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html" class="bmi-link" target="_blank" style="color:var(--medical-blue); text-decoration:underline;">如何计算BMI？</a>
+               </div>
+           </div>
+       </div>
+
+       <div class="question" id="q3">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-heart"></i>
+               </span>
+               4. 收缩压(mmHg)：
+           </h3>
+           <div class="input-group">
+               <label for="systolic">请输入收缩压(mmHg)：</label>
+               <input type="number" id="systolic" min="50" max="300" placeholder="例如：120" required>
+               <div class="error-message" id="systolicError" style="display:none;">请输入50-300之间的有效收缩压值</div>
+           </div>
+       </div>
+
+       <div class="question" id="q4">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-heartbeat"></i>
+               </span>
+               5. 舒张压(mmHg)：
+           </h3>
+           <div class="input-group">
+               <label for="diastolic">请输入您的舒张压(mmHg)：</label>
+               <input type="number" id="diastolic" min="30" max="200" placeholder="例如：80" required>
+               <div class="error-message" id="diastolicError" style="display:none;">请输入30-200之间的有效舒张压值</div>
+           </div>
+       </div>
+
+       <div class="question" id="q5">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-vial"></i>
+               </span>
+               6. 空腹血糖(mmol/L)：
+           </h3>
+           <div class="input-group">
+               <label for="fastingGlucose">请输入您的空腹血糖(mmol/L)：</label>
+               <input type="number" id="fastingGlucose" step="0.1" min="2" max="30" placeholder="例如：5.5" required>
+               <div class="error-message" id="fastingGlucoseError" style="display:none;">请输入2-30之间的有效空腹血糖值</div>
+           </div>
+       </div>
+
+       <div class="question" id="q6">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-utensils"></i>
+               </span>
+               7. 餐后血糖(mmol/L)：
+           </h3>
+           <div class="input-group">
+               <label for="postprandialGlucose">请输入您的餐后血糖(mmol/L)：</label>
+               <input type="number" id="postprandialGlucose" step="0.1" min="2" max="30" placeholder="例如：7.8" required>
+               <div class="error-message" id="postprandialGlucoseError" style="display:none;">请输入2-30之间的有效餐后血糖值</div>
+           </div>
+       </div>
+
+       <div class="question" id="q7">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-users"></i>
+               </span>
+               8. 家族糖尿病史：
+           </h3>
+           <div class="input-group">
+               <select id="familyHistory" required>
+                   <option value="">请选择</option>
+                   <option value="无">无</option>
+                   <option value="有">有</option>
+                   <option value="不确定">不确定</option>
+               </select>
+               <div class="error-message" id="familyHistoryError" style="display:none;">请选择家族糖尿病史情况</div>
+           </div>
+       </div>
+
+      
+       <div class="question" id="q8">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-baby"></i>
+               </span>
+               9. 妊娠糖尿病史：
+           </h3>
+           <div class="input-group">
+               <select id="pregnancyDiabetesHistory" required>
+                   <option value="">请选择</option>
+                   <option value="无">无</option>
+                   <option value="有">有</option>
+                   <option value="不确定">不确定</option>
+               </select>
+               <div class="error-message" id="pregnancyDiabetesHistoryError" style="display:none;">请选择妊娠糖尿病史情况</div>
+           </div>
+       </div>
+
+       
+       <div class="question" id="q9">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-lungs"></i>
+               </span>
+               10. 心血管疾病史：
+           </h3>
+           <div class="input-group">
+               <select id="cardiovascularDiseaseHistory" required>
+                   <option value="">请选择</option>
+                   <option value="无">无</option>
+                   <option value="有">有</option>
+                   <option value="不确定">不确定</option>
+               </select>
+               <div class="error-message" id="cardiovascularDiseaseHistoryError" style="display:none;">请选择心血管疾病史情况</div>
+           </div>
+       </div>
+
+      
+       <div class="question" id="q10">
+           <h3>
+               <span class="question-icon">
+                   <i class="fas fa-blood-pressure"></i>
+               </span>
+               11. 高血压病史：
+           </h3>
+           <div class="input-group">
+               <select id="hypertensionHistory" required>
+                   <option value="">请选择</option>
+                   <option value="无">无</option>
+                   <option value="有">有</option>
+                   <option value="不确定">不确定</option>
+               </select>
+               <div class="error-message" id="hypertensionHistoryError" style="display:none;">请选择高血压病史情况</div>
+           </div>
+       </div>
+
+    </div>
+
+    <div style="display:flex; justify-content:center; gap:15px; margin:30px 0;">
+        <button id="predictBtn" type="button">
+            <i class="fas fa-calculator"></i>
+            <span id="buttonText">提交评估</span>
+        </button>
+        <button id="returnBtn" onclick="window.location.href='index2.html'">
+            <i class="fas fa-arrow-left"></i>
+            <span>返回主页</span>
+        </button>
+    </div>
+
+    <div id="resultContainer" style="display:none;">
+        <h3>
+            <i class="fas fa-chart-line"></i>
+            预测结果：
+        </h3>
+        <p>糖尿病风险：<span id="riskValue">0</span>%</p>
+        <p>健康建议：<span id="advice"></span></p>
+        <p>AI建议：
+            <div class="loading-container" style="margin:15px 0;">
+                <div class="loading-spinner"></div>
+                <div class="skeleton-loading"></div>
+                <div class="skeleton-loading" style="width: 70%"></div>
+                <div class="skeleton-loading" style="width: 60%"></div>
+            </div>
+            <div class="ai-response" id="aiResponse"></div>
+        </p>
+        <div style="display:flex; justify-content:center; gap:15px; margin:20px 0;">
+            <button id="downloadPdfBtn">
+                <i class="fas fa-file-pdf"></i>
+                <span>下载PDF报告</span>
+            </button>
+            <button id="downloadImageBtn">
+                <i class="fas fa-image"></i>
+                <span>下载高清图像报告</span>
+            </button>
+        </div>
+        <button id="sendToPhoneBtn" style="margin:0 auto;">
+            <i class="fas fa-mobile-alt"></i>
+            <span>发送到手机端</span>
+        </button>
+    </div>
+
+    <script>
+        // 初始化验证状态
+        const validationRules = {
+            age: value => value >= 1 && value <= 120,
+            gender: value => ['男', '女'].includes(value),
+            familyHistory: value => ['无', '有', '不确定'].includes(value),
+            bmi: value => value >= 10 && value <= 50,
+            systolic: value => value >= 50 && value <= 300,
+            diastolic: value => value >= 30 && value <= 200,
+            fastingGlucose: value => value >= 2 && value <= 30,
+            postprandialGlucose: value => value >= 2 && value <= 30,
+            pregnancyDiabetesHistory: value => ['无', '有', '不确定'].includes(value),
+            cardiovascularDiseaseHistory: value => ['无', '有', '不确定'].includes(value),
+            hypertensionHistory: value => ['无', '有', '不确定'].includes(value)
+        };
+
+        // 实时输入验证
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('input', function() {
+                const field = this.id;
+                const errorElement = document.getElementById(`${field}Error`);
+                const value = this.value;
+
+                if (validationRules[field](value)) {
+                    errorElement.style.display = 'none';
+                    this.classList.remove('input-invalid');
+                } else {
+                    errorElement.style.display = 'block';
+                    this.classList.add('input-invalid');
+                }
+            });
+        });
+
+        // 提交评估处理
+        document.getElementById('predictBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('predictBtn');
+            const loadingContainer = document.querySelector('.loading-container');
+            const aiContent = document.getElementById('aiResponse');
+            const resultContainer = document.getElementById('resultContainer');
+
+            try {
+                // 初始化状态
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>评估中...</span>';
+                loadingContainer.style.display = 'block';
+                aiContent.style.display = 'none';
+                aiContent.innerHTML = '';
+                resultContainer.style.display = 'block';
+
+                // 收集数据
+                const patientData = {
+                    年龄: parseInt(document.getElementById('age').value),
+                    性别: document.getElementById('gender').value,
+                    家族糖尿病史: document.getElementById('familyHistory').value,
+                    BMI: parseFloat(document.getElementById('bmi').value),
+                    '收缩压(mmHg)': parseInt(document.getElementById('systolic').value),
+                    '舒张压(mmHg)': parseInt(document.getElementById('diastolic').value),
+                    '空腹血糖(mmol/L)': parseFloat(document.getElementById('fastingGlucose').value),
+                    '餐后血糖(mmol/L)': parseFloat(document.getElementById('postprandialGlucose').value),
+                    妊娠糖尿病史: document.getElementById('pregnancyDiabetesHistory').value,
+                    心血管疾病史: document.getElementById('cardiovascularDiseaseHistory').value,
+                    高血压病史: document.getElementById('hypertensionHistory').value
+                };
+
+                // 前端验证
+                let isValid = true;
+                Object.entries(patientData).forEach(([key, value]) => {
+                    const field = key === '年龄' ? 'age' :
+                                key === '性别' ? 'gender' :
+                                key === '家族糖尿病史' ? 'familyHistory' :
+                                key === 'BMI' ? 'bmi' :
+                                key === '收缩压(mmHg)' ? 'systolic' :
+                                key === '舒张压(mmHg)' ? 'diastolic' :
+                                key === '空腹血糖(mmol/L)' ? 'fastingGlucose' :
+                                key === '餐后血糖(mmol/L)' ? 'postprandialGlucose' :
+                                key === '妊娠糖尿病史' ? 'pregnancyDiabetesHistory' :
+                                key === '心血管疾病史' ? 'cardiovascularDiseaseHistory' : 'hypertensionHistory';
+
+                    if (!validationRules[field](value)) {
+                        document.getElementById(`${field}Error`).style.display = 'block';
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) throw new Error('请修正表单中的错误');
+
+                // 前端本地预测算法（基于医学风险评分模型）
+                function calculateRisk(data) {
+                    let score = 0;
+                    let factors = [];
+
+                    if (data.年龄 >= 65) { score += 20; factors.push('高龄'); }
+                    else if (data.年龄 >= 55) { score += 15; factors.push('年龄偏大'); }
+                    else if (data.年龄 >= 45) { score += 10; factors.push('中年'); }
+                    else if (data.年龄 >= 35) { score += 5; }
+
+                    if (data.BMI >= 30) { score += 18; factors.push('肥胖'); }
+                    else if (data.BMI >= 25) { score += 12; factors.push('超重'); }
+                    else if (data.BMI >= 24) { score += 8; factors.push('体重偏高'); }
+
+                    if (data['空腹血糖(mmol/L)'] >= 7.0) { score += 25; factors.push('空腹血糖偏高'); }
+                    else if (data['空腹血糖(mmol/L)'] >= 6.1) { score += 18; factors.push('空腹血糖受损'); }
+                    else if (data['空腹血糖(mmol/L)'] >= 5.6) { score += 10; factors.push('空腹血糖临界'); }
+
+                    if (data['餐后血糖(mmol/L)'] >= 11.1) { score += 25; factors.push('餐后血糖偏高'); }
+                    else if (data['餐后血糖(mmol/L)'] >= 7.8) { score += 15; factors.push('糖耐量异常'); }
+
+                    if (data['收缩压(mmHg)'] >= 140 || data['舒张压(mmHg)'] >= 90) { score += 12; factors.push('高血压'); }
+                    else if (data['收缩压(mmHg)'] >= 130 || data['舒张压(mmHg)'] >= 85) { score += 6; factors.push('血压偏高'); }
+
+                    if (data.家族糖尿病史 === '是') { score += 15; factors.push('家族遗传史'); }
+                    if (data.高血压病史 === '是') { score += 8; factors.push('高血压病史'); }
+                    if (data.心血管疾病史 === '是') { score += 10; factors.push('心血管疾病'); }
+                    if (data.妊娠糖尿病史 === '是') { score += 12; factors.push('妊娠糖尿病史'); }
+                    if (data.性别 === '女' && data.妊娠糖尿病史 === '是') { score += 5; }
+
+                    score = Math.min(score, 95);
+
+                    let recommendation = '';
+                    if (score < 30) {
+                        recommendation = '您的糖尿病风险较低，请继续保持健康的生活方式，定期体检，均衡饮食，适量运动。';
+                    } else if (score < 70) {
+                        recommendation = '您的糖尿病风险中等，建议调整饮食结构，增加运动，控制体重，定期监测血糖，必要时就医咨询。';
+                    } else {
+                        recommendation = '您的糖尿病风险较高，建议尽快就医进行专业检查，严格控制饮食和体重，遵医嘱进行干预治疗。';
+                    }
+
+                    return { risk: score, recommendation, key_factors: factors };
+                }
+
+                // 优先调用后端API，失败则降级到前端本地算法
+                let data;
+                let usedBackend = false;
+                try {
+                    const backendResponse = await fetch('http://127.0.0.1:5000/api/predict', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(patientData)
+                    });
+                    if (backendResponse.ok) {
+                        const backendResult = await backendResponse.json();
+                        if (backendResult.risk !== undefined) {
+                            data = {
+                                risk: backendResult.risk,
+                                recommendation: backendResult.medical_advice || backendResult.recommendation,
+                                key_factors: backendResult.top_factors
+                                    ? backendResult.top_factors.map(f => f.feature)
+                                    : []
+                            };
+                            usedBackend = true;
+                        }
+                    }
+                } catch (e) {
+                    console.log('后端不可用，使用本地算法:', e.message);
+                }
+
+                if (!usedBackend) {
+                    data = calculateRisk(patientData);
+                }
+
+                // 显示基础结果
+                const riskValue = document.getElementById('riskValue');
+                riskValue.textContent = data.risk.toFixed(1);
+                document.getElementById('advice').textContent = data.recommendation;
+
+                // 根据风险值添加样式
+                riskValue.className = '';
+                let riskLevel = '低风险';
+                if (data.risk >= 70) {
+                    riskValue.classList.add('risk-high');
+                    riskLevel = '高风险';
+                } else if (data.risk >= 30) {
+                    riskValue.classList.add('risk-medium');
+                    riskLevel = '中风险';
+                } else {
+                    riskValue.classList.add('risk-low');
+                }
+
+                // 将评估结果写入 localStorage，供桌宠读取
+                localStorage.setItem('tk_risk_level', riskLevel);
+                localStorage.setItem('tk_last_assessment', JSON.stringify({
+                    source: 'full_assessment',
+                    risk_level: riskLevel,
+                    probability: data.risk.toFixed(1),
+                    recommendation: data.recommendation,
+                    timestamp: new Date().toISOString()
+                }));
+
+                // 保存结构化健康档案，供 AI 助手个性化回答
+                localStorage.setItem('tk_health_profile', JSON.stringify({
+                    age: patientData.年龄,
+                    gender: patientData.性别,
+                    bmi: patientData.BMI,
+                    bloodPressure: patientData['收缩压(mmHg)'] + '/' + patientData['舒张压(mmHg)'] + ' mmHg',
+                    fastingGlucose: patientData['空腹血糖(mmol/L)'],
+                    postprandialGlucose: patientData['餐后血糖(mmol/L)'],
+                    familyDiabetes: patientData.家族糖尿病史,
+                    pregnancyDiabetesHistory: patientData.妊娠糖尿病史,
+                    cardiovascularDiseaseHistory: patientData.心血管疾病史,
+                    hypertensionHistory: patientData.高血压病史,
+                    source: 'full_assessment',
+                    updatedAt: new Date().toISOString()
+                }));
+
+                // 同步到后端数据库（如已登录）
+                const token = localStorage.getItem('tk_token');
+                if (token) {
+                    fetch('http://localhost:3001/api/health/assessment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({
+                            source: 'full_assessment',
+                            risk_level: riskLevel,
+                            probability: data.risk.toFixed(1),
+                            medical_advice: data.recommendation,
+                            raw_data: patientData
+                        })
+                    }).catch(() => {});
+                }
+
+                // 获取AI建议 - 优先调用API，失败则使用本地智能建议
+                function generateLocalAdvice(patientData, riskPercent, riskLevel) {
+                    let advice = '<h4 class="ai-title">风险评估总结</h4>';
+                    if (riskLevel === '低风险') {
+                        advice += '<p>您目前糖尿病风险较低，继续保持健康的生活方式非常重要。';
+                        if (patientData.BMI >= 24) advice += ' 注意控制体重。';
+                        advice += '</p>';
+                    } else if (riskLevel === '中风险') {
+                        const factors = data.key_factors && data.key_factors.length > 0 ? data.key_factors.join('、') : '生活方式';
+                        advice += '<p>您处于中等风险区间，主要危险因素包括：' + factors + '。通过积极干预可以有效降低风险。</p>';
+                    } else {
+                        const factors = data.key_factors && data.key_factors.length > 0 ? data.key_factors.join('、') : '多项指标异常';
+                        advice += '<p>您的风险较高，建议尽快就医进行专业检查。主要风险因素：' + factors + '。</p>';
+                    }
+
+                    advice += '<h4 class="ai-title">饮食与运动建议</h4><ul class="ai-list">';
+                    advice += '<li>控制碳水摄入，选择全谷物（燕麦、糙米）替代精制米面</li>';
+                    advice += '<li>每餐先吃蔬菜，再吃蛋白质，最后吃主食</li>';
+                    advice += '<li>每天运动30分钟，每周至少5次（快走、慢跑、游泳均可）</li>';
+                    if (patientData.BMI >= 25) advice += '<li>目标减轻5-7%体重，可显著降低糖尿病风险</li>';
+                    advice += '<li>每天饮水1500-2000ml，少喝含糖饮料</li>';
+                    advice += '</ul>';
+
+                    advice += '<h4 class="ai-title">筛查建议</h4><ul class="ai-list">';
+                    if (riskLevel === '低风险') {
+                        advice += '<li>每年体检1次，检查空腹血糖和糖化血红蛋白</li>';
+                    } else if (riskLevel === '中风险') {
+                        advice += '<li>每6个月检查一次血糖</li>';
+                        advice += '<li>建议做口服葡萄糖耐量试验（OGTT）</li>';
+                    } else {
+                        advice += '<li>每3个月监测血糖变化</li>';
+                        advice += '<li>尽快到内分泌科就诊，进行全面评估</li>';
+                    }
+                    advice += '</ul>';
+
+                    advice += '<h4 class="ai-title">健康提醒</h4><ul class="ai-list">';
+                    if (patientData.空腹血糖 >= 6.1 || patientData.餐后血糖 >= 7.8) {
+                        advice += '<li>您的血糖偏高，需要重点关注饮食控制和血糖监测</li>';
+                    }
+                    if (patientData.BMI >= 28) {
+                        advice += '<li>体重指数偏高，建议通过饮食管理和运动降低体重</li>';
+                    }
+                    if (patientData['收缩压(mmHg)'] >= 140 || patientData['舒张压(mmHg)'] >= 90) {
+                        advice += '<li>血压偏高，需要定期监测血压变化</li>';
+                    }
+                    advice += '<li>保持规律作息，避免熬夜和过度劳累</li>';
+                    advice += '<li>戒烟限酒，减少心血管疾病风险</li>';
+                    advice += '</ul>';
+
+                    return advice;
+                }
+
+                try {
+                    const apiKey = 'sk-你的DeepSeek_API密钥';
+                    const gptResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            "model": "deepseek-chat",
+                            "messages": [{
+                                "role": "user",
+                                "content": `你是一位糖尿病预防专家。请根据以下用户数据提供健康建议：年龄 ${patientData.年龄} 岁，性别 ${patientData.性别}，家族糖尿病史 ${patientData.家族糖尿病史}，BMI ${patientData.BMI}，收缩压 ${patientData['收缩压(mmHg)']} mmHg，舒张压 ${patientData['舒张压(mmHg)']} mmHg，空腹血糖 ${patientData['空腹血糖(mmol/L)']} mmol/L，餐后血糖 ${patientData['餐后血糖(mmol/L)']} mmol/L，糖尿病风险为 ${data.risk.toFixed(1)}%。请根据这些信息提供专业建议。请提供:
+                            1. 简要的风险评估总结（100字内）
+                            2. 3-5条具体的饮食与运动建议
+                            3. 推荐的血糖及并发症筛查频率
+                            4. 结合病史特征给出未来5年患病概率估计
+                            用中文回答，保持专业但易懂，300-400字`
+                            }]
+                        })
+                    });
+
+                    const gptData = await gptResponse.json();
+                    console.log('AI响应数据:', gptData);
+
+                    if (gptData.choices?.length > 0) {
+                        const rawText = gptData.choices[0].message.content;
+                        console.log('AI原始内容:', rawText);
+
+                        // 清理文本中的emoji符号
+                        const cleanText = rawText
+                            .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')  // 移除所有emoji
+                            .replace(/[✅⚠️🔴🟢🟡➕➖⭐📌💡🔍🎯]/g, '')  // 移除常见符号
+                            .replace(/\*\*(.*?)\*\*/g, '$1')  // 移除markdown粗体
+                            .replace(/\*(.*?)\*/g, '$1')  // 移除markdown斜体
+                            .replace(/#{1,6}\s/g, '')  // 移除markdown标题符号
+                            .replace(/[-*]\s(?=\S)/g, '');  // 移除列表符号前的横线
+
+                        // 格式化输出
+                        let formattedHTML = cleanText
+                            // 处理标题（如"一、风险评估"或"1. 风险评估"）
+                            .replace(/^[一二三四五六七八九十]+[、.]\s*(.+?)$/gm, '<h4 class="ai-title">$1</h4>')
+                            .replace(/^\d+[、.]\s*(.+?)$/gm, '<h4 class="ai-title">$1</h4>')
+                            // 处理列表项
+                            .replace(/^[\u25cf\u25cb\u25a0\u25b2]\s*(.+?)$/gm, '<li>$1</li>')
+                            .replace(/^\s*[-–—]\s*(.+?)$/gm, '<li>$1</li>')
+                            // 处理概率数字高亮
+                            .replace(/(\d+\.?\d*%)/g, '<span class="highlight-number">$1</span>')
+                            // 处理段落分隔
+                            .replace(/\n{3,}/g, '<br><br>')
+                            .replace(/\n{2}/g, '<br>');
+
+                        // 将连续的<li>标签包裹在<ul>中
+                        formattedHTML = formattedHTML.replace(/(<li>[\s\S]*?<\/li>)+/g, '<ul class="ai-list">$&</ul>');
+
+                        loadingContainer.style.display = 'none';
+                        aiContent.innerHTML = formattedHTML;
+                        aiContent.style.display = 'block';
+                    } else {
+                        throw new Error('AI无返回内容');
+                    }
+                } catch (aiError) {
+                    console.log('AI API调用失败，使用本地建议:', aiError.message);
+                    loadingContainer.style.display = 'none';
+                    aiContent.innerHTML = generateLocalAdvice(patientData, data.risk, riskLevel);
+                    aiContent.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('评估过程出错:', error);
+                loadingContainer.style.display = 'none';
+                aiContent.innerHTML = `
+                    <div class="error-message" style="color:var(--medical-red); padding:10px; border-left:3px solid var(--medical-red); background:#fef0f0;">
+                        <p>建议获取失败：${error.message}</p>
+                        <p>请检查输入数据是否完整或网络连接是否正常</p>
+                    </div>`;
+                aiContent.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-calculator"></i><span>提交评估</span>';
+            }
+        });
+
+        // 下载PDF报告
+        document.getElementById('downloadPdfBtn').addEventListener('click', generatePDF);
+        
+        async function generatePDF() {
+            const resultContainer = document.getElementById('resultContainer');
+            if (resultContainer.style.display === 'none') {
+                alert('请先完成评估再下载报告');
+                return;
+            }
+        
+            try {
+                
+                const canvas = await html2canvas(resultContainer, {
+                    scale: 3, 
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+        
+                // 2. 初始化PDF
+                const doc = new jspdf.jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        
+                // 3. 计算图片尺寸（适配A4页面）
+                const imgWidth = 210; // A4宽度
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                const imgData = canvas.toDataURL('image/png');
+        
+                // 4. 添加图片到PDF
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // 5. 保存PDF
+                doc.save(`糖尿病风险评估报告_${Date.now()}.pdf`);
+            } catch (error) {
+                console.error('生成PDF失败:', error);
+                alert('PDF生成失败：' + error.message);
+            }
+        }
+
+        // 下载高清图像报告
+        document.getElementById('downloadImageBtn').addEventListener('click', generateHighQualityImage);
+        
+        function generateHighQualityImage() {
+            const resultContainer = document.getElementById('resultContainer');
+            if (resultContainer.style.display === 'none') {
+                alert('请先完成评估再下载图像报告');
+                return;
+            }
+            
+            const btn = document.getElementById('downloadImageBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>生成高清图像中...</span>';
+            
+            // 创建加载层
+            const imageContainer = document.createElement('div');
+            imageContainer.id = 'image-generation-container';
+            imageContainer.style.position = 'fixed';
+            imageContainer.style.top = '0';
+            imageContainer.style.left = '0';
+            imageContainer.style.width = '100%';
+            imageContainer.style.height = '100%';
+            imageContainer.style.backgroundColor = 'white';
+            imageContainer.style.zIndex = '9999';
+            imageContainer.style.display = 'flex';
+            imageContainer.style.justifyContent = 'center';
+            imageContainer.style.alignItems = 'center';
+            imageContainer.style.padding = '20px';
+            
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'image-loading';
+            loadingDiv.innerHTML = '<div class="loading-spinner"></div><span style="margin-left:10px;">正在生成高清图像报告...</span>';
+            imageContainer.appendChild(loadingDiv);
+            document.body.appendChild(imageContainer);
+            
+            // 优化：创建高分辨率画布
+            const scale = 3; // 提高分辨率
+            const originalWidth = resultContainer.offsetWidth;
+            const originalHeight = resultContainer.offsetHeight;
+            
+            // 创建临时容器提高图像质量
+            const tempContainer = document.createElement('div');
+            tempContainer.style.width = `${originalWidth}px`;
+            tempContainer.style.minHeight = `${originalHeight}px`;
+            tempContainer.style.padding = '20px';
+            tempContainer.style.backgroundColor = 'white';
+            tempContainer.style.boxShadow = '0 0 15px rgba(0,0,0,0.05)';
+            tempContainer.style.position = 'relative';
+            tempContainer.style.zIndex = '100';
+            tempContainer.innerHTML = resultContainer.innerHTML;
+            
+            // 添加到页面
+            document.body.appendChild(tempContainer);
+            
+            // 生成图像
+            html2canvas(tempContainer, {
+                scale: scale, // 关键：提高缩放比例
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null,
+                width: originalWidth * scale,
+                height: originalHeight * scale,
+                letterRendering: true, // 优化文字渲染
+                useUncachedResources: true // 使用最新资源
+            }).then(canvas => {
+                // 清理临时元素
+                document.body.removeChild(tempContainer);
+                document.body.removeChild(imageContainer);
+                
+                // 生成高分辨率图像
+                const imgData = canvas.toDataURL('image/png', 1.0); // 1.0表示最高质量
+                const a = document.createElement('a');
+                a.href = imgData;
+                a.download = `糖尿病风险评估_高清报告_${Date.now()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }).catch(error => {
+                document.body.removeChild(tempContainer);
+                document.body.removeChild(imageContainer);
+                alert(`高清图像生成失败: ${error.message}`);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
+        }
+
+        // 发送到手机端（示例功能）
+        document.getElementById('sendToPhoneBtn').addEventListener('click', function() {
+            const risk = document.getElementById('riskValue').textContent;
+            const advice = document.getElementById('advice').textContent;
+            const aiAdvice = document.getElementById('aiResponse').textContent || '暂无AI建议';
+            
+            // 实际应用中可替换为发送到手机的API调用
+            alert(`即将发送以下内容到手机：\n\n糖尿病风险：${risk}%\n健康建议：${advice}\n\nAI建议：${aiAdvice.substring(0, 100)}...`);
+        });
+    </script>
+    <script src="tk-components.js?v=2"></script>
+</body>
+</html>

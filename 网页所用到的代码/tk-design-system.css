@@ -1,0 +1,800 @@
+/* ============================================
+   糖康孪生 - 统一设计系统 v2.0
+   ============================================ */
+
+/* === 全局修复：避让 fixed 导航栏 === */
+body.tk-page-has-header {
+    padding-top: 100px !important;
+}
+
+/* === 统一色彩变量 === */
+:root {
+    /* 主色调 - 医疗蓝绿系 */
+    --tk-primary: #2A64B5;
+    --tk-primary-dark: #1A3C75;
+    --tk-primary-light: #F0F6FF;
+    --tk-accent: #10b981;
+    --tk-accent-dark: #059669;
+    --tk-accent-light: #d1fae5;
+    
+    /* 功能色 */
+    --tk-success: #10b981;
+    --tk-success-light: #d1fae5;
+    --tk-warning: #f59e0b;
+    --tk-warning-light: #fef3c7;
+    --tk-danger: #ef4444;
+    --tk-danger-light: #fef2f2;
+    --tk-info: #3b82f6;
+    --tk-info-light: #dbeafe;
+    
+    /* 中性色 */
+    --tk-bg-page: #F8FAFC;
+    --tk-bg-card: #ffffff;
+    --tk-text-main: #1e293b;
+    --tk-text-muted: #64748b;
+    --tk-text-light: #94a3b8;
+    --tk-border: #e2e8f0;
+    --tk-divider: #f1f5f9;
+    
+    /* 阴影 */
+    --tk-shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --tk-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    --tk-shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+    --tk-shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+    
+    /* 圆角 */
+    --tk-radius-sm: 8px;
+    --tk-radius: 12px;
+    --tk-radius-lg: 16px;
+    --tk-radius-xl: 24px;
+    --tk-radius-full: 9999px;
+    
+    /* 间距 */
+    --tk-spacing-xs: 4px;
+    --tk-spacing-sm: 8px;
+    --tk-spacing-md: 16px;
+    --tk-spacing-lg: 24px;
+    --tk-spacing-xl: 32px;
+    --tk-spacing-2xl: 48px;
+    
+    /* 字体 */
+    --tk-font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* === 统一基础样式 === */
+.tk-page {
+    font-family: var(--tk-font-family) !important;
+    color: var(--tk-text-main) !important;
+    background: var(--tk-bg-page) !important;
+    line-height: 1.6;
+}
+
+.tk-page * {
+    box-sizing: border-box;
+}
+
+.tk-page h1, .tk-page h2, .tk-page h3, .tk-page h4 {
+    color: var(--tk-text-main) !important;
+    font-weight: 700 !important;
+}
+
+.tk-page a {
+    color: var(--tk-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.tk-page a:hover {
+    color: var(--tk-primary-dark);
+}
+
+/* === 统一按钮样式 === */
+.tk-btn {
+    padding: 10px 20px !important;
+    border-radius: var(--tk-radius-full) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-family: var(--tk-font-family) !important;
+}
+
+.tk-btn-primary {
+    background: var(--tk-primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(42, 100, 181, 0.25) !important;
+}
+
+.tk-btn-primary:hover {
+    background: var(--tk-primary-dark) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(42, 100, 181, 0.35) !important;
+    color: white !important;
+}
+
+.tk-btn-accent {
+    background: var(--tk-accent) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+}
+
+.tk-btn-accent:hover {
+    background: var(--tk-accent-dark) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+
+.tk-btn-outline {
+    background: white !important;
+    color: var(--tk-primary) !important;
+    border: 2px solid var(--tk-primary) !important;
+}
+
+.tk-btn-outline:hover {
+    background: var(--tk-primary-light) !important;
+    color: var(--tk-primary-dark) !important;
+}
+
+.tk-btn-ghost {
+    background: transparent !important;
+    color: var(--tk-text-muted) !important;
+}
+
+.tk-btn-ghost:hover {
+    background: var(--tk-divider) !important;
+    color: var(--tk-text-main) !important;
+}
+
+.tk-btn-lg {
+    padding: 14px 28px !important;
+    font-size: 1.05rem !important;
+}
+
+.tk-btn-sm {
+    padding: 6px 14px !important;
+    font-size: 0.85rem !important;
+}
+
+/* === 统一卡片样式 === */
+.tk-card {
+    background: var(--tk-bg-card) !important;
+    border-radius: var(--tk-radius-lg) !important;
+    padding: var(--tk-spacing-lg) !important;
+    box-shadow: var(--tk-shadow) !important;
+    border: 1px solid var(--tk-divider) !important;
+    transition: all 0.3s !important;
+}
+
+.tk-card:hover {
+    box-shadow: var(--tk-shadow-lg) !important;
+    transform: translateY(-2px);
+}
+
+.tk-card-flat {
+    background: var(--tk-bg-card) !important;
+    border-radius: var(--tk-radius-lg) !important;
+    padding: var(--tk-spacing-lg) !important;
+    box-shadow: var(--tk-shadow-sm) !important;
+    border: 1px solid var(--tk-divider) !important;
+}
+
+/* === 统一容器 === */
+.tk-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+}
+
+.tk-container-narrow {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+}
+
+.tk-container-wide {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 24px !important;
+}
+
+/* === 统一章节标题 === */
+.tk-section-title {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: var(--tk-text-main) !important;
+    margin-bottom: var(--tk-spacing-lg) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    position: relative !important;
+    padding-bottom: 12px !important;
+}
+
+.tk-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--tk-primary);
+    border-radius: 2px;
+}
+
+.tk-section-title i {
+    color: var(--tk-primary) !important;
+    font-size: 1.3rem;
+}
+
+.tk-section-subtitle {
+    color: var(--tk-text-muted) !important;
+    font-size: 1rem !important;
+    margin-bottom: var(--tk-spacing-lg) !important;
+    max-width: 600px;
+}
+
+/* === 统一标签 === */
+.tk-tag {
+    display: inline-block !important;
+    padding: 4px 12px !important;
+    border-radius: var(--tk-radius-full) !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.tk-tag-primary {
+    background: var(--tk-primary-light) !important;
+    color: var(--tk-primary) !important;
+}
+
+.tk-tag-accent {
+    background: var(--tk-accent-light) !important;
+    color: var(--tk-accent-dark) !important;
+}
+
+.tk-tag-warning {
+    background: var(--tk-warning-light) !important;
+    color: var(--tk-warning) !important;
+}
+
+.tk-tag-danger {
+    background: var(--tk-danger-light) !important;
+    color: var(--tk-danger) !important;
+}
+
+.tk-tag-info {
+    background: var(--tk-info-light) !important;
+    color: var(--tk-info) !important;
+}
+
+/* === 统一表单 === */
+.tk-input, .tk-textarea, .tk-select {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 1px solid var(--tk-border) !important;
+    border-radius: var(--tk-radius) !important;
+    font-size: 1rem !important;
+    background: white !important;
+    transition: all 0.2s !important;
+    font-family: var(--tk-font-family) !important;
+}
+
+.tk-input:focus, .tk-textarea:focus, .tk-select:focus {
+    outline: none !important;
+    border-color: var(--tk-primary) !important;
+    box-shadow: 0 0 0 3px rgba(42, 100, 181, 0.1) !important;
+}
+
+.tk-label {
+    display: block !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--tk-text-main) !important;
+    margin-bottom: 8px !important;
+}
+
+/* === 统一头部导航 === */
+.tk-modern-header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(42, 100, 181, 0.1) !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; right: 0 !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    height: 80px !important;
+    padding: 0 5% !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
+    font-family: var(--tk-font-family) !important;
+}
+
+.tk-header-logo {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: #1e293b !important;
+}
+
+.tk-header-logo img {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 10px !important;
+    margin-right: 12px !important;
+    object-fit: cover !important;
+}
+
+.tk-header-logo span {
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+}
+
+.tk-header-nav {
+    display: flex !important;
+    gap: 2rem !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+    align-items: center !important;
+}
+
+.tk-header-nav > li {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+}
+
+.tk-header-nav a, .tk-nav-item {
+    text-decoration: none !important;
+    color: var(--tk-text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    transition: color 0.2s !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 0 8px !important;
+}
+
+.tk-header-nav a:hover, .tk-nav-item:hover {
+    color: var(--tk-primary) !important;
+}
+
+.tk-nav-highlight {
+    color: #2A64B5 !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, rgba(42,100,181,0.08), rgba(42,100,181,0.15));
+    padding: 8px 18px !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(42,100,181,0.2) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.tk-nav-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(42,100,181,0.15), transparent);
+    transition: left 0.6s ease;
+}
+
+.tk-nav-item:hover .tk-nav-highlight::before {
+    left: 100%;
+}
+
+.tk-nav-item:hover .tk-nav-highlight {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42,100,181,0.15);
+}
+
+.tk-nav-item::after {
+    content: '▾' !important;
+    font-size: 11px !important;
+    transition: transform 0.2s !important;
+}
+
+.tk-nav-item:hover::after {
+    transform: rotate(180deg) !important;
+}
+
+.tk-dropdown {
+    position: absolute !important;
+    top: 80px !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(15px) !important;
+    min-width: 220px !important;
+    background: rgba(255,255,255,0.98) !important;
+    backdrop-filter: blur(16px) !important;
+    border-radius: var(--tk-radius-lg) !important;
+    box-shadow: var(--tk-shadow-xl) !important;
+    border: 1px solid rgba(42, 100, 181, 0.1) !important;
+    padding: 10px !important;
+    list-style: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+
+.tk-dropdown::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -40px !important;
+    left: -30px !important;
+    right: -30px !important;
+    height: 50px !important;
+    background: transparent !important;
+}
+
+.tk-nav-item:hover .tk-dropdown {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+.tk-dropdown li {
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.tk-dropdown a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 14px !important;
+    white-space: nowrap !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    color: var(--tk-text-muted) !important;
+    border-radius: var(--tk-radius) !important;
+    transition: all 0.2s !important;
+}
+
+.tk-dropdown a i {
+    color: var(--tk-primary) !important;
+    font-size: 0.9rem !important;
+    width: 18px;
+    text-align: center;
+}
+
+.tk-dropdown a:hover {
+    background: var(--tk-primary-light) !important;
+    color: var(--tk-primary) !important;
+}
+
+.tk-header-actions {
+    display: flex !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
+
+.tk-btn-login {
+    color: var(--tk-primary) !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--tk-radius) !important;
+}
+
+.tk-btn-login:hover {
+    background: var(--tk-primary-light) !important;
+}
+
+.tk-btn-register {
+    background: var(--tk-primary) !important;
+    color: white !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: var(--tk-radius-full) !important;
+    box-shadow: 0 4px 10px rgba(42, 100, 181, 0.2) !important;
+}
+
+.tk-btn-register:hover {
+    background: var(--tk-primary-dark) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+}
+
+@media (max-width: 900px) {
+    .tk-header-nav { display: none !important; }
+    .tk-btn-login { display: none !important; }
+}
+
+/* === 统一页脚 === */
+.tk-modern-footer {
+    background: #0f172a !important;
+    color: #94a3b8 !important;
+    padding: 4rem 5% 2rem !important;
+    font-family: var(--tk-font-family) !important;
+    margin-top: 4rem !important;
+}
+
+.tk-footer-grid {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr !important;
+    gap: 3rem !important;
+    max-width: 1200px !important;
+    margin: 0 auto 3rem !important;
+}
+
+.tk-footer-brand h3 {
+    color: white !important;
+    font-size: 1.6rem !important;
+    margin: 0 0 1.2rem 0 !important;
+    font-weight: 800 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tk-footer-brand h3 i {
+    color: var(--tk-accent) !important;
+}
+
+.tk-footer-brand p {
+    line-height: 1.7 !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 0.95rem !important;
+}
+
+.tk-footer-social {
+    display: flex !important;
+    gap: 0.8rem !important;
+}
+
+.tk-footer-social a {
+    color: #fff !important;
+    background: rgba(255,255,255,0.1) !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.3s !important;
+    text-decoration: none !important;
+}
+
+.tk-footer-social a:hover {
+    background: var(--tk-accent) !important;
+    transform: translateY(-3px) !important;
+    color: white !important;
+}
+
+.tk-footer-links h4 {
+    color: white !important;
+    margin: 0 0 1.5rem 0 !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+}
+
+.tk-footer-links ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.tk-footer-links li {
+    margin-bottom: 0.8rem !important;
+}
+
+.tk-footer-links a {
+    color: #94a3b8 !important;
+    text-decoration: none !important;
+    transition: all 0.2s !important;
+    font-size: 0.92rem !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tk-footer-links a:hover {
+    color: white !important;
+    transform: translateX(3px);
+}
+
+.tk-footer-contact li {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 1rem !important;
+    color: #94a3b8 !important;
+    font-size: 0.92rem !important;
+}
+
+.tk-footer-contact i {
+    color: var(--tk-accent) !important;
+    font-size: 1rem !important;
+}
+
+.tk-footer-bottom {
+    text-align: center !important;
+    padding-top: 2rem !important;
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    font-size: 0.88rem !important;
+    color: #64748b;
+}
+
+@media (max-width: 900px) {
+    .tk-footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+}
+
+/* === 统一侧边栏 === */
+.tk-sidebar {
+    background: var(--tk-bg-card) !important;
+    border-radius: var(--tk-radius-lg) !important;
+    padding: var(--tk-spacing-lg) !important;
+    box-shadow: var(--tk-shadow) !important;
+    border: 1px solid var(--tk-divider) !important;
+}
+
+.tk-sidebar-title {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+    color: var(--tk-text-main) !important;
+    padding-bottom: 0.8rem !important;
+    border-bottom: 2px solid var(--tk-primary-light) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tk-sidebar-title i {
+    color: var(--tk-primary) !important;
+}
+
+.tk-sidebar-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.tk-sidebar-list li {
+    margin-bottom: 4px !important;
+}
+
+.tk-sidebar-list a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 12px !important;
+    color: var(--tk-text-muted) !important;
+    text-decoration: none !important;
+    border-radius: var(--tk-radius) !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+    font-size: 0.92rem !important;
+}
+
+.tk-sidebar-list a i {
+    margin-right: 8px !important;
+    width: 18px !important;
+    text-align: center !important;
+    font-size: 0.9rem;
+}
+
+.tk-sidebar-list a:hover, .tk-sidebar-list a.active {
+    background: var(--tk-primary-light) !important;
+    color: var(--tk-primary) !important;
+    transform: translateX(3px);
+}
+
+.tk-sidebar-list a .tk-badge {
+    margin-left: auto !important;
+    background: var(--tk-divider) !important;
+    color: var(--tk-text-muted) !important;
+    padding: 2px 8px !important;
+    border-radius: var(--tk-radius-full) !important;
+    font-size: 0.72rem !important;
+}
+
+.tk-sidebar-list a.active .tk-badge {
+    background: var(--tk-primary) !important;
+    color: white !important;
+}
+
+/* === 统一通知/Toast === */
+.tk-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--tk-text-main);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--tk-radius-full);
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 9999;
+    box-shadow: var(--tk-shadow-lg);
+    max-width: 90%;
+}
+
+.tk-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* === 通用动画 === */
+@keyframes tk-fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tk-fade-in {
+    animation: tk-fadeIn 0.4s ease forwards;
+}
+
+@keyframes tk-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.tk-pulse {
+    animation: tk-pulse 2s infinite;
+}
+
+/* === 页面主体区域 === */
+.tk-main {
+    padding-top: 100px !important;
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+.tk-page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    position: relative;
+}
+
+.tk-page-header h1 {
+    font-size: 2.5rem !important;
+    font-weight: 800 !important;
+    color: var(--tk-text-main) !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.tk-page-header p {
+    color: var(--tk-text-muted) !important;
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+}
+
+.tk-page-header h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--tk-primary);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+}

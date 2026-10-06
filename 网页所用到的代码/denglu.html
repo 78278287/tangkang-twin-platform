@@ -1,0 +1,632 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>登录 - 糖康孪生平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f5f5f5;
+            /* 页面全屏居中布局 */
+            min-height: 100vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            padding: 20px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .auth-container {
+            width: 100%;
+            max-width: 1000px; /* 适当加宽容器 */
+            min-height: 600px; /* 增加最小高度，让页面更饱满 */
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px; /* 稍大圆角更柔和 */
+            box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+                -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+        }
+        .auth-image {
+            -webkit-box-flex: 1;
+                -ms-flex: 1;
+                    flex: 1;
+            min-width: 320px;
+            background: #2c3e50;
+            padding: 60px 40px; /* 增加内边距 */
+            color: white;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            /* 左侧添加装饰元素 */
+            position: relative;
+        }
+        .auth-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.05);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 30%);
+        }
+        .auth-image .content {
+            position: relative; /* 确保内容在装饰元素上方 */
+        }
+        .auth-image h2 {
+            margin-bottom: 25px;
+            font-size: 32px;
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+        .auth-image h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background: #fff;
+            opacity: 0.8;
+        }
+        .auth-image p {
+            margin-bottom: 40px;
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        .auth-forms {
+            -webkit-box-flex: 1;
+                -ms-flex: 1;
+                    flex: 1;
+            min-width: 320px;
+            padding: 60px 50px; /* 增加内边距，让表单更饱满 */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+        }
+        .form-toggle {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-toggle button {
+            background: none;
+            border: none;
+            padding: 12px 25px;
+            font-size: 20px !important;
+            font-weight: 500;
+            color: #777 !important;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            visibility: visible !important;
+            font-family: inherit;
+        }
+        .form-toggle button.active {
+            color: #2c3e50 !important;
+            font-weight: 600;
+        }
+        .form-toggle button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 20px; /* 适当调小表单间距，更紧凑 */
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333 !important;
+            font-weight: 500;
+            font-size: 15px !important;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px; /* 适当调小内边距 */
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus {
+            border-color: #34495e;
+            box-shadow: 0 0 0 3px rgba(52, 73, 94, 0.1); /* 焦点阴影色调与按钮一致 */
+            outline: none;
+        }
+        .form-actions {
+            margin-top: 35px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #2c3e50;
+            color: white !important;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px !important;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn:hover {
+            background: #3e5871; /* 稍浅的悬停色 */
+            transform: translateY(-1px); /* 轻微上浮效果 */
+            box-shadow: 0 4px 12px rgba(44,62,80,0.15);
+        }
+        .form-footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #777 !important;
+            font-size: 14px !important;
+        }
+        .form-footer a {
+            color: #34495e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .form-panel {
+            display: none;
+        }
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease; /* 切换动画稍微加快 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-panel h3 {
+            color: #2c3e50 !important;
+            font-size: 24px !important;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        
+        /* ========================================= */
+        /* Logo与左侧列表样式优化核心区 */
+        /* ========================================= */
+        
+        .logo-container {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            margin-bottom: 45px;
+        }
+        
+        /* Logo图片修改方案：处理为精致的白色圆形图标 */
+        .logo-container img {
+            width: 60px; /* 固定宽度 */
+            height: 60px; /* 固定高度，确保正方形 */
+            margin-right: 18px;
+            border-radius: 50%; /* 强制圆形 */
+            object-fit: cover; /* 确保图片在圆形内不缩放变形 */
+            background-color: #fff; /* 无论原图是否有底，都垫一层白底，处理不协调感 */
+            padding: 5px; /* 图片与圆边框的距离 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* 增加一点浮雕感 */
+            border: 2px solid rgba(255,255,255,0.5); /* 半透明外圈，更精致 */
+        }
+        
+        .logo-container h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        
+        /* 左侧功能列表优化 */
+        .auth-image ul {
+            padding-left: 0;
+            margin-top: 30px;
+        }
+        .auth-image ul li {
+            margin-bottom: 18px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        .auth-image ul li i {
+            width: 20px; /* 固定图标宽度，确保文本对齐 */
+            margin-right: 15px;
+            font-size: 18px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        @media screen and (max-width: 768px) {
+            .auth-container {
+                min-height: auto; /* 移动端取消最小高度限制 */
+                margin: 20px auto;
+            }
+            .auth-image, .auth-forms {
+                padding: 40px 30px;
+            }
+            .form-toggle button {
+                font-size: 18px !important;
+                padding: 10px 15px;
+            }
+            .logo-container {
+                margin-bottom: 30px;
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                        justify-content: center; /* 移动端居中 */
+            }
+            .logo-container img {
+                width: 50px;
+                height: 50px;
+                margin-right: 12px;
+            }
+            .logo-container h1 {
+                font-size: 24px;
+            }
+            .auth-image h2 {
+                font-size: 26px;
+                text-align: center;
+            }
+            .auth-image h2::after {
+                left: 50%;
+                -webkit-transform: translateX(-50%);
+                        transform: translateX(-50%);
+            }
+            .auth-image p {
+                text-align: center;
+                font-size: 15px;
+            }
+            .auth-image ul li {
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                        justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-image">
+            <div class="content"> <div class="logo-container">
+                    <img src="images/logo.jpg" alt="糖康" onerror="this.src='https://via.placeholder.com/60/ffffff/2c3e50?text=TK'"/>
+                    <h1>糖康孪生平台</h1>
+                </div>
+                <h2>欢迎回来</h2>
+                <p>基于数字孪生的糖尿病健康管控平台，为您建立专属的健康数字镜像。通过科学风险评估与个性化干预，精准管理您的血糖健康，助您拥抱无糖烦恼的精彩人生。</p>
+                <ul>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        <span>安全可靠的健康数据管理</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        <span>专业的风险评估分析模型</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-user-md"></i>
+                        <span>个性化精准健康干预建议</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="auth-forms">
+            <div class="form-toggle">
+                <button id="login-toggle" class="active">登录</button>
+                <button id="register-toggle">注册</button>
+            </div>
+            
+            <div id="login-panel" class="form-panel active">
+                <h3>账号登录</h3>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">邮箱</label>
+                        <input type="email" id="login-email" required placeholder="请输入您的注册邮箱">
+                        <div class="error-message" id="login-email-error">请输入有效的邮箱地址</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <input type="password" id="login-password" required placeholder="请输入密码">
+                        <div class="error-message" id="login-password-error">密码长度至少6位</div>
+                    </div>
+                    <div style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
+                        <a href="#" style="color: #555; text-decoration: none; font-size: 14px;">忘记密码?</a>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">登录</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="register-panel" class="form-panel">
+                <h3>创建账号</h3>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-name">姓名</label>
+                        <input type="text" id="register-name" required placeholder="请输入您的真实姓名">
+                        <div class="error-message" id="register-name-error">请输入您的姓名</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">邮箱</label>
+                        <input type="email" id="register-email" required placeholder="作为登录账号使用">
+                        <div class="error-message" id="register-email-error">请输入有效的邮箱地址</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">密码</label>
+                        <input type="password" id="register-password" required placeholder="至少6位字符">
+                        <div class="error-message" id="register-password-error">密码长度至少6位</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">确认密码</label>
+                        <input type="password" id="register-confirm" required placeholder="请再次输入密码">
+                        <div class="error-message" id="register-confirm-error">两次输入的密码不一致</div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">注册</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>注册即表示您同意我们的<a href="#">服务条款</a>和<a href="#">隐私政策</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001';
+
+        function addEvent(element, event, handler) {
+            if (element.addEventListener) {
+                element.addEventListener(event, handler);
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + event, handler);
+            } else {
+                element['on' + event] = handler;
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type) {
+            var existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+
+            var toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.style.cssText = 'position:fixed;top:30px;right:30px;padding:14px 28px;border-radius:8px;color:#fff;font-size:15px;z-index:9999;opacity:0;transition:opacity 0.3s;max-width:360px;box-shadow:0 4px 16px rgba(0,0,0,0.15);';
+            toast.style.background = type === 'success' ? '#27ae60' : '#e74c3c';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(function() { toast.style.opacity = '1'; }, 10);
+            setTimeout(function() {
+                toast.style.opacity = '0';
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 3000);
+        }
+
+        const loginToggle = document.getElementById('login-toggle');
+        const registerToggle = document.getElementById('register-toggle');
+        const loginPanel = document.getElementById('login-panel');
+        const registerPanel = document.getElementById('register-panel');
+
+        addEvent(loginToggle, 'click', function() {
+            loginToggle.classList.add('active');
+            registerToggle.classList.remove('active');
+            loginPanel.classList.add('active');
+            registerPanel.classList.remove('active');
+        });
+
+        addEvent(registerToggle, 'click', function() {
+            registerToggle.classList.add('active');
+            loginToggle.classList.remove('active');
+            registerPanel.classList.add('active');
+            loginPanel.classList.remove('active');
+        });
+
+        // 登录表单
+        const loginForm = document.getElementById('login-form');
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginEmailError = document.getElementById('login-email-error');
+        const loginPasswordError = document.getElementById('login-password-error');
+
+        addEvent(loginForm, 'submit', function(e) {
+            e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+            let isValid = true;
+
+            if (!loginEmail.value || !/\S+@\S+\.\S+/.test(loginEmail.value)) {
+                loginEmailError.classList.add('show');
+                isValid = false;
+            } else {
+                loginEmailError.classList.remove('show');
+            }
+
+            if (!loginPassword.value || loginPassword.value.length < 6) {
+                loginPasswordError.classList.add('show');
+                isValid = false;
+            } else {
+                loginPasswordError.classList.remove('show');
+            }
+
+            if (isValid) {
+                const btn = loginForm.querySelector('.btn');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+                btn.style.opacity = '0.8';
+                btn.disabled = true;
+
+                fetch(API_BASE + '/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: loginEmail.value, password: loginPassword.value })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.token) {
+                        localStorage.setItem('tk_token', data.token);
+                        localStorage.setItem('tk_user', JSON.stringify(data.user));
+                        localStorage.setItem('tk_risk_level', '低风险');
+                        showToast('登录成功！正在跳转...', 'success');
+                        setTimeout(function() {
+                            window.location.href = 'index2.html';
+                        }, 1000);
+                    } else {
+                        showToast(data.message || '登录失败，请检查邮箱和密码', 'error');
+                        btn.innerHTML = '登录';
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                    }
+                })
+                .catch(function(err) {
+                    showToast('网络错误，请检查服务器连接', 'error');
+                    btn.innerHTML = '登录';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                });
+            }
+        });
+
+        // 注册表单
+        const registerForm = document.getElementById('register-form');
+        const registerName = document.getElementById('register-name');
+        const registerEmail = document.getElementById('register-email');
+        const registerPassword = document.getElementById('register-password');
+        const registerConfirm = document.getElementById('register-confirm');
+        const registerNameError = document.getElementById('register-name-error');
+        const registerEmailError = document.getElementById('register-email-error');
+        const registerPasswordError = document.getElementById('register-password-error');
+        const registerConfirmError = document.getElementById('register-confirm-error');
+
+        addEvent(registerForm, 'submit', function(e) {
+            e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+            let isValid = true;
+
+            if (!registerName.value.trim()) {
+                registerNameError.classList.add('show');
+                isValid = false;
+            } else {
+                registerNameError.classList.remove('show');
+            }
+
+            if (!registerEmail.value || !/\S+@\S+\.\S+/.test(registerEmail.value)) {
+                registerEmailError.classList.add('show');
+                isValid = false;
+            } else {
+                registerEmailError.classList.remove('show');
+            }
+
+            if (!registerPassword.value || registerPassword.value.length < 6) {
+                registerPasswordError.classList.add('show');
+                isValid = false;
+            } else {
+                registerPasswordError.classList.remove('show');
+            }
+
+            if (registerConfirm.value !== registerPassword.value) {
+                registerConfirmError.classList.add('show');
+                isValid = false;
+            } else {
+                registerConfirmError.classList.remove('show');
+            }
+
+            if (isValid) {
+                const btn = registerForm.querySelector('.btn');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 注册中...';
+                btn.style.opacity = '0.8';
+                btn.disabled = true;
+
+                fetch(API_BASE + '/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: registerName.value.trim(), email: registerEmail.value, password: registerPassword.value })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.message && data.message.indexOf('成功') !== -1) {
+                        showToast('注册成功！请使用新账号登录。', 'success');
+                        btn.innerHTML = '注册';
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                        registerForm.reset();
+                        loginToggle.click();
+                    } else {
+                        showToast(data.message || '注册失败，请重试', 'error');
+                        btn.innerHTML = '注册';
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                    }
+                })
+                .catch(function(err) {
+                    showToast('网络错误，请检查服务器连接', 'error');
+                    btn.innerHTML = '注册';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>数据可视化大屏 - 糖康孪生平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="tk-design-system.css">
+    <link rel="stylesheet" href="tk-floating-menu.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding-top: 100px !important;
+        }
+        .dashboard {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
+
+        .dashboard-time {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .stat-card:nth-child(4)::before {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .stat-trend.up { color: #10b981; }
+        .stat-trend.down { color: #ef4444; }
+
+        .data-stream {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .stream-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stream-title i {
+            color: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .stream-items {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .stream-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stream-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            transform: scale(1.05);
+        }
+
+        .stream-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .stream-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .chart-card.full-width {
+            grid-column: span 3;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-title i {
+            color: #10b981;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container.tall {
+            height: 400px;
+        }
+
+        .risk-distribution {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .risk-item {
+            text-align: center;
+        }
+
+        .risk-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 auto 12px;
+            position: relative;
+        }
+
+        .risk-item:nth-child(1) .risk-circle {
+            background: conic-gradient(#10b981 0deg, #10b981 162deg, rgba(16, 185, 129, 0.2) 162deg);
+            color: #10b981;
+        }
+
+        .risk-item:nth-child(2) .risk-circle {
+            background: conic-gradient(#f59e0b 0deg, #f59e0b 126deg, rgba(245, 158, 11, 0.2) 126deg);
+            color: #f59e0b;
+        }
+
+        .risk-item:nth-child(3) .risk-circle {
+            background: conic-gradient(#ef4444 0deg, #ef4444 72deg, rgba(239, 68, 68, 0.2) 72deg);
+            color: #ef4444;
+        }
+
+        .risk-label {
+            font-size: 1rem;
+            color: #94a3b8;
+        }
+
+        .risk-percent {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .dashboard-footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: repeat(2, 1fr); }
+            .chart-card.full-width { grid-column: span 2; }
+            .stream-items { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .chart-card.full-width { grid-column: span 1; }
+            .stream-items { grid-template-columns: repeat(2, 1fr); }
+            .dashboard-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tk-header-placeholder"></div>
+
+    <div class="dashboard">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-chart-line"></i> 糖康孪生 - 全球糖尿病数据分析大屏
+            </h1>
+            <p class="dashboard-subtitle">实时监控 | 智能分析 | 风险预警</p>
+            <div class="dashboard-time" id="currentTime"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">累计用户数</div>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月 +12.5%</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-stethoscope"></i></div>
+                <div class="stat-value" id="totalAssessments">0</div>
+                <div class="stat-label">风险评估次数</div>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>较上月 +28.3%</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                <div class="stat-value" id="avgAccuracy">0%</div>
+                <div class="stat-label">模型预测准确率</div>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>AUC: 0.92</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-value" id="responseTime">0ms</div>
+                <div class="stat-label">平均响应时间</div>
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>优化 -15ms</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-stream">
+            <h3 class="stream-title">
+                <i class="fas fa-broadcast-tower"></i> 实时数据监控
+            </h3>
+            <div class="stream-items">
+                <div class="stream-item">
+                    <div class="stream-value" id="onlineUsers">0</div>
+                    <div class="stream-label">在线用户</div>
+                </div>
+                <div class="stream-item">
+                    <div class="stream-value" id="todayAssess">0</div>
+                    <div class="stream-label">今日评估</div>
+                </div>
+                <div class="stream-item">
+                    <div class="stream-value" id="highRisk">0</div>
+                    <div class="stream-label">高风险预警</div>
+                </div>
+                <div class="stream-item">
+                    <div class="stream-value" id="dataProcessed">0</div>
+                    <div class="stream-label">数据处理量</div>
+                </div>
+                <div class="stream-item">
+                    <div class="stream-value" id="apiCalls">0</div>
+                    <div class="stream-label">API调用</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3 class="chart-title"><i class="fas fa-chart-bar"></i> 年龄段分布</h3>
+                <div class="chart-container">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3 class="chart-title"><i class="fas fa-venus-mars"></i> 性别比例</h3>
+                <div class="chart-container">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3 class="chart-title"><i class="fas fa-chart-pie"></i> 症状分布</h3>
+                <div class="chart-container">
+                    <canvas id="symptomChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3 class="chart-title"><i class="fas fa-chart-area"></i> 风险等级分布与趋势</h3>
+                <div class="risk-distribution">
+                    <div class="risk-item">
+                        <div class="risk-circle"><span>45%</span></div>
+                        <div class="risk-label">低风险</div>
+                        <div class="risk-percent">4,521 人</div>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-circle"><span>35%</span></div>
+                        <div class="risk-label">中风险</div>
+                        <div class="risk-percent">3,518 人</div>
+                    </div>
+                    <div class="risk-item">
+                        <div class="risk-circle"><span>20%</span></div>
+                        <div class="risk-label">高风险</div>
+                        <div class="risk-percent">2,012 人</div>
+                    </div>
+                </div>
+                <div class="chart-container tall">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-footer">
+            <p>糖康孪生平台 © 2026 | 数据更新时间：<span id="updateTime"></span></p>
+        </div>
+    </div>
+
+    <div id="tk-footer-placeholder"></div>
+    <div id="tk-fab-placeholder"></div>
+
+    <script src="tk-components.js"></script>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN');
+            document.getElementById('currentTime').textContent = timeStr;
+            document.getElementById('updateTime').textContent = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        function animateNumber(element, target, duration = 2000) {
+            const start = 0;
+            const startTime = performance.now();
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (target - start) * easeProgress);
+                element.textContent = current.toLocaleString();
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                animateNumber(document.getElementById('totalUsers'), 125893);
+                animateNumber(document.getElementById('totalAssessments'), 458672);
+                animateNumber(document.getElementById('onlineUsers'), 1523);
+                animateNumber(document.getElementById('todayAssess'), 389);
+                animateNumber(document.getElementById('highRisk'), 47);
+                animateNumber(document.getElementById('dataProcessed'), 1234567);
+                animateNumber(document.getElementById('apiCalls'), 8934);
+                document.getElementById('avgAccuracy').textContent = '92.5%';
+                document.getElementById('responseTime').textContent = '45ms';
+            }, 500);
+        });
+
+        new Chart(document.getElementById('ageChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['20以下', '20-30', '30-40', '40-50', '50-60', '60-70', '70以上'],
+                datasets: [{
+                    label: '患者数量',
+                    data: [1234, 4521, 8934, 12356, 15678, 11234, 5678],
+                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('genderChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['男性', '女性'],
+                datasets: [{
+                    data: [45.94, 54.06],
+                    backgroundColor: ['#3b82f6', '#ec4899'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#e2e8f0', padding: 20 } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('symptomChart').getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: ['多尿', '烦渴', '体重下降', '疲劳', '视力模糊', '伤口愈合慢'],
+                datasets: [{
+                    label: '症状检出率',
+                    data: [65, 58, 42, 38, 25, 32],
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        angleLines: { color: 'rgba(255,255,255,0.1)' },
+                        pointLabels: { color: '#e2e8f0' },
+                        ticks: { display: false }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('trendChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                datasets: [
+                    {
+                        label: '低风险',
+                        data: [3200, 3450, 3680, 3890, 4120, 4521],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '中风险',
+                        data: [2800, 2950, 3100, 3250, 3380, 3518],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '高风险',
+                        data: [1500, 1620, 1750, 1820, 1920, 2012],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#e2e8f0', usePointStyle: true } }
+                },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

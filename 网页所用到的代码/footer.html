@@ -1,0 +1,70 @@
+<style>
+    /* ========================================= */
+    /* 现代高级版：深色沉浸式专业页脚 */
+    /* ========================================= */
+    .modern-footer { background: #0f172a; color: #94a3b8; padding: 5rem 5% 2rem; font-family: -apple-system, sans-serif; margin-top: 4rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .footer-brand h3 { color: white; font-size: 1.6rem; margin: 0 0 1.2rem 0; font-weight: 800; letter-spacing: -0.5px; }
+    .footer-brand p { line-height: 1.7; margin-bottom: 2rem; font-size: 0.95rem; }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social a { color: #fff; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; text-decoration: none; }
+    .footer-social a:hover { background: #2563eb; transform: translateY(-3px); }
+    
+    .footer-links h4 { color: white; margin: 0 0 1.5rem 0; font-size: 1.1rem; font-weight: 600; }
+    .footer-links ul { list-style: none; padding: 0; margin: 0; }
+    .footer-links li { margin-bottom: 1rem; }
+    .footer-links a { color: #94a3b8; text-decoration: none; transition: color 0.2s; font-size: 0.95rem; }
+    .footer-links a:hover { color: white; padding-left: 5px; }
+    
+    .footer-contact li { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; color: #94a3b8; font-size: 0.95rem;}
+    .footer-contact i { color: #2563eb; font-size: 1.2rem; }
+
+    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+    
+    @media (max-width: 900px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+</style>
+
+<footer class="modern-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3><i class="fas fa-heartbeat" style="color: #2563eb; margin-right: 8px;"></i>糖康孪生平台</h3>
+            <p>致力于通过大数据与数字孪生技术，为全球用户提供精准的糖尿病早期风险预测、个性化健康管理方案及权威的专家交流社区。</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-weixin"></i></a>
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>快速导航</h4>
+            <ul>
+                <li><a href="index.html">平台首页</a></li>
+                <li><a href="dati1.html">一键风险评估</a></li>
+                <li><a href="luntan.html">糖友互助社区</a></li>
+                <li><a href="fenxi.html">全球病例分析</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>支持与帮助</h4>
+            <ul>
+                <li><a href="guanyuwm.html">关于我们</a></li>
+                <li><a href="#">隐私保护政策</a></li>
+                <li><a href="#">用户服务条款</a></li>
+                <li><a href="#">数据安全说明</a></li>
+            </ul>
+        </div>
+        <div class="footer-links footer-contact">
+            <h4>联系我们</h4>
+            <ul>
+                <li><i class="fas fa-envelope"></i> contact@tangkang.com</li>
+                <li><i class="fas fa-phone-alt"></i> 400-123-4567</li>
+                <li><i class="fas fa-map-marker-alt"></i> 科技创新园区数字医疗大厦 12F</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 糖康孪生 - 糖康孪生平台. 保留所有权利. 
+    </div>
+</footer>
